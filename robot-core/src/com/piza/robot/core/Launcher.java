@@ -7,13 +7,17 @@ import java.util.TimeZone;
  */
 public class Launcher {
 
-    public static void main(String[] args) {
+    public void init(){
         final TimeZone zone = TimeZone.getTimeZone("GMT+8");
         TimeZone.setDefault(zone);
         ConfigUtil.initProp();
+
+
+    }
+
+    public void startApp(){
         ChatService.getInstance().start();
-        System.out.println("hello world! "+Version.VERSION);
-        System.out.println(ConfigUtil.getIntProp("maxPoolSize"));
+
         while(AppStatus.robotStatus!= AppStatus.RobotStatus.EXIT){
             try {
                 Thread.sleep(60000);
@@ -21,6 +25,7 @@ public class Launcher {
                 e.printStackTrace();
             }
         }
-
     }
+
+
 }

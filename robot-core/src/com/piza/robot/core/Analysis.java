@@ -1,4 +1,4 @@
-package com.piza.robot.core.chat;
+package com.piza.robot.core;
 
 public class Analysis {
 	

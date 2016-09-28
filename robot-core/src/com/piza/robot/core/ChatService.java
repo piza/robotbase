@@ -49,11 +49,20 @@ public class ChatService {
         executor.execute(chatRobot);
     }
 
+    public void sendMessage(String to,String content){
+        ChatMessage chatMessage=new ChatMessage();
+        chatMessage.setContent(content);
+        chatMessage.setFriend(to);
+        messagesQueue.add(chatMessage);
+    }
+
 
     private class ChatRobot implements Runnable{
         private final GtalkRobotListener listener;
 
         private XMPPTCPConnection connection;
+
+        private ChatManager chatManager;
 
         public ChatRobot(){
             listener=new GtalkRobotListener();
@@ -67,10 +76,10 @@ public class ChatService {
                 return false;
             }
 
-            ChatManager manager=ChatManager.getInstanceFor(connection);
+            chatManager=ChatManager.getInstanceFor(connection);
 
 
-            manager.addChatListener(new ChatManagerListener() {
+            chatManager.addChatListener(new ChatManagerListener() {
 
                 @Override
                 public void chatCreated(Chat chat, boolean arg1) {
@@ -205,6 +214,19 @@ public class ChatService {
         @Override
         public void run() {
             this.login();
+            System.out.println("start polling message");
+            while(true) {
+                try {
+                    ChatMessage chatMessage = messagesQueue.take();
+                    Chat chat = chatManager.createChat(chatMessage.getFriend());
+                    chat.sendMessage(chatMessage.getContent());
+                } catch (SmackException.NotConnectedException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
         }
     }
 
@@ -213,20 +235,25 @@ public class ChatService {
 
         @Override
         public void processMessage(Chat chat, Message message) {
-            ContainerPool pool=ContainerPool.getPool();
-            AbstractDispatcher gtalkDispatcher=pool.getDispatcher();
-            if(gtalkDispatcher==null){
-                gtalkDispatcher=new GtalkDispatcher();
-            }
-            UserRequest request=new GtalkUserRequest();
-            request.setAttribute(Constants.GTALK_CHAT,chat);
-            request.setAttribute(Constants.GTALK_MESSAGE, message);
+//            ContainerPool pool=ContainerPool.getPool();
+//            AbstractDispatcher gtalkDispatcher=pool.getDispatcher();
+//            if(gtalkDispatcher==null){
+//                gtalkDispatcher=new GtalkDispatcher();
+//            }
+//            UserRequest request=new GtalkUserRequest();
+//            request.setAttribute(Constants.GTALK_CHAT,chat);
+//            request.setAttribute(Constants.GTALK_MESSAGE, message);
+//
+//            UserResponse response=new GtalkUserResponse();
+//            response.setAttribute(Constants.GTALK_CHAT, chat);
+//            gtalkDispatcher.setRequest(request);
+//            gtalkDispatcher.setResponse(response);
+//            pool.prcessMessage(gtalkDispatcher);
 
-            UserResponse response=new GtalkUserResponse();
-            response.setAttribute(Constants.GTALK_CHAT, chat);
-            gtalkDispatcher.setRequest(request);
-            gtalkDispatcher.setResponse(response);
-            pool.prcessMessage(gtalkDispatcher);
+            ChatMessage chatMessage=new ChatMessage();
+            chatMessage.setFriend(chat.getParticipant());
+            chatMessage.setContent(message.getBody());
+            DispatchService.getInstance().add(chatMessage);
 
         }
 

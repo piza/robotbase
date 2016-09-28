@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.piza.robot.core.IAnalyser;
 import org.apache.log4j.Logger;
 
 public abstract class AbstractDispatcher implements Runnable{

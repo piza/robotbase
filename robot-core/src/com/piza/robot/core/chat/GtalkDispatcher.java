@@ -1,5 +1,6 @@
 package com.piza.robot.core.chat;
 
+import com.piza.robot.core.IAnalyser;
 import org.jivesoftware.smack.packet.Message;
 
 
@@ -19,7 +20,7 @@ public class GtalkDispatcher extends AbstractDispatcher{
 		boolean handleable=false; 
 		for(IAnalyser anlysis:this.allAnalyser.values()){
 			if(anlysis.analyse(text).isHandleable()){
-				controllerName=anlysis.getBeanName();
+				controllerName=anlysis.getTaskName();
 				handleable=true;
 				break;
 			}
