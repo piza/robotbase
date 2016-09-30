@@ -1,0 +1,268 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.piza</groupId>
+  <artifactId>robotbase</artifactId>
+  <version>1.0</version>
+    <modules>
+        <module>robot-core</module>
+        <module>robot-deployer</module>
+    </modules>
+  <packaging>pom</packaging>
+
+  <distributionManagement>
+    <site>
+      <id>website</id>
+      <url>scp://webhost.company.com/www/website</url>
+    </site>
+  </distributionManagement>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <org.springframework.version>4.0.8.RELEASE</org.springframework.version>
+      
+      <slf4j.version>1.7.9</slf4j.version>
+      
+      <junit.version>4.12</junit.version>
+      <druid-version>1.0.16</druid-version>
+      
+  </properties>
+    <repositories>
+
+        <!-- for red5-server snapshot-->
+        <!--<repository>-->
+            <!--<id>sonatype-snapshots</id>-->
+            <!--<name>Sonatype Snapshots</name>-->
+            <!--<url>http://oss.sonatype.org/content/repositories/snapshots</url>-->
+        <!--</repository>-->
+        <!--<repository>-->
+            <!--<id>sonatype-releases</id>-->
+            <!--<name>Sonatype Releases</name>-->
+            <!--<url>http://oss.sonatype.org/content/repositories/releases</url>-->
+        <!--</repository>-->
+        <!--<repository>-->
+            <!--<id>osgeo</id>-->
+            <!--<name>OSGeo repo - mainly for groboutils-core resolution</name>-->
+            <!--<url>http://download.osgeo.org/webdav/geotools</url>-->
+        <!--</repository>-->
+        <!--<repository>-->
+            <!--<id>maven2-repository.dev.java.net</id>-->
+            <!--<url>http://download.java.net/maven/2</url>-->
+        <!--</repository>-->
+        <!--<repository>-->
+            <!--<id>Alfresco Maven Repository</id>-->
+            <!--<url>https://maven.alfresco.com/nexus/content/groups/public/</url>-->
+        <!--</repository>-->
+        <!--<repository>-->
+            <!--<id>for com.jhlabs imaging</id>-->
+            <!--<url>http://maven.jahia.org/maven2</url>-->
+        <!--</repository>-->
+        <repository>
+            <id>public repo1</id>
+            <url>http://repo1.maven.org/maven2</url>
+        </repository>
+        <!--http://repo1.maven.org/maven2-->
+
+        <!--http://repository.jboss.com/maven2-->
+
+        <!--http://repository.sonatype.org/content/groups/public-->
+
+        <!--http://mirrors.ibiblio.org/pub/mirrors/maven2/org/acegisecurity-->
+
+        <!--用来解决 jaudiotagger-2.0.4-SNAPSHOT.pom 问题-->
+        <repository>
+            <id>grails</id>
+            <name>Grails</name>
+            <url>http://repo.grails.org/grails/repo/</url>
+        </repository>
+
+    </repositories>
+
+    <dependencies>
+        
+
+
+        <!-- Mybatis Dependencies -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+        <!-- mybatis generator core -->
+        <dependency>
+            <groupId>org.mybatis.generator</groupId>
+            <artifactId>mybatis-generator-core</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>${druid-version}</version>
+        </dependency>
+
+        <!-- MySQL jdbc driver -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.37</version>
+        </dependency>
+
+
+        
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging-api</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.16</version>
+        </dependency>
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.8.3</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-pool</groupId>
+            <artifactId>commons-pool</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.5</version>
+        </dependency>
+        
+        
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-asl</artifactId>
+            <version>1.9.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.7</version>
+        </dependency>
+        <!-- JSON lib 开发包 以及它的依赖包 -->
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <classifier>jdk15</classifier>
+            <version>2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.0</version>
+        </dependency>
+       
+        
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.3</version>
+        </dependency>
+       
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.1</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.igniterealtime.smack/smack-core -->
+        <dependency>
+            <groupId>org.igniterealtime.smack</groupId>
+            <artifactId>smack-core</artifactId>
+            <version>4.1.8</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.igniterealtime.smack/smack-extensions -->
+        <dependency>
+            <groupId>org.igniterealtime.smack</groupId>
+            <artifactId>smack-extensions</artifactId>
+            <version>4.1.8</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.igniterealtime.smack/smack-tcp -->
+        <dependency>
+            <groupId>org.igniterealtime.smack</groupId>
+            <artifactId>smack-tcp</artifactId>
+            <version>4.1.8</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.igniterealtime.smack/smack-java7 -->
+        <dependency>
+            <groupId>org.igniterealtime.smack</groupId>
+            <artifactId>smack-java7</artifactId>
+            <version>4.1.8</version>
+        </dependency>
+
+
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-site-plugin</artifactId>
+                <configuration>
+                    <locales>en,fr</locales>
+                </configuration>
+            </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                    </configuration>
+                </plugin>
+        </plugins>
+
+    </build>
+</project>
