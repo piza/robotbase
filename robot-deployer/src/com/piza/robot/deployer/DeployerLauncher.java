@@ -3,6 +3,8 @@ package com.piza.robot.deployer;
 import com.piza.robot.core.Launcher;
 import com.piza.robot.core.ParserManage;
 import com.piza.robot.core.TaskManager;
+import com.piza.robot.core.task.RobotInfoAnalyser;
+import com.piza.robot.core.task.RobotInfoTask;
 
 /**
  * Created by Peter on 16/9/28.
@@ -16,10 +18,8 @@ public class DeployerLauncher extends Launcher {
 
         deployerLauncher.init();
         ParserManage.getInstance().addAnalyser("deployer",new DeployerAnalyser());
-        ParserManage.getInstance().addAnalyser("robotInfo",new RobotInfoAnalyser());
 
         TaskManager.getInstance().addTask(new DeployTask());
-        TaskManager.getInstance().addTask(new RobotInfoTask());
 
         deployerLauncher.startApp();
 

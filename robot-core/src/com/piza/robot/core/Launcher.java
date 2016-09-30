@@ -1,5 +1,8 @@
 package com.piza.robot.core;
 
+import com.piza.robot.core.task.RobotInfoAnalyser;
+import com.piza.robot.core.task.RobotInfoTask;
+
 import java.util.TimeZone;
 
 /**
@@ -11,6 +14,10 @@ public class Launcher {
         final TimeZone zone = TimeZone.getTimeZone("GMT+8");
         TimeZone.setDefault(zone);
         ConfigUtil.initProp();
+        //add basic task
+        ParserManage.getInstance().addAnalyser("robotInfo", new RobotInfoAnalyser());
+        TaskManager.getInstance().addTask(new RobotInfoTask());
+
 
 
     }
