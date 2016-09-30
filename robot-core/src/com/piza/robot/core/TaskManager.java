@@ -42,4 +42,13 @@ public class TaskManager {
         return task;
     }
 
+    public String report(){
+        StringBuilder sb=new StringBuilder();
+        sb.append("all task\n");
+        for(String taskName:taskPool.keySet()){
+            sb.append(taskName).append(",\n");
+        }
+        return sb.toString();
+    }
+
 }

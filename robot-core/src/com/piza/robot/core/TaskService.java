@@ -12,6 +12,7 @@ public class TaskService {
 
     private static final Logger logger= Logger.getLogger(TaskService.class);
     private static volatile TaskService taskService=null;
+    private static volatile int taskLong=0;
     private Executor executor;
 
     private TaskService(){
@@ -29,9 +30,16 @@ public class TaskService {
         return taskService;
     }
 
+    public String report(){
+        StringBuilder sb=new StringBuilder();
+        sb.append("task service\n");
+        sb.append("task executed:"+taskLong);
+        return sb.toString();
+    }
 
     public synchronized void addTask(TaskBase taskBase){
         logger.info("add task:"+taskBase.getTaskName());
+        taskLong++;
         executor.execute(taskBase);
     }
 }

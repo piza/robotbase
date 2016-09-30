@@ -16,8 +16,10 @@ public class DeployerLauncher extends Launcher {
 
         deployerLauncher.init();
         ParserManage.getInstance().addAnalyser("deployer",new DeployerAnalyser());
+        ParserManage.getInstance().addAnalyser("robotInfo",new RobotInfoAnalyser());
 
         TaskManager.getInstance().addTask(new DeployTask());
+        TaskManager.getInstance().addTask(new RobotInfoTask());
 
         deployerLauncher.startApp();
 

@@ -10,10 +10,12 @@ import org.jivesoftware.smack.chat.ChatMessageListener;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.roster.Roster;
+import org.jivesoftware.smack.roster.RosterEntry;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 
 import java.io.IOException;
+import java.util.Set;
 import java.util.concurrent.*;
 
 /**
@@ -47,6 +49,13 @@ public class ChatService {
 
     public void start(){
         executor.execute(chatRobot);
+    }
+
+    public String report(){
+        StringBuilder sb=new StringBuilder();
+        sb.append("robot status:\n");
+        sb.append(chatRobot.report());
+        return sb.toString();
     }
 
     public void sendMessage(String to,String content){
@@ -208,8 +217,18 @@ public class ChatService {
 
         }
 
-        public String getName() {
-            return "GtalkRobot";
+        public String report() {
+           Roster roster=Roster.getInstanceFor(connection);
+            Set<RosterEntry> entrySet=roster.getEntries();
+            if(entrySet==null){
+                return "no entry";
+            }
+            StringBuilder sb=new StringBuilder();
+            for(RosterEntry entry:entrySet){
+                sb.append(entry.getUser()+"\n");
+            }
+
+            return sb.toString();
         }
         @Override
         public void run() {

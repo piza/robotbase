@@ -1,6 +1,5 @@
 package com.piza.robot.deployer;
 
-import com.piza.robot.core.ChatMessage;
 import com.piza.robot.core.ChatService;
 import com.piza.robot.core.TaskBase;
 

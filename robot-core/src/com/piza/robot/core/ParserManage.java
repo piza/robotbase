@@ -29,8 +29,17 @@ public class ParserManage {
         return parserManager;
     }
 
+    public String report(){
+        StringBuilder sb=new StringBuilder();
+        sb.append("all parser\n");
+        for(String parserName:analyserPool.keySet()){
+            sb.append(parserName).append(",\n");
+        }
+        return sb.toString();
+    }
+
     public void addAnalyser(String key,IAnalyser analyser){
-        logger.info("add task:"+analyser.getName());
+        logger.info("add parser:"+analyser.getName());
         analyserPool.put(key,analyser);
     }
 
