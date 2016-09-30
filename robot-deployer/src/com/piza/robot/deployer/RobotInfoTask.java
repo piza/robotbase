@@ -14,7 +14,7 @@ public class RobotInfoTask  extends TaskBase {
     @Override
     public void run() {
         String sendMsg="status report:\n"
-                + ParserManage.getInstance().report()
+                +ParserManage.getInstance().report()
                 +TaskManager.getInstance().report()
                 +TaskService.getInstance().report()+"\n"
                 +ChatService.getInstance().report();
