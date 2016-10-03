@@ -1,6 +1,7 @@
 package com.piza.robot.core.task;
 
 import com.piza.robot.core.ConfigUtil;
+import com.piza.robot.core.Launcher;
 import com.piza.robot.core.ShellJob;
 import com.piza.robot.core.TaskBase;
 import org.apache.commons.io.FileUtils;
@@ -11,6 +12,8 @@ import java.io.*;
  * Created by Peter on 16/9/29.
  */
 public class UpgradeTask extends TaskBase {
+
+    private volatile static boolean working=false;
     @Override
     public String getTaskName() {
         return "upgradeTask";
@@ -18,11 +21,67 @@ public class UpgradeTask extends TaskBase {
 
     @Override
     public void run() {
-      this.sendChat("ok,start upgrade!\n pull code...");
-        pullCode();
+        if(working){
+            this.sendChat("duplicate command!");
+            return;
+        }
+        try {
+            working=true;
+            this.sendChat("ok,start upgrade!\n pull code...");
+            if(!pullCode()){
+                this.sendChat("task over");
+                return;
+            }
+            if(!buildProject()){
+                this.sendChat("task over");
+                return;
+            }
+            if(!restartProject()){
+                this.sendChat("task over");
+                return;
+            }
+        }finally {
+            working=false;
+        }
     }
 
-    private void pullCode(){
+    private boolean restartProject(){
+
+        Launcher.tryExist();
+
+        this.sendChat("start to restart project!");
+        String workingDir= ConfigUtil.getStrProp("workDir");
+
+        try {
+            String pullCmd = workingDir + File.separator + "restartProject.sh "+workingDir+File.separator+"robotbase";
+            ShellJob shellJob=new ShellJob();
+            shellJob.runCommand(pullCmd);
+            this.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
+            return shellJob.isSuccess();
+        }catch (Exception e){
+            e.printStackTrace();
+            this.sendChat("error when restart project:" + e.getMessage());
+        }
+
+        return true;
+    }
+    private boolean buildProject(){
+        this.sendChat("start to build project!");
+        String workingDir= ConfigUtil.getStrProp("workDir");
+
+        try {
+            String pullCmd = workingDir + File.separator + "buildProject.sh "+workingDir+File.separator+"robotbase";
+            ShellJob shellJob=new ShellJob();
+            shellJob.runCommand(pullCmd);
+            this.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
+            return shellJob.isSuccess();
+        }catch (Exception e){
+            e.printStackTrace();
+            this.sendChat("error when build project:" + e.getMessage());
+        }
+        return false;
+    }
+    private boolean pullCode(){
         checkFirst();
         this.sendChat("start to pull code!");
         String workingDir= ConfigUtil.getStrProp("workDir");
@@ -32,10 +91,12 @@ public class UpgradeTask extends TaskBase {
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(pullCmd);
             this.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
+            return shellJob.isSuccess();
         }catch (Exception e){
             e.printStackTrace();
-            this.sendChat("error when clone project:" + e.getMessage());
+            this.sendChat("error when pull code:" + e.getMessage());
         }
+        return false;
     }
 
     private void checkFirst(){
@@ -56,6 +117,8 @@ public class UpgradeTask extends TaskBase {
             //create git clone shell
             File cloneShell=new File(workingDir+File.separator+"cloneProject.sh");
             File pullShell=new File(workingDir+File.separator+"pullProject.sh");
+            File buildShell=new File(workingDir+File.separator+"buildProject.sh");
+            File restartShell=new File(workingDir+File.separator+"restartProject.sh");
 
             if(!cloneShell.exists()){
                 try {
@@ -65,6 +128,12 @@ public class UpgradeTask extends TaskBase {
 
                     FileUtils.copyInputStreamToFile(UpgradeTask.class.getClassLoader().getResourceAsStream("shells/pullProject.sh"),pullShell);
                     pullShell.setExecutable(true);
+
+                    FileUtils.copyInputStreamToFile(UpgradeTask.class.getClassLoader().getResourceAsStream("shells/buildProject.sh"),buildShell);
+                    buildShell.setExecutable(true);
+
+                    FileUtils.copyInputStreamToFile(UpgradeTask.class.getClassLoader().getResourceAsStream("shells/restartProject.sh"),restartShell);
+                    restartShell.setExecutable(true);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
