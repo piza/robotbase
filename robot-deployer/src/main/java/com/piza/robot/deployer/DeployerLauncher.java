@@ -1,5 +1,6 @@
 package com.piza.robot.deployer;
 
+import com.piza.robot.core.ConfigUtil;
 import com.piza.robot.core.Launcher;
 import com.piza.robot.core.ParserManage;
 import com.piza.robot.core.TaskManager;
@@ -17,6 +18,7 @@ public class DeployerLauncher extends Launcher {
         DeployerLauncher deployerLauncher=new DeployerLauncher();
 
         deployerLauncher.init();
+        ConfigUtil.initProp("deployer.properties");
         ParserManage.getInstance().addAnalyser("deployer",new DeployerAnalyser());
 
         TaskManager.getInstance().addTask(new DeployTask());

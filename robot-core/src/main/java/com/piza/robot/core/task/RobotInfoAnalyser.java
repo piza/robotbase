@@ -15,7 +15,9 @@ public class RobotInfoAnalyser implements IAnalyser {
     @Override
     public Analysis analyse(String input) {
         Analysis analysis=new Analysis();
-        if(input!=null && (input.startsWith("hello") || input.toLowerCase().startsWith("hi "))){
+        if(input!=null && (input.startsWith("hello")
+                || input.toLowerCase().equals("hi")
+                || input.startsWith("hi "))){
             analysis.setHandleable(true);
         }
         return analysis;

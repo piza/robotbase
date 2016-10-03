@@ -146,11 +146,13 @@ public class ChatService {
             config.setHost(ConfigUtil.getStrProp("GtalkIP"));
             config.setPort(ConfigUtil.getIntProp("GtalkPort"));
             config.setDebuggerEnabled(true);
+            config.setConnectTimeout(50000);
 //            XMPPTCPConnection.setUseStreamManagementResumptiodDefault(true);
             XMPPTCPConnection.setUseStreamManagementDefault(true);
             SASLAuthentication.unBlacklistSASLMechanism("PLAIN");
             SASLAuthentication.blacklistSASLMechanism("DIGEST-MD5");
             connection = new XMPPTCPConnection(config.build());
+            connection.setPacketReplyTimeout(60000);
             connection.connect();
             connection.login(ConfigUtil.getStrProp("GtalkRobotID"), ConfigUtil.getStrProp("GtalkPassword"));
 

@@ -20,8 +20,8 @@ public class ConfigUtil {
     /**
      * invoke before thread pool start
      */
-    public static void initProp(){
-        InputStream inputStream=ConfigUtil.class.getClassLoader().getResourceAsStream("config.properties");
+    public static void initProp(String fileName){
+        InputStream inputStream=ConfigUtil.class.getClassLoader().getResourceAsStream(fileName);
         try {
             props.load(inputStream);
         } catch (IOException e) {

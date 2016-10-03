@@ -44,17 +44,24 @@ public class DispatchService {
         @Override
         public void run() {
             Collection<IAnalyser> allAnalyser=ParserManage.getInstance().getAllAnalyser();
+            boolean foundTask=false;
             for(IAnalyser iAnalyser:allAnalyser){
                Analysis analysis= iAnalyser.analyse(this.chatMessage.getContent());
                 if(analysis.isHandleable()){
                     TaskBase taskBase=TaskManager.getInstance().getTask(iAnalyser.getTaskName());
                     taskBase.setChatMessage(chatMessage);
                     TaskService.getInstance().addTask(taskBase);
+                    foundTask=true;
                     if(!analysis.isContinuable()){
                         break;
                     }
                 }
 
+            }
+            if(!foundTask){
+                TaskBase defaultTask=TaskManager.getInstance().getTask("defaultTask");
+                defaultTask.setChatMessage(chatMessage);
+                TaskService.getInstance().addTask(defaultTask);
             }
         }
     }
