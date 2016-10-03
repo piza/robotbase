@@ -71,7 +71,7 @@ public class ChatService {
         StringBuilder sb=new StringBuilder();
         sb.append("robot status:\n");
         if(chatRobot!=null){
-            executor.execute(chatRobot);
+            sb.append(chatRobot.report());
         }
         return sb.toString();
     }
