@@ -4,6 +4,9 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by Peter on 2016/10/3.
@@ -38,7 +41,7 @@ public class ShellJob {
 //            Process pid = Runtime.getRuntime().exec(cmd);
             pb.redirectErrorStream(true);
             Process pid=pb.start();
-            StringBuilder sb = new StringBuilder();
+            List<String> jobInfo= Collections.synchronizedList(new ArrayList());
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -49,7 +52,7 @@ public class ShellJob {
                         String s;
                         while ((s = reader.readLine()) != null) {
                             success=true;
-                            sb.append(s).append("\n");
+                            jobInfo.add(s+"\n");
                         }
                     }catch (IOException ioE){
                         ioE.printStackTrace();
@@ -67,8 +70,7 @@ public class ShellJob {
                         String s;
 
                         while ((s = errReader.readLine()) != null) {
-
-                            sb.append(s).append("\n");
+                            jobInfo.add(s+"\n");
                         }
 
                     }catch (IOException ioE){
@@ -77,9 +79,14 @@ public class ShellJob {
                 }
             }).start();
             pid.waitFor();
-            if(sb.length()>25){//just show last 15 lines if content too lang
-                sb.delete(5,sb.length()-16);
+            StringBuilder sb = new StringBuilder();
+            for(int i=0;i<jobInfo.size();i++){
+                sb.append(jobInfo.get(i));
+                if(i>5 && jobInfo.size()>25 && i<jobInfo.size()-15){
+                    i=jobInfo.size()-15;
+                }
             }
+
             this.result=sb.toString();
         }catch (IOException ioException){
             ioException.printStackTrace();

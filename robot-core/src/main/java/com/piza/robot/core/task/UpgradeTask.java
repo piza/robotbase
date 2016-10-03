@@ -91,6 +91,10 @@ public class UpgradeTask extends TaskBase {
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(pullCmd);
             this.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
+            if(shellJob.getResult()!=null && shellJob.getResult().contains("Already up-to-date")){
+                this.sendChat("no code changed, cancel task!");
+                return false;
+            }
             return shellJob.isSuccess();
         }catch (Exception e){
             e.printStackTrace();
