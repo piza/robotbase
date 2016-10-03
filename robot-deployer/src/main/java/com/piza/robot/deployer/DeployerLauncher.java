@@ -19,7 +19,7 @@ public class DeployerLauncher extends Launcher {
 
         deployerLauncher.init();
         ConfigUtil.initProp("deployer.properties");
-        ParserManage.getInstance().addAnalyser("deployer",new DeployerAnalyser());
+        ParserManage.getInstance().addAnalyser(new DeployerAnalyser());
 
         TaskManager.getInstance().addTask(new DeployTask());
 

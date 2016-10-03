@@ -33,14 +33,15 @@ public class ParserManage {
         StringBuilder sb=new StringBuilder();
         sb.append("all parser\n");
         for(String parserName:analyserPool.keySet()){
-            sb.append(parserName).append(",\n");
+            sb.append(parserName).append(",");
         }
+        sb.append("\n");
         return sb.toString();
     }
 
-    public void addAnalyser(String key,IAnalyser analyser){
+    public void addAnalyser(IAnalyser analyser){
         logger.info("add parser:"+analyser.getName());
-        analyserPool.put(key,analyser);
+        analyserPool.put(analyser.getName(),analyser);
     }
 
     public Collection<IAnalyser> getAllAnalyser(){

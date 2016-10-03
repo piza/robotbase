@@ -46,8 +46,9 @@ public class TaskManager {
         StringBuilder sb=new StringBuilder();
         sb.append("all task\n");
         for(String taskName:taskPool.keySet()){
-            sb.append(taskName).append(",\n");
+            sb.append(taskName).append("");
         }
+        sb.append("\n");
         return sb.toString();
     }
 

@@ -15,5 +15,9 @@ public abstract class TaskBase implements Runnable{
         this.chatMessage = chatMessage;
     }
 
+    protected void sendChat(String msg){
+        ChatService.getInstance().sendMessage(this.chatMessage.getFriend(),msg);
+    }
+
     public abstract String getTaskName();
 }
