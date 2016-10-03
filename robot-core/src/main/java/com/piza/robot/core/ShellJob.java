@@ -77,6 +77,9 @@ public class ShellJob {
                 }
             }).start();
             pid.waitFor();
+            if(sb.length()>25){//just show last 15 lines if content too lang
+                sb.delete(5,sb.length()-16);
+            }
             this.result=sb.toString();
         }catch (IOException ioException){
             ioException.printStackTrace();

@@ -107,6 +107,11 @@ public class UpgradeTask extends TaskBase {
             robotDir.mkdir();
         }
 
+        checkShellFile(workingDir,"cloneProject.sh");
+        checkShellFile(workingDir,"pullProject.sh");
+        checkShellFile(workingDir,"buildProject.sh");
+        checkShellFile(workingDir,"restartProject.sh");
+
         String projectDir=workingDir+ File.separator+"robotbase";
 
         File projectFolder=new File(projectDir);
@@ -115,29 +120,6 @@ public class UpgradeTask extends TaskBase {
         }else{
             this.sendChat("first time upgrade, clone code now!");
             //create git clone shell
-            File cloneShell=new File(workingDir+File.separator+"cloneProject.sh");
-            File pullShell=new File(workingDir+File.separator+"pullProject.sh");
-            File buildShell=new File(workingDir+File.separator+"buildProject.sh");
-            File restartShell=new File(workingDir+File.separator+"restartProject.sh");
-
-            if(!cloneShell.exists()){
-                try {
-                    this.sendChat("copy cloneProject.sh & pullProject.sh");
-                    FileUtils.copyInputStreamToFile(UpgradeTask.class.getClassLoader().getResourceAsStream("shells/cloneProject.sh"),cloneShell);
-                    cloneShell.setExecutable(true);
-
-                    FileUtils.copyInputStreamToFile(UpgradeTask.class.getClassLoader().getResourceAsStream("shells/pullProject.sh"),pullShell);
-                    pullShell.setExecutable(true);
-
-                    FileUtils.copyInputStreamToFile(UpgradeTask.class.getClassLoader().getResourceAsStream("shells/buildProject.sh"),buildShell);
-                    buildShell.setExecutable(true);
-
-                    FileUtils.copyInputStreamToFile(UpgradeTask.class.getClassLoader().getResourceAsStream("shells/restartProject.sh"),restartShell);
-                    restartShell.setExecutable(true);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
 
             try {
                 String cloneCmd = workingDir + File.separator + "cloneProject.sh "+workingDir+" git@github.com:piza/robotbase.git";
@@ -153,5 +135,19 @@ public class UpgradeTask extends TaskBase {
         }
 
         return;
+    }
+
+
+    private void checkShellFile(String workingDir,String shellName){
+        File shellFile=new File(workingDir+File.separator+shellName);
+        if(!shellFile.exists()) {
+            try {
+                this.sendChat("copy "+shellName);
+                FileUtils.copyInputStreamToFile(UpgradeTask.class.getClassLoader().getResourceAsStream("shells/"+shellName), shellFile);
+                shellFile.setExecutable(true);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

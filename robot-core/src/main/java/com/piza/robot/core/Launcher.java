@@ -37,7 +37,7 @@ public class Launcher {
     }
 
     public static void tryExist(){
-        System.out.printf(Thread.currentThread().getName()+" notify all components that system will shutdown in 5s!");
+        System.out.println(Thread.currentThread().getName()+" notify all components that system will shutdown in 5s!");
         try {
             Thread.currentThread().sleep(5000);
         } catch (InterruptedException e) {
