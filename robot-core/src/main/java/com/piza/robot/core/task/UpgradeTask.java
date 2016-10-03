@@ -1,6 +1,7 @@
 package com.piza.robot.core.task;
 
 import com.piza.robot.core.ConfigUtil;
+import com.piza.robot.core.ShellJob;
 import com.piza.robot.core.TaskBase;
 import org.apache.commons.io.FileUtils;
 
@@ -18,26 +19,19 @@ public class UpgradeTask extends TaskBase {
     @Override
     public void run() {
       this.sendChat("ok,start upgrade!\n pull code...");
+        pullCode();
     }
 
     private void pullCode(){
         checkFirst();
+        this.sendChat("start to pull code!");
         String workingDir= ConfigUtil.getStrProp("workDir");
 
         try {
             String pullCmd = workingDir + File.separator + "pullProject.sh "+workingDir+File.separator+"robotbase";
-            String[] cmd = {"/bin/bash", "-c", pullCmd};
-
-            Process pid = Runtime.getRuntime().exec(cmd);
-            BufferedInputStream in = new BufferedInputStream(pid.getInputStream());
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-            String s;
-            StringBuilder sb=new StringBuilder();
-            while ((s = reader.readLine()) != null) {
-                sb.append(s+"\n");
-            }
-            pid.waitFor();
-            this.sendChat(sb.toString());
+            ShellJob shellJob=new ShellJob();
+            shellJob.runCommand(pullCmd);
+            this.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
         }catch (Exception e){
             e.printStackTrace();
             this.sendChat("error when clone project:" + e.getMessage());
@@ -77,20 +71,10 @@ public class UpgradeTask extends TaskBase {
             }
 
             try {
-                String cloneCmd = workingDir + File.separator + "cloneProject.sh git@github.com:piza/robotbase.git";
-                String[] cmd = {"/bin/bash", "-c", cloneCmd};
-
-                Process pid = Runtime.getRuntime().exec(cmd);
-                BufferedInputStream in = new BufferedInputStream(pid.getInputStream());
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                String s;
-                while ((s = reader.readLine()) != null) {
-                    if (s.toLowerCase().indexOf("checking connectivity... done.") > -1) {
-                        this.sendChat("clone project done!");
-                        return ;
-                    }
-                }
-                pid.waitFor();
+                String cloneCmd = workingDir + File.separator + "cloneProject.sh "+workingDir+" git@github.com:piza/robotbase.git";
+                ShellJob shellJob=new ShellJob();
+                shellJob.runCommand(cloneCmd);
+                this.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
             }catch (Exception e){
                 e.printStackTrace();
                 this.sendChat("error when clone project:"+e.getMessage());
