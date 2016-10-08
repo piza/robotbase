@@ -55,7 +55,7 @@ public class DeployTask extends TaskBase {
         String workingDir= ConfigUtil.getStrProp("workDir");
 
         try {
-            String pullCmd = workingDir + File.separator + "deployPocketmoney.sh "+ConfigUtil.getStrProp("pocketmoneyDir")+" "+ConfigUtil.getStrProp("deployDir");
+            String pullCmd = workingDir + File.separator + "shells_deployer/deployPocketmoney.sh "+ConfigUtil.getStrProp("pocketmoneyDir")+" "+ConfigUtil.getStrProp("deployDir");
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(pullCmd);
             this.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
@@ -73,7 +73,7 @@ public class DeployTask extends TaskBase {
         String workingDir= ConfigUtil.getStrProp("workDir");
 
         try {
-            String pullCmd = workingDir + File.separator + "restartTomcat.sh "+ConfigUtil.getStrProp("tomcatDir");
+            String pullCmd = workingDir + File.separator + "shells_deployer/restartTomcat.sh "+ConfigUtil.getStrProp("tomcatDir");
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(pullCmd);
             this.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
