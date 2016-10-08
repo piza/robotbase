@@ -8,6 +8,7 @@
     <modules>
         <module>robot-core</module>
         <module>robot-deployer</module>
+        <module>robot-coder</module>
     </modules>
   <packaging>pom</packaging>
 

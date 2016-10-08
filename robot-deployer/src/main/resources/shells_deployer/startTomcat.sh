@@ -5,7 +5,7 @@ tomcartDir=$1
 echo "tomcat dir:"
 echo $tomcartDir
 
-pid=`ps -ef | grep tomcat | grep -v grep | awk {'print $2'}`
+pid=`ps -ef | grep "org.apache.catalina.startup.Bootstrap" | grep -v grep | awk {'print $2'}`
 if [ "${pid}" != "" ]
 then
 echo "force shutdown tomcat"
