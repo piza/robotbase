@@ -83,7 +83,7 @@ public class DeployTask extends TaskBase {
             ShellJob shellJob1=new ShellJob();
             shellJob1.runCommand(shutdownCmd);
             this.sendChat("["+shellJob1.isSuccess()+"]"+shellJob1.getResult());
-            Thread.sleep(5000);
+//            Thread.sleep(5000);
             String startCmd = workingDir + File.separator + "shells_deployer/startTomcat.sh "+ConfigUtil.getStrProp("tomcatDir");
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(startCmd);
