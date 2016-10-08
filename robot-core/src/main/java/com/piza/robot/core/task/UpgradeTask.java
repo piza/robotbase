@@ -153,7 +153,7 @@ public class UpgradeTask extends TaskBase {
         if(force!=null){
             shellFile.deleteOnExit();
         }
-        if(!shellFile.exists()) {
+        if(!shellFile.exists() || force!=null) {
             try {
                 this.sendChat("copy "+shellName);
                 FileUtils.copyInputStreamToFile(UpgradeTask.class.getClassLoader().getResourceAsStream("shells/"+shellName), shellFile);
