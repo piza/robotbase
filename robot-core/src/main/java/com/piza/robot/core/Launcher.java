@@ -9,9 +9,12 @@ import java.util.TimeZone;
  */
 public class Launcher {
 
+    public static long startTime=0;
+
     public void init(){
         final TimeZone zone = TimeZone.getTimeZone("GMT+8");
         TimeZone.setDefault(zone);
+        startTime=System.currentTimeMillis();
         ConfigUtil.initProp("config.properties");
         //add basic task
         ParserManage.getInstance().addAnalyser(new RobotInfoAnalyser());

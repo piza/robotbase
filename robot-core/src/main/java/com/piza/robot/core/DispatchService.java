@@ -50,6 +50,11 @@ public class DispatchService {
                 if(analysis.isHandleable()){
                     TaskBase taskBase=TaskManager.getInstance().getTask(iAnalyser.getTaskName());
                     taskBase.setChatMessage(chatMessage);
+                    if(System.currentTimeMillis()-Launcher.startTime<3000){
+                        logger.info("drop history task:"+taskBase.getTaskName());
+                        taskBase.sendChat("old command, ignored!");
+                        break;
+                    }
                     TaskService.getInstance().addTask(taskBase);
                     foundTask=true;
                     if(!analysis.isContinuable()){
