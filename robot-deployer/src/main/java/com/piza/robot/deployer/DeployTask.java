@@ -11,7 +11,9 @@ import java.io.IOException;
  */
 public class DeployTask extends TaskBase {
 
-    private volatile static boolean working=false;
+    private volatile static boolean working=false;//make sure just run one task at the sametime
+
+    private String force=null;
 
     @Override
     public String getTaskName() {
@@ -27,6 +29,9 @@ public class DeployTask extends TaskBase {
         }
         try {
             working=true;
+            if(this.chatMessage.getContent().contains("-f") || this.chatMessage.getContent().contains("force") ){
+                force="yes";
+            }
             this.sendChat("ok,start deploy task!\n pull code...");
             if(!pullCode()){
                 this.sendChat("task over");
@@ -47,6 +52,7 @@ public class DeployTask extends TaskBase {
             }
         }finally {
             working=false;
+            force=null;
         }
     }
     private boolean deployProject(){
@@ -90,7 +96,7 @@ public class DeployTask extends TaskBase {
         String workingDir= ConfigUtil.getStrProp("workDir");
 
         try {
-            String pullCmd = workingDir + File.separator + "buildProject.sh "+workingDir+File.separator+"robotbase";
+            String pullCmd = workingDir + File.separator + "buildProject.sh "+ConfigUtil.getStrProp("pocketmoneyDir");
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(pullCmd);
             this.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
@@ -152,6 +158,9 @@ public class DeployTask extends TaskBase {
 
     private void checkShellFile(String workingDir,String shellName){
         File shellFile=new File(workingDir+File.separator+shellName);
+        if(force!=null){
+            shellFile.deleteOnExit();
+        }
         if(!shellFile.exists()) {
             try {
                 this.sendChat("copy "+shellName);

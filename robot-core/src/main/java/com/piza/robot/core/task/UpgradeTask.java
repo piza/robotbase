@@ -14,6 +14,8 @@ import java.io.*;
 public class UpgradeTask extends TaskBase {
 
     private volatile static boolean working=false;
+    private String force=null;
+
     @Override
     public String getTaskName() {
         return "upgradeTask";
@@ -27,6 +29,9 @@ public class UpgradeTask extends TaskBase {
         }
         try {
             working=true;
+            if(this.chatMessage.getContent().contains("-f") || this.chatMessage.getContent().contains("force") ){
+                force="yes";
+            }
             this.sendChat("ok,start upgrade!\n pull code...");
             if(!pullCode()){
                 this.sendChat("task over");
@@ -42,6 +47,7 @@ public class UpgradeTask extends TaskBase {
             }
         }finally {
             working=false;
+            force=null;
         }
     }
 
@@ -144,6 +150,9 @@ public class UpgradeTask extends TaskBase {
 
     private void checkShellFile(String workingDir,String shellName){
         File shellFile=new File(workingDir+File.separator+shellName);
+        if(force!=null){
+            shellFile.deleteOnExit();
+        }
         if(!shellFile.exists()) {
             try {
                 this.sendChat("copy "+shellName);
