@@ -24,6 +24,6 @@ public class RobotInfoTask  extends TaskBase {
 
     private String getSystemInfo(){
         return "freeMemory:"+Runtime.getRuntime().freeMemory()+",maxMemory:"+Runtime.getRuntime().maxMemory()
-                +"totalMemory:"+Runtime.getRuntime().totalMemory()+"\n";
+                +",totalMemory:"+Runtime.getRuntime().totalMemory()+"\n";
     }
 }

@@ -1,10 +1,7 @@
 package com.piza.robot.core;
 
 import org.apache.log4j.Logger;
-import org.jivesoftware.smack.ConnectionConfiguration;
-import org.jivesoftware.smack.SASLAuthentication;
-import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.*;
 import org.jivesoftware.smack.chat.Chat;
 import org.jivesoftware.smack.chat.ChatManager;
 import org.jivesoftware.smack.chat.ChatManagerListener;
@@ -46,7 +43,6 @@ public class ChatRobot implements Runnable{
         if(connection==null || !connection.isConnected()){
             return false;
         }
-
         chatManager=ChatManager.getInstanceFor(connection);
 
 
@@ -110,6 +106,7 @@ public class ChatRobot implements Runnable{
         SASLAuthentication.unBlacklistSASLMechanism("PLAIN");
         SASLAuthentication.blacklistSASLMechanism("DIGEST-MD5");
         connection = new XMPPTCPConnection(config.build());
+        connection.addConnectionListener(new ConnectionListenerImpl());
         connection.setPacketReplyTimeout(60000);
         connection.connect();
         connection.login(ConfigUtil.getStrProp("GtalkRobotID"), ConfigUtil.getStrProp("GtalkPassword"));
@@ -188,5 +185,45 @@ public class ChatRobot implements Runnable{
 
         }
 
+    }
+
+
+    public class ConnectionListenerImpl implements ConnectionListener{
+        @Override
+        public void connected(XMPPConnection connection) {
+            logger.info("connected");
+        }
+
+        @Override
+        public void authenticated(XMPPConnection connection, boolean resumed) {
+            logger.info("authenticated:"+resumed);
+        }
+
+        @Override
+        public void connectionClosed() {
+            logger.info("connectionClosed");
+        }
+
+        @Override
+        public void connectionClosedOnError(Exception e) {
+            logger.info("connectionClosedOnError:"+e.getMessage());
+            e.printStackTrace();
+        }
+
+        @Override
+        public void reconnectionSuccessful() {
+            logger.info("reconnectionSuccessful");
+        }
+
+        @Override
+        public void reconnectingIn(int seconds) {
+            logger.info("reconnectingIn:"+seconds);
+        }
+
+        @Override
+        public void reconnectionFailed(Exception e) {
+            logger.info("reconnectionFailed:"+e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
