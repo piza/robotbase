@@ -79,9 +79,14 @@ public class DeployTask extends TaskBase {
         String workingDir= ConfigUtil.getStrProp("workDir");
 
         try {
-            String pullCmd = workingDir + File.separator + "shells_deployer/restartTomcat.sh "+ConfigUtil.getStrProp("tomcatDir");
+            String shutdownCmd = workingDir + File.separator + "shells_deployer/shutdownTomcat.sh "+ConfigUtil.getStrProp("tomcatDir");
+            ShellJob shellJob1=new ShellJob();
+            shellJob1.runCommand(shutdownCmd);
+            this.sendChat("["+shellJob1.isSuccess()+"]"+shellJob1.getResult());
+            Thread.sleep(5000);
+            String startCmd = workingDir + File.separator + "shells_deployer/startTomcat.sh "+ConfigUtil.getStrProp("tomcatDir");
             ShellJob shellJob=new ShellJob();
-            shellJob.runCommand(pullCmd);
+            shellJob.runCommand(startCmd);
             this.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
             return shellJob.isSuccess();
         }catch (Exception e){
@@ -142,7 +147,8 @@ public class DeployTask extends TaskBase {
         checkShellFile(workingDir,"shells/pullProject.sh");
         checkShellFile(workingDir,"shells/buildProject.sh");
         checkShellFile(workingDir,"shells_deployer/deployPocketmoney.sh");
-        checkShellFile(workingDir,"shells_deployer/restartTomcat.sh");
+        checkShellFile(workingDir,"shells_deployer/shutdownTomcat.sh");
+        checkShellFile(workingDir,"shells_deployer/startTomcat.sh");
 
         String projectDir=ConfigUtil.getStrProp("pocketmoneyDir");
 
