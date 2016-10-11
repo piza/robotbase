@@ -232,11 +232,11 @@ public class CoderTask extends TaskBase {
             ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
             ve.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
 
-            mapperTemplate = ve.getTemplate("mapperTemplate.vm");
-            serviceTemplate = ve.getTemplate("serviceTemplate.vm");
-            implTemplate = ve.getTemplate("serviceImplTemplate.vm");
-            validatorTemplate = ve.getTemplate("validatorTemplate.vm");
-            controllerTemplate = ve.getTemplate("controllerTemplate.vm");
+            mapperTemplate = ve.getTemplate("template/mapperTemplate.vm");
+            serviceTemplate = ve.getTemplate("template/serviceTemplate.vm");
+            implTemplate = ve.getTemplate("template/serviceImplTemplate.vm");
+            validatorTemplate = ve.getTemplate("template/validatorTemplate.vm");
+            controllerTemplate = ve.getTemplate("template/controllerTemplate.vm");
         }
 
         @Override
