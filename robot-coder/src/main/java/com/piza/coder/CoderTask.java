@@ -289,11 +289,11 @@ public class CoderTask extends TaskBase {
                 String modelClass=tableConfiguration.getDomainObjectName();
                 context.put("modelClass", modelClass);
                 context.put("modelClassParam", lowFirstChar(modelClass));
-                writeTemplate(ormPath+basePackagePath+"dao",modelClass,mapperTemplate,"Mapper");
-                writeTemplate(servicePath+basePackagePath+"service",modelClass,serviceTemplate,"Service");
-                writeTemplate(servicePath+basePackagePath+"service"+File.separator+"impl",modelClass,implTemplate,"ServiceImpl");
-                writeTemplate(controllerPath+basePackagePath+"validator",modelClass,validatorTemplate,"Validator");
-                writeTemplate(controllerPath+basePackagePath+"controller",modelClass,controllerTemplate,"Controller");
+                writeTemplate(ormPath+basePackagePath+File.separator+"dao",modelClass,mapperTemplate,"Mapper");
+                writeTemplate(servicePath+basePackagePath+File.separator+"service",modelClass,serviceTemplate,"Service");
+                writeTemplate(servicePath+basePackagePath+File.separator+"service"+File.separator+"impl",modelClass,implTemplate,"ServiceImpl");
+                writeTemplate(controllerPath+basePackagePath+File.separator+"validator",modelClass,validatorTemplate,"Validator");
+                writeTemplate(controllerPath+basePackagePath+File.separator+"controller",modelClass,controllerTemplate,"Controller");
 
             }
 
