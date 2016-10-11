@@ -17,6 +17,7 @@ import org.mybatis.generator.internal.DefaultShellCallback;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -262,7 +263,13 @@ public class CoderTask extends TaskBase {
         private void cleanFile(String path){
             logger.info("cleanFile:" + path);
             File file=new File(path);
-            file.deleteOnExit();
+            try {
+                FileUtils.forceDeleteOnExit(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+                sendChat("encounterred error when clean:"+path);
+                logger.error(e);
+            }
         }
 
         private void checkFolder(String parentPath,String folderName,boolean cleanFolder){
