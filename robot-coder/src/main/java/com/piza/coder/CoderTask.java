@@ -161,7 +161,7 @@ public class CoderTask extends TaskBase {
                 tableConfiguration.setSchema(ConfigUtil.getStrProp("coder.portal_db"));
                 tableConfiguration.setTableName(tableName);
                 tableConfiguration.setDomainObjectName(convertDomainName(tableName));
-                GeneratedKey generatedKey=new GeneratedKey("id","MySql",true,"pre");
+                GeneratedKey generatedKey=new GeneratedKey("id","MySql",true,null);
                 tableConfiguration.setGeneratedKey(generatedKey);
                 context.addTableConfiguration(tableConfiguration);
             }
