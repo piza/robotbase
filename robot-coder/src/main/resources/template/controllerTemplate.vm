@@ -21,7 +21,7 @@ import $!{validatorPackage}.$!{modelClass}Validator;
 
 
 @Controller
-@RequestMapping("/$!{modelClassParam}")
+@RequestMapping("/api/v1/$!{modelClassParam}")
 public class $!{modelClass}Controller extends BaseController {
 
     @Autowired

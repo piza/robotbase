@@ -142,7 +142,7 @@ public class CoderTask extends TaskBase {
 
             JavaModelGeneratorConfiguration javaModelGeneratorConfiguration=new JavaModelGeneratorConfiguration();
             javaModelGeneratorConfiguration.setTargetPackage(ConfigUtil.getStrProp("coder.basePackage")+".model");
-            javaModelGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("coder.ormPath") + "/src/");
+            javaModelGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("coder.ormPath") + "/java/");
             context.setJavaModelGeneratorConfiguration(javaModelGeneratorConfiguration);
 
             SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration=new SqlMapGeneratorConfiguration();
