@@ -31,6 +31,4 @@ public class VelocityUtil {
         return "";
     }
 
-    public static void main(String[] args) {
-    }
 }
