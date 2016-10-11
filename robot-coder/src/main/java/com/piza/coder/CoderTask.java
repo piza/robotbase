@@ -190,7 +190,9 @@ public class CoderTask extends TaskBase {
         logger.info("cleanFile:" + path);
         File file=new File(path);
         try {
-            FileUtils.forceDelete(file);
+            if(file.exists()) {
+                FileUtils.forceDelete(file);
+            }
         } catch (IOException e) {
             e.printStackTrace();
             sendChat("encounterred error when clean:"+path);

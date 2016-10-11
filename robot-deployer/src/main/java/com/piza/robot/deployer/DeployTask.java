@@ -105,6 +105,10 @@ public class DeployTask extends TaskBase {
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(pullCmd);
             this.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
+            if(shellJob.getResult()!=null && shellJob.getResult().contains("[ERROR]")){
+                this.sendChat("build failed, break task!");
+                return false;
+            }
             return shellJob.isSuccess();
         }catch (Exception e){
             e.printStackTrace();
