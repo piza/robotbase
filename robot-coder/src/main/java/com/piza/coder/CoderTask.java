@@ -1,6 +1,7 @@
 package com.piza.coder;
 
 import com.piza.robot.core.ConfigUtil;
+import com.piza.robot.core.ShellJob;
 import com.piza.robot.core.TaskBase;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -48,12 +49,60 @@ public class CoderTask extends TaskBase {
                 this.sendChat("wrong param, example:\n code table1 table2 ...");
                 return;
             }
-            CoderWorker worker=new CoderWorker(tableList);
-            worker.generate();
+            //update code to latest
+            if(!pullCode()){
+                return;
+            }
+            if(!this.generate(tableList)){
+                return;
+            }
+
+            commitCode();
 
         }finally {
             working=false;
         }
+    }
+    private boolean commitCode(){
+        this.sendChat("start to commit code!");
+        String workingDir= ConfigUtil.getStrProp("workDir");
+
+        try {
+            String pullCmd = workingDir + File.separator + "commitProject.sh "+ConfigUtil.getStrProp("coder.projectDir");
+            ShellJob shellJob=new ShellJob();
+            shellJob.runCommand(pullCmd);
+            this.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
+            if(shellJob.getResult()!=null && shellJob.getResult().contains("coder push success")){
+                this.sendChat("code pushed!");
+                return true;
+            }
+            return shellJob.isSuccess();
+        }catch (Exception e){
+            e.printStackTrace();
+            this.sendChat("error when pull code:" + e.getMessage());
+        }
+        return false;
+    }
+
+    private boolean pullCode(){
+        this.sendChat("start to pull code!");
+        String workingDir= ConfigUtil.getStrProp("workDir");
+
+        try {
+            String pullCmd = workingDir + File.separator + "pullProject.sh "+ConfigUtil.getStrProp("coder.projectDir");
+            ShellJob shellJob=new ShellJob();
+            shellJob.runCommand(pullCmd);
+            this.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
+            if(shellJob.getResult()!=null && shellJob.getResult().contains("Already up-to-date")){
+                this.sendChat("no code changed, continue task!");
+                return true;
+            }
+            return shellJob.isSuccess();
+        }catch (Exception e){
+            e.printStackTrace();
+            this.sendChat("error when pull code:" + e.getMessage());
+        }
+        return false;
     }
 
     private void getTableList(List<String> tableList,String command){
@@ -70,81 +119,78 @@ public class CoderTask extends TaskBase {
         }
     }
 
-    class CoderWorker{
-        private List<String> tableList;
-        public CoderWorker(List<String> tableList){
-            this.tableList=tableList;
-        }
+    public boolean generate(List<String> tableList){
+        logger.info("start generate MBG obj");
+        List<String> warnings = new ArrayList<String>();
+        try {
+            Configuration configuration = new Configuration();
+            configuration.addClasspathEntry(ConfigUtil.getStrProp("coder.classPathEntry"));
+            Context context=new Context(ModelType.CONDITIONAL);
+            context.setId("defaultContext");
 
-        public void generate(){
+
+            CommentGeneratorConfiguration commentGeneratorConfiguration=new CommentGeneratorConfiguration();
+            commentGeneratorConfiguration.addProperty("suppressAllComments","true");
+            context.setCommentGeneratorConfiguration(commentGeneratorConfiguration);
+
+            JDBCConnectionConfiguration jdbcConnectionConfiguration=new JDBCConnectionConfiguration();
+            jdbcConnectionConfiguration.setDriverClass(ConfigUtil.getStrProp("com.mysql.jdbc.Driver"));
+            jdbcConnectionConfiguration.setConnectionURL(ConfigUtil.getStrProp("coder.connectionURL"));
+            jdbcConnectionConfiguration.setUserId(ConfigUtil.getStrProp("coder.userId"));
+            jdbcConnectionConfiguration.setPassword(ConfigUtil.getStrProp("coder.password"));
+            context.setJdbcConnectionConfiguration(jdbcConnectionConfiguration);
+
+            JavaModelGeneratorConfiguration javaModelGeneratorConfiguration=new JavaModelGeneratorConfiguration();
+            javaModelGeneratorConfiguration.setTargetPackage(ConfigUtil.getStrProp("coder.basePackage")+".model");
+            javaModelGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("coder.outputPath") + "/src/");
+            context.setJavaModelGeneratorConfiguration(javaModelGeneratorConfiguration);
+
+            SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration=new SqlMapGeneratorConfiguration();
+            sqlMapGeneratorConfiguration.setTargetPackage("orm");
+            sqlMapGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("coder.outputPath")+"/resources/");
+            context.setSqlMapGeneratorConfiguration(sqlMapGeneratorConfiguration);
+
+
+//                JavaClientGeneratorConfiguration javaClientGeneratorConfiguration=new JavaClientGeneratorConfiguration();
+//                javaClientGeneratorConfiguration.setTargetPackage(ConfigUtil.getStrProp("coder.basePackage") + ".dao");
+//                javaClientGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("coder.outputPath") + "/src/");
+//                context.setJavaClientGeneratorConfiguration(javaClientGeneratorConfiguration);
+
+            for(String tableName:tableList){
+                TableConfiguration tableConfiguration=new TableConfiguration(context);
+                tableConfiguration.setSchema(ConfigUtil.getStrProp("coder.portal_db"));
+                tableConfiguration.setTableName(tableName);
+                tableConfiguration.setDomainObjectName(convertDomainName(tableName));
+                GeneratedKey generatedKey=new GeneratedKey("id","MySql",true,"pre");
+                tableConfiguration.setGeneratedKey(generatedKey);
+                context.addTableConfiguration(tableConfiguration);
+            }
+
+            configuration.addContext(context);
             boolean overwrite = true;
-            List<String> warnings = new ArrayList<String>();
-            try {
-                Configuration configuration = new Configuration();
-                configuration.addClasspathEntry(ConfigUtil.getStrProp("coder.classPathEntry"));
-                Context context=new Context(ModelType.CONDITIONAL);
-                context.setId("defaultContext");
+            DefaultShellCallback callback = new DefaultShellCallback(overwrite);
+            MyBatisGenerator myBatisGenerator = new MyBatisGenerator(configuration, callback, warnings);
+            myBatisGenerator.generate(new TemplateGenerate(configuration));
 
-
-                CommentGeneratorConfiguration commentGeneratorConfiguration=new CommentGeneratorConfiguration();
-                commentGeneratorConfiguration.addProperty("suppressAllComments","true");
-                context.setCommentGeneratorConfiguration(commentGeneratorConfiguration);
-
-                JDBCConnectionConfiguration jdbcConnectionConfiguration=new JDBCConnectionConfiguration();
-                jdbcConnectionConfiguration.setDriverClass(ConfigUtil.getStrProp("com.mysql.jdbc.Driver"));
-                jdbcConnectionConfiguration.setConnectionURL(ConfigUtil.getStrProp("coder.connectionURL"));
-                jdbcConnectionConfiguration.setUserId(ConfigUtil.getStrProp("coder.userId"));
-                jdbcConnectionConfiguration.setPassword(ConfigUtil.getStrProp("coder.password"));
-                context.setJdbcConnectionConfiguration(jdbcConnectionConfiguration);
-
-                JavaModelGeneratorConfiguration javaModelGeneratorConfiguration=new JavaModelGeneratorConfiguration();
-                javaModelGeneratorConfiguration.setTargetPackage(ConfigUtil.getStrProp("coder.basePackage")+".model");
-                javaModelGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("coder.outputPath") + "/src/");
-                context.setJavaModelGeneratorConfiguration(javaModelGeneratorConfiguration);
-
-                SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration=new SqlMapGeneratorConfiguration();
-                sqlMapGeneratorConfiguration.setTargetPackage("orm");
-                sqlMapGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("coder.outputPath")+"/resources/");
-                context.setSqlMapGeneratorConfiguration(sqlMapGeneratorConfiguration);
-
-
-                JavaClientGeneratorConfiguration javaClientGeneratorConfiguration=new JavaClientGeneratorConfiguration();
-                javaClientGeneratorConfiguration.setTargetPackage(ConfigUtil.getStrProp("coder.basePackage") + ".dao");
-                javaClientGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("coder.outputPath") + "/src/");
-                context.setJavaClientGeneratorConfiguration(javaClientGeneratorConfiguration);
-
-                for(String tableName:this.tableList){
-                    TableConfiguration tableConfiguration=new TableConfiguration(context);
-                    tableConfiguration.setSchema(ConfigUtil.getStrProp("coder.portal_db"));
-                    tableConfiguration.setTableName(tableName);
-                    tableConfiguration.setDomainObjectName(convertDomainName(tableName));
-                    GeneratedKey generatedKey=new GeneratedKey("id","MySql",true,"pre");
-                    tableConfiguration.setGeneratedKey(generatedKey);
-                    context.addTableConfiguration(tableConfiguration);
-                }
-
-                configuration.addContext(context);
-
-                DefaultShellCallback callback = new DefaultShellCallback(overwrite);
-                MyBatisGenerator myBatisGenerator = new MyBatisGenerator(configuration, callback, warnings);
-                myBatisGenerator.generate(new TemplateGenerate(configuration));
-
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+        }catch (Exception e){
+            e.printStackTrace();
+            this.sendChat("encounter error when generate code:\n"+e.getMessage());
+            return false;
         }
-
-
-        private String convertDomainName(String tableName){
-            String className="";
-            String[] array = tableName.split("_");
-            for (int i = 0; i < array.length; i++) {
-                className += array[i].substring(0, 1).toUpperCase() + array[i].substring(1);
-            }
-            return className;
-        }
-
+        return true;
     }
+
+
+    private String convertDomainName(String tableName){
+        String className="";
+        String[] array = tableName.split("_");
+        for (int i = 0; i < array.length; i++) {
+            className += array[i].substring(0, 1).toUpperCase() + array[i].substring(1);
+        }
+        return className;
+    }
+
+
 
 
     class TemplateGenerate implements ProgressCallback {
@@ -152,8 +198,10 @@ public class CoderTask extends TaskBase {
         private Configuration configuration;
         private VelocityContext context;
         private VelocityEngine ve;
-        private String outputRootPath;
-        private String baseOutputPath;
+        private String ormPath;
+        private String servicePath;
+        private String controllerPath;
+        private String basePackagePath;
 
         private Template mapperTemplate;
         private Template serviceTemplate;
@@ -174,8 +222,12 @@ public class CoderTask extends TaskBase {
             context.put("controllerPackage",basePackage+".controller");
             context.put("apiPackage",basePackage+".api");
 
-            outputRootPath=ConfigUtil.getStrProp("coder.outputPath");
-            baseOutputPath=outputRootPath+ConfigUtil.getStrProp("coder.basePackagePath");
+            ormPath=ConfigUtil.getStrProp("coder.outputPath");
+            servicePath=ConfigUtil.getStrProp("coder.servicePath");
+            controllerPath=ConfigUtil.getStrProp("coder.controllerPath");
+
+
+            basePackagePath=ConfigUtil.getStrProp("coder.basePackagePath");
             ve = new VelocityEngine();
             ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
             ve.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
@@ -195,12 +247,12 @@ public class CoderTask extends TaskBase {
         @Override
         public void generationStarted(int totalTasks) {
             logger.info("generationStarted:totalTasks:" + totalTasks);
-            checkFolder(outputRootPath, "resources", true);
-            checkFolder(outputRootPath, "src", true);
-            checkFolder(baseOutputPath, "service", false);
-            checkFolder(baseOutputPath,"service"+File.separator+"impl",false);
-            checkFolder(baseOutputPath,"validator",false);
-            checkFolder(baseOutputPath,"controller",false);
+//            checkFolder(ormPath, "resources", false);
+//            checkFolder(outputRootPath, "src", false);
+//            checkFolder(baseOutputPath, "service", false);
+//            checkFolder(baseOutputPath,"service"+File.separator+"impl",false);
+//            checkFolder(baseOutputPath,"validator",false);
+//            checkFolder(baseOutputPath,"controller",false);
 
         }
 
@@ -236,11 +288,11 @@ public class CoderTask extends TaskBase {
                 String modelClass=tableConfiguration.getDomainObjectName();
                 context.put("modelClass", modelClass);
                 context.put("modelClassParam", lowFirstChar(modelClass));
-                writeTemplate("dao_generics",modelClass,mapperTemplate,"Mapper");
-                writeTemplate("service",modelClass,serviceTemplate,"Service");
-                writeTemplate("service"+File.separator+"impl",modelClass,implTemplate,"ServiceImpl");
-                writeTemplate("validator",modelClass,validatorTemplate,"Validator");
-                writeTemplate("controller",modelClass,controllerTemplate,"Controller");
+                writeTemplate(ormPath+basePackagePath+"dao",modelClass,mapperTemplate,"Mapper");
+                writeTemplate(servicePath+basePackagePath+"service",modelClass,serviceTemplate,"Service");
+                writeTemplate(servicePath+basePackagePath+"service"+File.separator+"impl",modelClass,implTemplate,"ServiceImpl");
+                writeTemplate(controllerPath+basePackagePath+"validator",modelClass,validatorTemplate,"Validator");
+                writeTemplate(controllerPath+basePackagePath+"controller",modelClass,controllerTemplate,"Controller");
 
             }
 
@@ -254,7 +306,7 @@ public class CoderTask extends TaskBase {
 
         private void writeTemplate(String folderName,String modelClass,Template template,String suffix){
             try {
-                FileWriter writer=new FileWriter(baseOutputPath+File.separator+folderName+File.separator+modelClass+".java");
+                FileWriter writer=new FileWriter(folderName+File.separator+modelClass+".java");
                 template.merge(context, writer);
                 writer.flush();
                 writer.close();

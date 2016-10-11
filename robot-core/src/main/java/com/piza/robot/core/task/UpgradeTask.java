@@ -121,6 +121,8 @@ public class UpgradeTask extends TaskBase {
         checkShellFile(workingDir,"pullProject.sh");
         checkShellFile(workingDir,"buildProject.sh");
         checkShellFile(workingDir,"restartProject.sh");
+        checkShellFile(workingDir,"commitProject.sh");
+
 
         String projectDir=workingDir+ File.separator+"robotbase";
 
