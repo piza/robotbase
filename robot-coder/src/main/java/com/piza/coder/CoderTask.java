@@ -134,7 +134,7 @@ public class CoderTask extends TaskBase {
             context.setCommentGeneratorConfiguration(commentGeneratorConfiguration);
 
             JDBCConnectionConfiguration jdbcConnectionConfiguration=new JDBCConnectionConfiguration();
-            jdbcConnectionConfiguration.setDriverClass(ConfigUtil.getStrProp("com.mysql.jdbc.Driver"));
+            jdbcConnectionConfiguration.setDriverClass("com.mysql.jdbc.Driver");
             jdbcConnectionConfiguration.setConnectionURL(ConfigUtil.getStrProp("coder.connectionURL"));
             jdbcConnectionConfiguration.setUserId(ConfigUtil.getStrProp("coder.userId"));
             jdbcConnectionConfiguration.setPassword(ConfigUtil.getStrProp("coder.password"));
