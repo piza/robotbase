@@ -165,12 +165,17 @@ public class CoderTask extends TaskBase {
                 GeneratedKey generatedKey=new GeneratedKey("id","MySql",true,null);
                 tableConfiguration.setGeneratedKey(generatedKey);
                 context.addTableConfiguration(tableConfiguration);
+
+                cleanFile(ConfigUtil.getStrProp("coder.ormPath")+"/resources/orm/"+tableConfiguration.getDomainObjectName()+"Mapper.xml");
             }
 
             configuration.addContext(context);
             boolean overwrite = true;
             DefaultShellCallback callback = new DefaultShellCallback(overwrite);
             MyBatisGenerator myBatisGenerator = new MyBatisGenerator(configuration, callback, warnings);
+
+
+
             myBatisGenerator.generate(new TemplateGenerate(configuration));
 
         }catch (Exception e){
@@ -181,6 +186,17 @@ public class CoderTask extends TaskBase {
         return true;
     }
 
+    private void cleanFile(String path){
+        logger.info("cleanFile:" + path);
+        File file=new File(path);
+        try {
+            FileUtils.forceDeleteOnExit(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+            sendChat("encounterred error when clean:"+path);
+            logger.error(e);
+        }
+    }
 
     private String convertDomainName(String tableName){
         String className="";
@@ -243,10 +259,7 @@ public class CoderTask extends TaskBase {
         @Override
         public void introspectionStarted(int totalTasks) {
             logger.info("introspectionStarted:totalTasks:" + totalTasks);
-            List<TableConfiguration> tableConfigurationList=this.configuration.getContext("defaultContext").getTableConfigurations();
-            for(TableConfiguration tableConfiguration:tableConfigurationList){
-                cleanFile(ormPath+"/resources/orm/"+tableConfiguration.getDomainObjectName()+"Mapper.xml");
-            }
+
         }
 
         @Override
@@ -260,17 +273,6 @@ public class CoderTask extends TaskBase {
 //            checkFolder(baseOutputPath,"controller",false);
         }
 
-        private void cleanFile(String path){
-            logger.info("cleanFile:" + path);
-            File file=new File(path);
-            try {
-                FileUtils.forceDeleteOnExit(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-                sendChat("encounterred error when clean:"+path);
-                logger.error(e);
-            }
-        }
 
         private void checkFolder(String parentPath,String folderName,boolean cleanFolder){
             try {
