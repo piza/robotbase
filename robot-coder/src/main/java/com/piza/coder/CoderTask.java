@@ -241,7 +241,11 @@ public class CoderTask extends TaskBase {
 
         @Override
         public void introspectionStarted(int totalTasks) {
-
+            logger.info("introspectionStarted:totalTasks:" + totalTasks);
+            List<TableConfiguration> tableConfigurationList=this.configuration.getContext("defaultContext").getTableConfigurations();
+            for(TableConfiguration tableConfiguration:tableConfigurationList){
+                cleanFile(ormPath+"/resources/orm/"+tableConfiguration.getDomainObjectName()+"Mapper.xml");
+            }
         }
 
         @Override
@@ -253,14 +257,10 @@ public class CoderTask extends TaskBase {
 //            checkFolder(baseOutputPath,"service"+File.separator+"impl",false);
 //            checkFolder(baseOutputPath,"validator",false);
 //            checkFolder(baseOutputPath,"controller",false);
-            List<TableConfiguration> tableConfigurationList=this.configuration.getContext("defaultContext").getTableConfigurations();
-
-            for(TableConfiguration tableConfiguration:tableConfigurationList){
-                cleanFile(ormPath+"/resources/orm/"+tableConfiguration.getDomainObjectName()+"Mapper.xml");
-            }
         }
 
         private void cleanFile(String path){
+            logger.info("cleanFile:" + path);
             File file=new File(path);
             file.deleteOnExit();
         }
