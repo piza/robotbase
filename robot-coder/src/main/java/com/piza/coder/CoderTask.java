@@ -142,12 +142,12 @@ public class CoderTask extends TaskBase {
 
             JavaModelGeneratorConfiguration javaModelGeneratorConfiguration=new JavaModelGeneratorConfiguration();
             javaModelGeneratorConfiguration.setTargetPackage(ConfigUtil.getStrProp("coder.basePackage")+".model");
-            javaModelGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("coder.outputPath") + "/src/");
+            javaModelGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("coder.ormPath") + "/src/");
             context.setJavaModelGeneratorConfiguration(javaModelGeneratorConfiguration);
 
             SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration=new SqlMapGeneratorConfiguration();
             sqlMapGeneratorConfiguration.setTargetPackage("orm");
-            sqlMapGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("coder.outputPath")+"/resources/");
+            sqlMapGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("coder.ormPath")+"/resources/");
             context.setSqlMapGeneratorConfiguration(sqlMapGeneratorConfiguration);
 
 
@@ -158,7 +158,7 @@ public class CoderTask extends TaskBase {
 
             for(String tableName:tableList){
                 TableConfiguration tableConfiguration=new TableConfiguration(context);
-                tableConfiguration.setSchema(ConfigUtil.getStrProp("coder.portal_db"));
+                tableConfiguration.setSchema(ConfigUtil.getStrProp("coder.database"));
                 tableConfiguration.setTableName(tableName);
                 tableConfiguration.setDomainObjectName(convertDomainName(tableName));
                 GeneratedKey generatedKey=new GeneratedKey("id","MySql",true,null);
@@ -222,7 +222,7 @@ public class CoderTask extends TaskBase {
             context.put("controllerPackage",basePackage+".controller");
             context.put("apiPackage",basePackage+".api");
 
-            ormPath=ConfigUtil.getStrProp("coder.outputPath");
+            ormPath=ConfigUtil.getStrProp("coder.ormPath");
             servicePath=ConfigUtil.getStrProp("coder.servicePath");
             controllerPath=ConfigUtil.getStrProp("coder.controllerPath");
 
