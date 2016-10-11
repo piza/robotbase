@@ -282,6 +282,7 @@ public class CoderTask extends TaskBase {
         @Override
         public void done() {
             logger.info("done");
+            sendChat("MBG done, start velocity generator!");
             List<TableConfiguration> tableConfigurationList=this.configuration.getContext("defaultContext").getTableConfigurations();
 
             for(TableConfiguration tableConfiguration:tableConfigurationList){
@@ -306,12 +307,14 @@ public class CoderTask extends TaskBase {
 
         private void writeTemplate(String folderName,String modelClass,Template template,String suffix){
             try {
-                FileWriter writer=new FileWriter(folderName+File.separator+modelClass+".java");
+                FileWriter writer=new FileWriter(folderName+File.separator+modelClass+suffix+".java");
                 template.merge(context, writer);
                 writer.flush();
                 writer.close();
             }catch (Exception e){
                 e.printStackTrace();
+                sendChat("encounter error when write file:"+folderName+File.separator+modelClass+suffix);
+                logger.error(e);
             }
 
         }
