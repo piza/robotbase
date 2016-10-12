@@ -149,7 +149,7 @@ public class CoderTask extends TaskBase {
             JavaClientGeneratorConfiguration javaClientGeneratorConfiguration=new JavaClientGeneratorConfiguration();
             javaClientGeneratorConfiguration.setTargetPackage(ConfigUtil.getStrProp("coder.basePackage") + ".dao");
             javaClientGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("coder.ormPath") + "/java/");
-            javaClientGeneratorConfiguration.addProperty("type","XMLMAPPER");
+            javaClientGeneratorConfiguration.setConfigurationType("XMLMAPPER");
             context.setJavaClientGeneratorConfiguration(javaClientGeneratorConfiguration);
 
             SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration=new SqlMapGeneratorConfiguration();
