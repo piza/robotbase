@@ -152,10 +152,10 @@ public class CoderTask extends TaskBase {
             context.setSqlMapGeneratorConfiguration(sqlMapGeneratorConfiguration);
 
 
-//                JavaClientGeneratorConfiguration javaClientGeneratorConfiguration=new JavaClientGeneratorConfiguration();
-//                javaClientGeneratorConfiguration.setTargetPackage(ConfigUtil.getStrProp("coder.basePackage") + ".dao");
-//                javaClientGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("coder.outputPath") + "/src/");
-//                context.setJavaClientGeneratorConfiguration(javaClientGeneratorConfiguration);
+            JavaClientGeneratorConfiguration javaClientGeneratorConfiguration=new JavaClientGeneratorConfiguration();
+            javaClientGeneratorConfiguration.setTargetPackage(ConfigUtil.getStrProp("coder.basePackage") + ".dao");
+            javaClientGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("coder.ormPath") + "/java/");
+            context.setJavaClientGeneratorConfiguration(javaClientGeneratorConfiguration);
 
             for(String tableName:tableList){
                 TableConfiguration tableConfiguration=new TableConfiguration(context);
