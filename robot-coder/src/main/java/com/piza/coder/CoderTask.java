@@ -146,16 +146,18 @@ public class CoderTask extends TaskBase {
             javaModelGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("coder.ormPath") + "/java/");
             context.setJavaModelGeneratorConfiguration(javaModelGeneratorConfiguration);
 
+            JavaClientGeneratorConfiguration javaClientGeneratorConfiguration=new JavaClientGeneratorConfiguration();
+            javaClientGeneratorConfiguration.setTargetPackage(ConfigUtil.getStrProp("coder.basePackage") + ".dao");
+            javaClientGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("coder.ormPath") + "/java/");
+            context.setJavaClientGeneratorConfiguration(javaClientGeneratorConfiguration);
+
             SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration=new SqlMapGeneratorConfiguration();
             sqlMapGeneratorConfiguration.setTargetPackage("orm");
             sqlMapGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("coder.ormPath")+"/resources/");
             context.setSqlMapGeneratorConfiguration(sqlMapGeneratorConfiguration);
 
 
-            JavaClientGeneratorConfiguration javaClientGeneratorConfiguration=new JavaClientGeneratorConfiguration();
-            javaClientGeneratorConfiguration.setTargetPackage(ConfigUtil.getStrProp("coder.basePackage") + ".dao");
-            javaClientGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("coder.ormPath") + "/java/");
-            context.setJavaClientGeneratorConfiguration(javaClientGeneratorConfiguration);
+
 
             for(String tableName:tableList){
                 TableConfiguration tableConfiguration=new TableConfiguration(context);
@@ -180,6 +182,7 @@ public class CoderTask extends TaskBase {
 
         }catch (Exception e){
             e.printStackTrace();
+            logger.error(e);
             this.sendChat("encounter error when generate code:\n"+e.getMessage());
             return false;
         }
