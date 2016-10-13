@@ -331,7 +331,13 @@ public class CoderTask extends TaskBase {
 
         private void writeTemplate(String folderName,String modelClass,Template template,String suffix){
             try {
-                FileWriter writer=new FileWriter(folderName+File.separator+modelClass+suffix+".java");
+                String filePath=folderName+File.separator+modelClass+suffix+".java";
+                File file=new File(filePath);
+                if(file.exists()){
+                    sendChat("skip exists file:"+file.getName());
+                    return;
+                }
+                FileWriter writer=new FileWriter(filePath);
                 template.merge(context, writer);
                 writer.flush();
                 writer.close();
