@@ -333,7 +333,7 @@ public class CoderTask extends TaskBase {
             try {
                 String filePath=folderName+File.separator+modelClass+suffix+".java";
                 File file=new File(filePath);
-                if(file.exists()){
+                if(file.exists() && !"Mapper".equals(suffix)){
                     sendChat("skip exists file:"+file.getName());
                     return;
                 }
