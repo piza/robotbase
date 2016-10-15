@@ -33,6 +33,11 @@ public class DeployerLauncher extends Launcher {
 
         TaskManager.getInstance().addTask(new CoderTask());
 
+
+        ParserManage.getInstance().addAnalyser(new DeployerEshowAnalyser());
+
+        TaskManager.getInstance().addTask(new DeployEshowTask());
+
         deployerLauncher.startApp();
 
     }
