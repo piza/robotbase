@@ -63,7 +63,7 @@ public class DeployEshowTask extends TaskBase {
         String workingDir= ConfigUtil.getStrProp("workDir");
 
         try {
-            String pullCmd = workingDir + File.separator + "shells_deployer/deployEshow.sh "+ConfigUtil.getStrProp("eshowDir")+" "+ConfigUtil.getStrProp("deployDir");
+            String pullCmd = workingDir + File.separator + "shells_deployer/deployEshow.sh "+ConfigUtil.getStrProp("eshowDir")+" "+ConfigUtil.getStrProp("deployEshowDir");
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(pullCmd);
             this.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
