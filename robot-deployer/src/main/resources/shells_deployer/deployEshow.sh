@@ -7,7 +7,7 @@ deployDir=$2
 echo "project dir:"
 echo $projectDir
 
-echo "project dir:"
+echo "deploy dir:"
 echo $deployDir
 
 cd $deployDir

@@ -58,6 +58,10 @@ public class ChatService {
         return chatService;
     }
 
+    public void checkStatus(){
+        chatRobot.checkStatu();
+    }
+
     public void start(){
         if(chatRobot!=null){
             executor.execute(chatRobot);

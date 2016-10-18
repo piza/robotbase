@@ -35,6 +35,12 @@ public class ChatRobot implements Runnable{
         this.messagesQueue=messagesQueue;
         listener=new ChatRobotListener();
     }
+
+    public void checkStatu(){
+        if(!connection.isConnected()){
+            login();
+        }
+    }
     public boolean login() {
         logger.info("ChatRobot trying to login....");
         boolean success=false;

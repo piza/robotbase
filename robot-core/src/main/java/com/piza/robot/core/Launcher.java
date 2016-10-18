@@ -3,6 +3,7 @@ package com.piza.robot.core;
 import com.piza.robot.core.task.*;
 
 import java.util.TimeZone;
+import java.util.Timer;
 
 /**
  * Created by Peter on 16/9/26.
@@ -11,6 +12,7 @@ public class Launcher {
 
     public static long startTime=0;
 
+    protected Timer timer;
     public void init(){
         final TimeZone zone = TimeZone.getTimeZone("GMT+8");
         TimeZone.setDefault(zone);
@@ -24,7 +26,8 @@ public class Launcher {
         ParserManage.getInstance().addAnalyser(new UpgradeAnalyser());
         TaskManager.getInstance().addTask(new UpgradeTask());
 
-
+        timer=new Timer();
+        timer.schedule(new SelfCheckTimerTask(),600000,600000);//execute every 10 minutes
     }
 
     public void startApp(){
