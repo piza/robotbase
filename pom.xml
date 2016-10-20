@@ -9,6 +9,7 @@
         <module>robot-core</module>
         <module>robot-deployer</module>
         <module>robot-coder</module>
+        <module>robot-translate</module>
     </modules>
   <packaging>pom</packaging>
 

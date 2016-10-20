@@ -1,5 +1,6 @@
 package com.piza.robot.core;
 
+import com.piza.robot.core.task.GetUserInfoTask;
 import org.apache.log4j.Logger;
 import org.jivesoftware.smack.*;
 import org.jivesoftware.smack.chat.Chat;
@@ -31,6 +32,8 @@ public class ChatRobot implements Runnable{
 
     private BlockingQueue<ChatMessage> messagesQueue;
 
+    private Roster roster;
+
     public ChatRobot( BlockingQueue<ChatMessage> messagesQueue){
         this.messagesQueue=messagesQueue;
         listener=new ChatRobotListener();
@@ -60,6 +63,9 @@ public class ChatRobot implements Runnable{
 
             }
         });
+         roster=Roster.getInstanceFor(connection);
+         GetUserInfoTask getUserInfoTask=new GetUserInfoTask(roster);
+         TaskManager.getInstance().addTask(getUserInfoTask);
 
         success=true;
 
@@ -121,7 +127,6 @@ public class ChatRobot implements Runnable{
 
     public boolean addFriend(String email, String name) {
         boolean isSuccess=false;
-        Roster roster=Roster.getInstanceFor(connection);
         try {
             roster.createEntry(email, name, null);
             isSuccess=true;

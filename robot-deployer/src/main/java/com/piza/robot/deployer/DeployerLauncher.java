@@ -8,6 +8,8 @@ import com.piza.robot.core.ParserManage;
 import com.piza.robot.core.TaskManager;
 import com.piza.robot.core.task.RobotInfoAnalyser;
 import com.piza.robot.core.task.RobotInfoTask;
+import com.piza.translate.TranslateAnalyser;
+import com.piza.translate.TranslateTask;
 
 /**
  * Created by Peter on 16/9/28.
@@ -37,6 +39,10 @@ public class DeployerLauncher extends Launcher {
         ParserManage.getInstance().addAnalyser(new DeployerEshowAnalyser());
 
         TaskManager.getInstance().addTask(new DeployEshowTask());
+
+        ParserManage.getInstance().addAnalyser(new TranslateAnalyser());
+
+        TaskManager.getInstance().addTask(new TranslateTask());
 
         deployerLauncher.startApp();
 

@@ -3,6 +3,10 @@ package com.piza.robot.core;
 import org.apache.log4j.Logger;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -14,6 +18,8 @@ public class DispatchService {
     private static final Logger logger= Logger.getLogger(DispatchService.class);
     private static volatile DispatchService dispatchService=null;
     private Executor executor;
+    private Map<String,Conversation> conversationMap=new ConcurrentHashMap<>();
+    private Timer timer=new Timer();
 
     private DispatchService(){
         executor= Executors.newFixedThreadPool(5);
@@ -33,6 +39,32 @@ public class DispatchService {
 
     public synchronized void add(final ChatMessage chatMessage){
         executor.execute(new DispatchTask(chatMessage));
+    }
+
+    public synchronized void setConversation(Conversation conversation){
+        CloseConversationTask closeConversationTask=new CloseConversationTask(conversation.getTask());
+        timer.schedule(closeConversationTask,conversation.getCloseTime());
+        conversation.setCloseTask(closeConversationTask);
+        this.conversationMap.put(conversation.getUserAccount(),conversation);
+    }
+
+    public Conversation getConversation(String account){
+        if(conversationMap.containsKey(account)){
+            return conversationMap.get(account);
+        }else {
+            return null;
+        }
+    }
+
+    public void removeConversation(String account){
+        if(conversationMap.containsKey(account)){
+            Conversation conversation= conversationMap.remove(account);
+            try{
+                conversation.getCloseTask().cancel();
+            }catch (Exception e){
+
+            }
+        }
     }
 
     public class DispatchTask implements Runnable{
@@ -67,6 +99,24 @@ public class DispatchService {
                 TaskBase defaultTask=TaskManager.getInstance().getTask("defaultTask");
                 defaultTask.setChatMessage(chatMessage);
                 TaskService.getInstance().addTask(defaultTask);
+            }
+        }
+    }
+
+
+    private class CloseConversationTask extends TimerTask{
+
+        private ConversationTask conversationTask;
+
+        public CloseConversationTask(ConversationTask conversationTask){
+            this.conversationTask=conversationTask;
+        }
+        @Override
+        public void run() {
+            try {
+                conversationTask.close();
+            }catch (Exception e){
+
             }
         }
     }
