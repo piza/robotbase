@@ -75,6 +75,18 @@ public class DispatchService {
         }
         @Override
         public void run() {
+            String userAccount=chatMessage.getFriend();
+            if(conversationMap.containsKey(userAccount)){
+                Conversation conversation=conversationMap.get(userAccount);
+                if(conversation!=null) {
+                    TaskBase conversationTask = conversation.getTask();
+                    if (conversationTask != null) {
+                        conversationTask.setChatMessage(chatMessage);
+                        TaskService.getInstance().addTask(conversationTask);
+                    }
+                }
+                return;
+            }
             Collection<IAnalyser> allAnalyser=ParserManage.getInstance().getAllAnalyser();
             boolean foundTask=false;
             for(IAnalyser iAnalyser:allAnalyser){
