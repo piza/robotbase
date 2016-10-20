@@ -1,5 +1,7 @@
 package com.piza.robot.util;
 
+import net.sf.json.util.JSONUtils;
+import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -7,10 +9,7 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Map;
 
 public class HttpUtil {
@@ -35,23 +34,35 @@ public class HttpUtil {
         return r;
     }
 
-    public static String post(String url,
-                              Map<String, String> data) {
+    public static String postJSON(String url,
+                              String json) {
         String r = null;
         HttpClient client = new HttpClient();
         client.getHttpConnectionManager().getParams().setConnectionTimeout(5000);// 设置连接时间 
         PostMethod pm = new PostMethod(url);
-        HttpMethodParams httpMethodParams = new HttpMethodParams();
-        pm.setParams(httpMethodParams);
+        pm.setRequestHeader("Content-type", "application/json");
+        pm.setRequestHeader("Accept", "application/json");
+
         try {
-            for (String key : data.keySet()) {
-                httpMethodParams.setParameter(key, data.get(key));
-            }
+            StringRequestEntity stringRequestEntity=new StringRequestEntity(json,"application/json","utf-8");
+            pm.setRequestEntity(stringRequestEntity);
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+//        HttpMethodParams httpMethodParams = new HttpMethodParams();
+
+//        pm.setParams(httpMethodParams);
+        try {
+//            for (String key : data.keySet()) {
+//                httpMethodParams.setParameter(key, data.get(key));
+//            }
             int status = client.executeMethod(pm);
             if (status == HttpStatus.SC_OK) {
                 r = pm.getResponseBodyAsString();
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return r;
     }
