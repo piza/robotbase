@@ -79,7 +79,10 @@ public class UpgradeTask extends TaskBase {
             String pullCmd = workingDir + File.separator + "buildProject.sh "+workingDir+File.separator+"robotbase";
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(pullCmd);
-            this.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
+            this.sendChat("isShellSuccess:["+shellJob.isSuccess()+"]\n"+shellJob.getResult());
+            if(shellJob.getResult()!=null && shellJob.getResult().contains("[ERROR]")){
+                return false;
+            }
             return shellJob.isSuccess();
         }catch (Exception e){
             e.printStackTrace();
