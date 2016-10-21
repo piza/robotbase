@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 public class TranslateTask extends ConversationTask {
     private static final Logger logger= Logger.getLogger(TranslateTask.class);
 
-    private static final String TRANSLATE_URL="";
+    private static final String TRANSLATE_URL="http://api.01cun.com/api/v1/translate";
 
     @Override
     public String getTaskName() {
@@ -33,19 +33,22 @@ public class TranslateTask extends ConversationTask {
 
         String json = "{\"word\":\"" + msg + "\",\"userId\":\""
                 + getUserId()
-                + "}";
+                + "\"}";
         String transStr= HttpUtil.postJSON(TRANSLATE_URL,json,FriendManage.getInstance().getLoginData().getCurrentToken());
         SimpleResult simpleResult= JsonUtil.str2Obj(transStr,SimpleResult.class);
         if(simpleResult!=null){
             this.sendChat(pretty(simpleResult));
+        }else{
+            this.sendChat("not found!");
         }
 
     }
 
     private String pretty(SimpleResult simpleResult){
         StringBuilder stringBuilder=new StringBuilder();
-        stringBuilder.append(simpleResult.getQuery()).append("\n").append(simpleResult.getPhonetic())
-                .append("\n").append(simpleResult.getTranslation())
+        stringBuilder.append(simpleResult.getQuery())
+                .append("        ").append(simpleResult.getTranslation())
+                .append("\n").append(simpleResult.getPhonetic())
                 .append("\n").append(simpleResult.getExplains());
         if(simpleResult.getWeb()!=null){
             for(String web:simpleResult.getWeb()){

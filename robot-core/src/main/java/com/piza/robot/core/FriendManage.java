@@ -77,7 +77,7 @@ public class FriendManage {
         if(this.friendList.containsKey(friend)){
             return friendList.get(friend);
         }
-        String queryUrl = "http://api.01cun.com/api/v1/userRobot?robotAccount="+friend;
+        String queryUrl = "http://api.01cun.com/api/v1/userRobot/list?robotAccount="+friend;
         String res=HttpUtil.getJSON(queryUrl, this.loginData.getCurrentToken());
 
         if(res==null){
