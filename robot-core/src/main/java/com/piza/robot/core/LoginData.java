@@ -1,9 +1,9 @@
-package com.piza.robot;
+package com.piza.robot.core;
 
 /**
  * Created by Peter on 2016/10/21.
  */
-public class LoginData {
+public class LoginData extends WebResponse{
 
     private Integer id;
     private String account;

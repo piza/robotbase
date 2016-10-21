@@ -1,7 +1,5 @@
 package com.piza.robot.util;
 
-import net.sf.json.util.JSONUtils;
-import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -35,14 +33,20 @@ public class HttpUtil {
     }
 
     public static String postJSON(String url,
-                              String json) {
+                                  String json) {
+        return postJSON(url,json,null);
+    }
+    public static String postJSON(String url,
+                              String json,String token) {
         String r = null;
         HttpClient client = new HttpClient();
         client.getHttpConnectionManager().getParams().setConnectionTimeout(5000);// 设置连接时间 
         PostMethod pm = new PostMethod(url);
         pm.setRequestHeader("Content-type", "application/json");
         pm.setRequestHeader("Accept", "application/json");
-
+        if(token!=null){
+            pm.setRequestHeader("token", token);
+        }
         try {
             StringRequestEntity stringRequestEntity=new StringRequestEntity(json,"application/json","utf-8");
             pm.setRequestEntity(stringRequestEntity);
@@ -50,19 +54,51 @@ public class HttpUtil {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-//        HttpMethodParams httpMethodParams = new HttpMethodParams();
-
-//        pm.setParams(httpMethodParams);
         try {
-//            for (String key : data.keySet()) {
-//                httpMethodParams.setParameter(key, data.get(key));
-//            }
             int status = client.executeMethod(pm);
             if (status == HttpStatus.SC_OK) {
                 r = pm.getResponseBodyAsString();
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        if(r!=null){
+            if(r.startsWith("{\"success\":")){
+                r=r.substring(11,r.length()-1);
+            }else if(r.startsWith("{\"failed\":")){
+                r=r.substring(10,r.length()-1);
+            }
+        }
+        return r;
+    }
+    public static String getJSON(String url) {
+        return postJSON(url,null);
+    }
+    public static String getJSON(String url,
+                                  String token) {
+        String r = null;
+        HttpClient client = new HttpClient();
+        client.getHttpConnectionManager().getParams().setConnectionTimeout(5000);// 设置连接时间
+        GetMethod pm = new GetMethod(url);
+        pm.setRequestHeader("Content-type", "application/json");
+        pm.setRequestHeader("Accept", "application/json");
+        if(token!=null){
+            pm.setRequestHeader("token", token);
+        }
+        try {
+            int status = client.executeMethod(pm);
+            if (status == HttpStatus.SC_OK) {
+                r = pm.getResponseBodyAsString();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if(r!=null){
+            if(r.startsWith("{\"success\":")){
+                r=r.substring(11,r.length()-1);
+            }else if(r.startsWith("{\"failed\":")){
+                r=r.substring(10,r.length()-1);
+            }
         }
         return r;
     }

@@ -8,6 +8,8 @@ public abstract class ConversationTask extends TaskBase {
     public abstract ConversationTask newConversation();
 
     protected final static long DEFAULT_CLOSE_TIME=3600000;
+
+    protected FriendData friendData;
     /**
      * 会话管理
      */
@@ -38,8 +40,10 @@ public abstract class ConversationTask extends TaskBase {
             conversation=new Conversation();
             conversation.setUserAccount(this.chatMessage.getFriend());
             conversation.setCloseTime(parseCloseTime());
-            conversation.setTask(this.newConversation());
+            ConversationTask conversationTask=this.newConversation();
+            conversation.setTask(conversationTask);
             DispatchService.getInstance().setConversation(conversation);
+            conversationTask.friendData=FriendManage.getInstance().getFriendData(this.chatMessage.getFriend());
             return true;
         }
         return false;
@@ -66,5 +70,13 @@ public abstract class ConversationTask extends TaskBase {
     protected void close(){
         DispatchService.getInstance().removeConversation(this.chatMessage.getFriend());
         this.sendChat("close conversation");
+    }
+
+    protected Integer getUserId(){
+        if(friendData!=null){
+            return friendData.getUserId();
+        }else{
+            return 0;
+        }
     }
 }

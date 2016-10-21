@@ -26,6 +26,7 @@ public class Launcher {
         ParserManage.getInstance().addAnalyser(new UpgradeAnalyser());
         TaskManager.getInstance().addTask(new UpgradeTask());
 
+        FriendManage.getInstance().login();
         timer=new Timer();
         timer.schedule(new SelfCheckTimerTask(),600000,600000);//execute every 10 minutes
     }
