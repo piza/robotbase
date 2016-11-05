@@ -31,9 +31,9 @@ public class ParserManage {
 
     public String report(){
         StringBuilder sb=new StringBuilder();
-        sb.append("all parser\n");
+        sb.append("---all parser---\n");
         for(String parserName:analyserPool.keySet()){
-            sb.append(parserName).append(",");
+            sb.append(parserName).append("\n");
         }
         sb.append("\n");
         return sb.toString();

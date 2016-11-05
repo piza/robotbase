@@ -73,7 +73,7 @@ public class ChatService {
 
     public String report(){
         StringBuilder sb=new StringBuilder();
-        sb.append("robot status:\n");
+        sb.append("---robot status:---\n");
         if(chatRobot!=null){
             sb.append(chatRobot.report());
         }
