@@ -98,12 +98,13 @@ public class CodeTaskItem {
 
     private void getTableList(List<String> tableList,String command){
         String[] cmdArr=command.split(" ");
-        if(cmdArr.length<2){
+        if(cmdArr.length<3){
+            taskBase.sendChat("wrong command: hint:\n festival code [tablename1] [tablename2] ...");
             return;
         }
         int ind=0;
         for(String tableName:cmdArr){
-            if(ind>0){
+            if(ind>1){
                 tableList.add(tableName);
             }
             ind++;

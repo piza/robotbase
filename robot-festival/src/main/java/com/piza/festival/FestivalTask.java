@@ -49,6 +49,8 @@ public class FestivalTask extends TaskBase {
                 codeTaskItem.work();
             }else if(this.hasTaskItem("deploy")){
                 (new DeployTaskItem(this)).work();
+            }else{
+                this.sendChat("help:\n code       generate code\n deploy    deploy project");
             }
 
         }finally {
