@@ -2,6 +2,8 @@ package com.piza.robot.deployer;
 
 import com.piza.coder.CoderAnalyser;
 import com.piza.coder.CoderTask;
+import com.piza.festival.FestivalAnalyser;
+import com.piza.festival.FestivalTask;
 import com.piza.robot.core.ConfigUtil;
 import com.piza.robot.core.Launcher;
 import com.piza.robot.core.ParserManage;
@@ -32,17 +34,22 @@ public class DeployerLauncher extends Launcher {
         ConfigUtil.initProp("coder.properties");
 
         ParserManage.getInstance().addAnalyser(new CoderAnalyser());
-
         TaskManager.getInstance().addTask(new CoderTask());
 
 
         ParserManage.getInstance().addAnalyser(new DeployerEshowAnalyser());
-
         TaskManager.getInstance().addTask(new DeployEshowTask());
 
-        ParserManage.getInstance().addAnalyser(new TranslateAnalyser());
 
+
+
+        ParserManage.getInstance().addAnalyser(new TranslateAnalyser());
         TaskManager.getInstance().addTask(new TranslateTask());
+
+
+        ConfigUtil.initProp("festival.properties");
+        ParserManage.getInstance().addAnalyser(new FestivalAnalyser());
+        TaskManager.getInstance().addTask(new FestivalTask());
 
         deployerLauncher.startApp();
 

@@ -10,6 +10,7 @@
         <module>robot-deployer</module>
         <module>robot-coder</module>
         <module>robot-translate</module>
+        <module>robot-festival</module>
     </modules>
   <packaging>pom</packaging>
 

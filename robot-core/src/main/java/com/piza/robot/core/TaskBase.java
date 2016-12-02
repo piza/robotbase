@@ -15,9 +15,33 @@ public abstract class TaskBase implements Runnable{
         this.chatMessage = chatMessage;
     }
 
-    protected void sendChat(String msg){
+    public void sendChat(String msg){
         ChatService.getInstance().sendMessage(this.chatMessage.getFriend(),msg);
     }
 
     public abstract String getTaskName();
+
+    public String getMsgContent(){
+        if(chatMessage==null){
+            return "";
+        }
+        return chatMessage.getContent();
+    }
+
+    public boolean hasTaskItem(String item){
+        String cmdStr=this.getMsgContent();
+        if(cmdStr==null || !cmdStr.contains(" ")){
+            return false;
+        }
+
+        String[] itemArr=cmdStr.split(" ");
+        for(String itemStr:itemArr){
+            if(itemStr.equalsIgnoreCase(item)){
+                return true;
+            }
+
+        }
+
+        return false;
+    }
 }
