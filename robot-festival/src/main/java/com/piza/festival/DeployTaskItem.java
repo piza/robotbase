@@ -53,7 +53,7 @@ public class DeployTaskItem {
         String workingDir= ConfigUtil.getStrProp("workDir");
 
         try {
-            String pullCmd = workingDir + File.separator + "shells_deployer/deployFestival.sh "+ConfigUtil.getStrProp("festival.projectDir")+" "+ConfigUtil.getStrProp("festival.deployDir");
+            String pullCmd = workingDir + File.separator + "shell_deployer/deployFestival.sh "+ConfigUtil.getStrProp("festival.projectDir")+" "+ConfigUtil.getStrProp("festival.deployDir");
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(pullCmd);
             taskBase.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
