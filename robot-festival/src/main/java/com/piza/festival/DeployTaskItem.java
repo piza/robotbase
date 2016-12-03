@@ -15,6 +15,9 @@ public class DeployTaskItem {
 
     private TaskBase taskBase;
     private String force=null;
+    private boolean skipPull=false;
+    private boolean skipBuild=false;
+
 
     public DeployTaskItem(TaskBase taskBase) {
         this.taskBase=taskBase;
@@ -24,6 +27,12 @@ public class DeployTaskItem {
     public void work(){
         if(this.taskBase.hasTaskItem("force") ){
             force="yes";
+        }
+        if(this.taskBase.hasTaskItem("skipPull") ){
+            skipPull=true;
+        }
+        if(this.taskBase.hasTaskItem("skipBuild") ){
+            skipBuild=true;
         }
         taskBase.sendChat("ok,start deploy task!\n pull code...");
         if(!pullCode()){
@@ -53,7 +62,7 @@ public class DeployTaskItem {
         String workingDir= ConfigUtil.getStrProp("workDir");
 
         try {
-            String pullCmd = workingDir + File.separator + "shell_deployer/deployFestival.sh "+ConfigUtil.getStrProp("festival.projectDir")+" "+ConfigUtil.getStrProp("festival.deployDir");
+            String pullCmd = workingDir + File.separator + "shell_festival/deployFestival.sh "+ConfigUtil.getStrProp("festival.projectDir")+" "+ConfigUtil.getStrProp("festival.deployDir");
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(pullCmd);
             taskBase.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
