@@ -39,7 +39,7 @@ public class CodeTaskItem {
         List<String> tableList=new ArrayList();
         getTableList(tableList,taskBase.getMsgContent());
         if(tableList.size()==0){
-            taskBase.sendChat("wrong param, example:\n code table1 table2 ...");
+//            taskBase.sendChat("wrong param, example:\n code table1 table2 ...");
             return;
         }
         //update code to latest
@@ -228,12 +228,13 @@ public class CodeTaskItem {
             this.configuration=configuration;
             context = new VelocityContext();
             String basePackage=ConfigUtil.getStrProp("festival.basePackage");
+            String controllerPackage=ConfigUtil.getStrProp("festival.controllerPackage");
             context.put("basePackage",basePackage);
             context.put("modelPackage",basePackage+".model");
             context.put("daoPackage", basePackage+".dao");
             context.put("servicePackage",basePackage+".service");
             context.put("validatorPackage",basePackage+".validator");
-            context.put("controllerPackage",basePackage+".controller");
+            context.put("controllerPackage",controllerPackage+".controller");
             context.put("apiPackage",basePackage+".api");
 
             ormPath=ConfigUtil.getStrProp("festival.ormPath");
