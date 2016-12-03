@@ -35,12 +35,12 @@ public class DeployTaskItem {
             skipBuild=true;
         }
         taskBase.sendChat("ok,start deploy task!\n pull code...");
-        if(!pullCode()){
+        if(!pullCode() && !skipPull){
             taskBase.sendChat("task over");
             return;
         }
 
-        if(!buildProject()){
+        if(!buildProject() && !skipBuild){
             taskBase.sendChat("task over");
             return;
         }
