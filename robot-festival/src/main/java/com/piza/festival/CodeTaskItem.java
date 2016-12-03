@@ -233,7 +233,7 @@ public class CodeTaskItem {
             context.put("modelPackage",basePackage+".model");
             context.put("daoPackage", basePackage+".dao");
             context.put("servicePackage",basePackage+".service");
-            context.put("validatorPackage",basePackage+".validator");
+            context.put("validatorPackage",controllerPackage+".validator");
             context.put("controllerPackage",controllerPackage+".controller");
             context.put("apiPackage",basePackage+".api");
 
