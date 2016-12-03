@@ -53,7 +53,7 @@ public class DeployTaskItem {
         String workingDir= ConfigUtil.getStrProp("workDir");
 
         try {
-            String pullCmd = workingDir + File.separator + "shells_deployer/deployEshow.sh "+ConfigUtil.getStrProp("eshowDir")+" "+ConfigUtil.getStrProp("deployEshowDir");
+            String pullCmd = workingDir + File.separator + "shells_deployer/deployFestival.sh "+ConfigUtil.getStrProp("festival.projectDir")+" "+ConfigUtil.getStrProp("festival.deployDir");
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(pullCmd);
             taskBase.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
@@ -93,7 +93,7 @@ public class DeployTaskItem {
         String workingDir= ConfigUtil.getStrProp("workDir");
 
         try {
-            String pullCmd = workingDir + File.separator + "buildProject.sh "+ConfigUtil.getStrProp("eshowDir");
+            String pullCmd = workingDir + File.separator + "buildProject.sh "+ConfigUtil.getStrProp("festival.projectDir");
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(pullCmd);
             taskBase.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
@@ -116,7 +116,7 @@ public class DeployTaskItem {
         String workingDir= ConfigUtil.getStrProp("workDir");
 
         try {
-            String pullCmd = workingDir + File.separator + "pullProject.sh "+ConfigUtil.getStrProp("eshowDir");
+            String pullCmd = workingDir + File.separator + "pullProject.sh "+ConfigUtil.getStrProp("festival.projectDir");
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(pullCmd);
             taskBase.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
@@ -142,11 +142,11 @@ public class DeployTaskItem {
 
         checkShellFile(workingDir,"shells/pullProject.sh");
         checkShellFile(workingDir,"shells/buildProject.sh");
-        checkShellFile(workingDir,"shells_deployer/deployEshow.sh");
+        checkShellFile(workingDir,"shells_deployer/deployFestival.sh");
         checkShellFile(workingDir,"shells_deployer/shutdownTomcat.sh");
         checkShellFile(workingDir,"shells_deployer/startTomcat.sh");
 
-        String projectDir=ConfigUtil.getStrProp("eshowDir");
+        String projectDir=ConfigUtil.getStrProp("festival.projectDir");
 
         File projectFolder=new File(projectDir);
         if(projectFolder.exists()){
