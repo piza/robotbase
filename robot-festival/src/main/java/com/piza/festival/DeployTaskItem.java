@@ -142,7 +142,7 @@ public class DeployTaskItem {
 
         checkShellFile(workingDir,"shells/pullProject.sh");
         checkShellFile(workingDir,"shells/buildProject.sh");
-        checkShellFile(workingDir,"shells_festival/deployFestival.sh");
+        checkShellFile(workingDir,"shell_festival/deployFestival.sh");
         checkShellFile(workingDir,"shells_deployer/shutdownTomcat.sh");
         checkShellFile(workingDir,"shells_deployer/startTomcat.sh");
 
