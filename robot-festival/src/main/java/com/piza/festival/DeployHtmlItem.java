@@ -49,7 +49,7 @@ public class DeployHtmlItem {
         String workingDir= ConfigUtil.getStrProp("workDir");
 
         try {
-            String pullCmd = workingDir + File.separator + "shell_festival/festivalHtml.sh "+ConfigUtil.getStrProp("festival.projectDir")+" "+ConfigUtil.getStrProp("festival.deployHtmlDir");
+            String pullCmd = workingDir + File.separator + "shell_festival/deployHtml.sh "+ConfigUtil.getStrProp("festival.projectDir")+" "+ConfigUtil.getStrProp("festival.deployHtmlDir");
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(pullCmd);
             taskBase.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
