@@ -47,6 +47,9 @@ public class FestivalTask extends TaskBase {
             if(this.hasTaskItem("code")){
                 CodeTaskItem codeTaskItem=new CodeTaskItem(this);
                 codeTaskItem.work();
+            }else if(this.hasTaskItem("deployAll")){
+                (new DeployHtmlItem(this,false)).work();
+                (new DeployTaskItem(this)).work();
             }else if(this.hasTaskItem("deploy")){
                 (new DeployTaskItem(this)).work();
             }else if(this.hasTaskItem("html")){

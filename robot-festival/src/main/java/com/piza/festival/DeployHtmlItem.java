@@ -15,10 +15,17 @@ public class DeployHtmlItem {
 
     private TaskBase taskBase;
     private String force=null;
+    private boolean restart=true;
+
+    public DeployHtmlItem(TaskBase taskBase,boolean restart) {
+        this.taskBase=taskBase;
+        this.restart=restart;
+    }
 
     public DeployHtmlItem(TaskBase taskBase) {
         this.taskBase=taskBase;
     }
+
 
 
     public void work(){
@@ -35,7 +42,7 @@ public class DeployHtmlItem {
             taskBase.sendChat("task over");
             return;
         }
-        if(!restartTomcat()){
+        if(this.restart && !restartTomcat()){
             taskBase.sendChat("task over");
             return;
         }
