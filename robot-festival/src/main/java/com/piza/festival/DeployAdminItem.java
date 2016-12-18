@@ -17,11 +17,18 @@ public class DeployAdminItem {
     private String force=null;
     private boolean skipPull=false;
     private boolean skipBuild=false;
+    private boolean restart=true;
 
 
     public DeployAdminItem(TaskBase taskBase) {
         this.taskBase=taskBase;
     }
+
+    public DeployAdminItem(TaskBase taskBase,boolean restart) {
+        this.taskBase=taskBase;
+        this.restart=restart;
+    }
+
 
 
     public void work(){
@@ -48,7 +55,7 @@ public class DeployAdminItem {
             taskBase.sendChat("task over");
             return;
         }
-        if(!restartTomcat()){
+        if(this.restart && !restartTomcat()){
             taskBase.sendChat("task over");
             return;
         }
