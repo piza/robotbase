@@ -58,7 +58,7 @@ public class FestivalTask extends TaskBase {
                 (new DeployAdminItem(this)).work();
             }else if(this.hasTaskItem("java")){
                 (new DeployAdminItem(this,false)).work();
-                (new DeployTaskItem(this)).work();
+                (new DeployTaskItem(this,true)).work();
             }else{
                 this.sendChat("help:\n code       generate code\n deploy    deploy project" +
                         "\n html    deploy wechat html project" +

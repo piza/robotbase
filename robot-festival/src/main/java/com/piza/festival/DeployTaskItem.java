@@ -18,9 +18,14 @@ public class DeployTaskItem {
     private boolean skipPull=false;
     private boolean skipBuild=false;
 
+    private boolean justDeploy;
 
     public DeployTaskItem(TaskBase taskBase) {
         this.taskBase=taskBase;
+    }
+    public DeployTaskItem(TaskBase taskBase,boolean justDeploy) {
+        this.taskBase=taskBase;
+        this.justDeploy=justDeploy;
     }
 
 
@@ -28,21 +33,23 @@ public class DeployTaskItem {
         if(this.taskBase.hasTaskItem("force") ){
             force="yes";
         }
-        if(this.taskBase.hasTaskItem("skipPull") ){
-            skipPull=true;
-        }
-        if(this.taskBase.hasTaskItem("skipBuild") ){
-            skipBuild=true;
-        }
-        taskBase.sendChat("ok,start deploy task!\n pull code...");
-        if( !skipPull&& !pullCode()){
-            taskBase.sendChat("task over");
-            return;
-        }
+        if (!this.justDeploy) {
+            if (this.taskBase.hasTaskItem("skipPull")) {
+                skipPull = true;
+            }
+            if (this.taskBase.hasTaskItem("skipBuild")) {
+                skipBuild = true;
+            }
+            taskBase.sendChat("ok,start deploy task!\n pull code...");
+            if (!skipPull && !pullCode()) {
+                taskBase.sendChat("task over");
+                return;
+            }
 
-        if(!skipBuild  && !buildProject()){
-            taskBase.sendChat("task over");
-            return;
+            if (!skipBuild && !buildProject()) {
+                taskBase.sendChat("task over");
+                return;
+            }
         }
         if(!deployProject()){
             taskBase.sendChat("task over");
