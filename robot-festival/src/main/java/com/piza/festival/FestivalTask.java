@@ -64,7 +64,9 @@ public class FestivalTask extends TaskBase {
                         "\n html    deploy wechat html project" +
                         "\n admin    deploy admin project" +
                         "\n skipBuild    skip build" +
-                        "\n skipPull     skip pull code");
+                        "\n skipPull     skip pull code "+
+                        "\n deployAll     deploy admin & portal "
+                        );
             }
 
         }finally {
