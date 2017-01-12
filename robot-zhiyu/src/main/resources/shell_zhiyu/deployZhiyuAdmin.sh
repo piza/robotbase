@@ -18,7 +18,7 @@ mkdir current
 echo "deploy new version"
 cd current
 
-jar -xvf $projectDir/festival-portal/target/festival-portal.war
+jar -xvf $projectDir/zhiyu-admin/target/zhiyu-admin.war
 
 cd WEB-INF/lib
-find . -name "*.jar" | grep  -v "festival" | grep  -v "wechat" | xargs rm -f
+find . -name "*.jar" | grep  -v "festival" | grep  -v "wechat" | grep  -v "zhiyu" | xargs rm -f

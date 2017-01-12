@@ -1,4 +1,4 @@
-package com.piza.festival;
+package com.piza.zhiyu;
 
 import com.piza.robot.core.ConfigUtil;
 import com.piza.robot.core.ShellJob;
@@ -11,51 +11,51 @@ import java.io.IOException;
 /**
  * Created by Peter on 2016/12/2.
  */
-public class DeployAdminItem {
+public class DeployTaskItem {
 
     private TaskBase taskBase;
     private String force=null;
     private boolean skipPull=false;
     private boolean skipBuild=false;
-    private boolean restart=true;
 
+    private boolean justDeploy;
 
-    public DeployAdminItem(TaskBase taskBase) {
+    public DeployTaskItem(TaskBase taskBase) {
         this.taskBase=taskBase;
     }
-
-    public DeployAdminItem(TaskBase taskBase,boolean restart) {
+    public DeployTaskItem(TaskBase taskBase,boolean justDeploy) {
         this.taskBase=taskBase;
-        this.restart=restart;
+        this.justDeploy=justDeploy;
     }
-
 
 
     public void work(){
         if(this.taskBase.hasTaskItem("force") ){
             force="yes";
         }
-        if(this.taskBase.hasTaskItem("skipPull") ){
-            skipPull=true;
-        }
-        if(this.taskBase.hasTaskItem("skipBuild") ){
-            skipBuild=true;
-        }
-        taskBase.sendChat("ok,start deploy task!\n pull code...");
-        if( !skipPull&& !pullCode()){
-            taskBase.sendChat("task over");
-            return;
-        }
+        if (!this.justDeploy) {
+            if (this.taskBase.hasTaskItem("skipPull")) {
+                skipPull = true;
+            }
+            if (this.taskBase.hasTaskItem("skipBuild")) {
+                skipBuild = true;
+            }
+            taskBase.sendChat("ok,start deploy task!\n pull code...");
+            if (!skipPull && !pullCode()) {
+                taskBase.sendChat("task over");
+                return;
+            }
 
-        if(!skipBuild  && !buildProject()){
-            taskBase.sendChat("task over");
-            return;
+            if (!skipBuild && !buildProject()) {
+                taskBase.sendChat("task over");
+                return;
+            }
         }
         if(!deployProject()){
             taskBase.sendChat("task over");
             return;
         }
-        if(this.restart && !restartTomcat()){
+        if(!restartTomcat()){
             taskBase.sendChat("task over");
             return;
         }
@@ -65,18 +65,18 @@ public class DeployAdminItem {
 
     private boolean deployProject(){
 
-        taskBase.sendChat("start to deploy admin project!");
+        taskBase.sendChat("start to deploy project!");
         String workingDir= ConfigUtil.getStrProp("workDir");
 
         try {
-            String pullCmd = workingDir + File.separator + "shell_festival/deployFestivalAdmin.sh "+ConfigUtil.getStrProp("festival.projectDir")+" "+ConfigUtil.getStrProp("festival.deployAdminDir");
+            String pullCmd = workingDir + File.separator + "shell_zhiyu/deployZhiyu.sh "+ConfigUtil.getStrProp("zhiyu.projectDir")+" "+ConfigUtil.getStrProp("zhiyu.deployDir");
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(pullCmd);
             taskBase.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
             return shellJob.isSuccess();
         }catch (Exception e){
             e.printStackTrace();
-            taskBase.sendChat("error when deploy admin project:" + e.getMessage());
+            taskBase.sendChat("error when deploy project:" + e.getMessage());
         }
 
         return true;
@@ -109,7 +109,7 @@ public class DeployAdminItem {
         String workingDir= ConfigUtil.getStrProp("workDir");
 
         try {
-            String pullCmd = workingDir + File.separator + "buildProject.sh "+ConfigUtil.getStrProp("festival.projectDir");
+            String pullCmd = workingDir + File.separator + "buildProject.sh "+ConfigUtil.getStrProp("zhiyu.projectDir");
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(pullCmd);
             taskBase.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
@@ -132,7 +132,7 @@ public class DeployAdminItem {
         String workingDir= ConfigUtil.getStrProp("workDir");
 
         try {
-            String pullCmd = workingDir + File.separator + "pullProject.sh "+ConfigUtil.getStrProp("festival.projectDir");
+            String pullCmd = workingDir + File.separator + "pullProject.sh "+ConfigUtil.getStrProp("zhiyu.projectDir");
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(pullCmd);
             taskBase.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
@@ -158,11 +158,11 @@ public class DeployAdminItem {
 
         checkShellFile(workingDir,"shells/pullProject.sh");
         checkShellFile(workingDir,"shells/buildProject.sh");
-        checkShellFile(workingDir,"shell_festival/deployFestivalAdmin.sh");
+        checkShellFile(workingDir,"shell_zhiyu/deployZhiyu.sh");
         checkShellFile(workingDir,"shells_deployer/shutdownTomcat.sh");
         checkShellFile(workingDir,"shells_deployer/startTomcat.sh");
 
-        String projectDir=ConfigUtil.getStrProp("festival.projectDir");
+        String projectDir=ConfigUtil.getStrProp("zhiyu.projectDir");
 
         File projectFolder=new File(projectDir);
         if(projectFolder.exists()){
@@ -182,7 +182,7 @@ public class DeployAdminItem {
         if(!shellFile.exists()|| force!=null) {
             try {
                 taskBase.sendChat("copy "+shellName);
-                FileUtils.copyInputStreamToFile(DeployAdminItem.class.getClassLoader().getResourceAsStream(shellName), shellFile);
+                FileUtils.copyInputStreamToFile(DeployTaskItem.class.getClassLoader().getResourceAsStream(shellName), shellFile);
                 shellFile.setExecutable(true);
             } catch (IOException e) {
                 e.printStackTrace();

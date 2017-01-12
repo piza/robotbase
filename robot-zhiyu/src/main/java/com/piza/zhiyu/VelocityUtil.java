@@ -1,4 +1,4 @@
-package com.piza.festival;
+package com.piza.zhiyu;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;

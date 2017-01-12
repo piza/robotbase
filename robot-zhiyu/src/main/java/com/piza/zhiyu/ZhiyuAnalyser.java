@@ -1,4 +1,4 @@
-package com.piza.festival;
+package com.piza.zhiyu;
 
 import com.piza.robot.core.Analysis;
 import com.piza.robot.core.IAnalyser;
@@ -6,16 +6,16 @@ import com.piza.robot.core.IAnalyser;
 /**
  * Created by Peter on 16/9/28.
  */
-public class FestivalAnalyser implements IAnalyser {
+public class ZhiyuAnalyser implements IAnalyser {
     @Override
     public String getName() {
-        return "FestivalAnalyser";
+        return "ZhiyuAnalyser";
     }
 
     @Override
     public Analysis analyse(String input) {
         Analysis analysis=new Analysis();
-        if(input!=null && input.startsWith("festival")){
+        if(input!=null && (input.startsWith("zhiyu") || input.startsWith("zy"))){
             analysis.setHandleable(true);
         }
         return analysis;
@@ -23,6 +23,6 @@ public class FestivalAnalyser implements IAnalyser {
 
     @Override
     public String getTaskName() {
-        return "festivalTask";
+        return "zhiyuTask";
     }
 }

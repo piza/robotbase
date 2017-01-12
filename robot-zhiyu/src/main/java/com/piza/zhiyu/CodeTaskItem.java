@@ -1,4 +1,4 @@
-package com.piza.festival;
+package com.piza.zhiyu;
 
 import com.piza.robot.core.ConfigUtil;
 import com.piza.robot.core.ShellJob;
@@ -59,7 +59,7 @@ public class CodeTaskItem {
         String workingDir= ConfigUtil.getStrProp("workDir");
 
         try {
-            String pullCmd = workingDir + File.separator + "commitProject.sh "+ConfigUtil.getStrProp("festival.projectDir");
+            String pullCmd = workingDir + File.separator + "commitProject.sh "+ConfigUtil.getStrProp("zhiyu.projectDir");
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(pullCmd);
             taskBase.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
@@ -80,7 +80,7 @@ public class CodeTaskItem {
         String workingDir= ConfigUtil.getStrProp("workDir");
 
         try {
-            String pullCmd = workingDir + File.separator + "pullProject.sh "+ConfigUtil.getStrProp("festival.projectDir");
+            String pullCmd = workingDir + File.separator + "pullProject.sh "+ConfigUtil.getStrProp("zhiyu.projectDir");
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(pullCmd);
             taskBase.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
@@ -99,7 +99,7 @@ public class CodeTaskItem {
     private void getTableList(List<String> tableList,String command){
         String[] cmdArr=command.split(" ");
         if(cmdArr.length<3){
-            taskBase.sendChat("wrong command: hint:\n festival code [tablename1] [tablename2] ...");
+            taskBase.sendChat("wrong command: hint:\n zhiyu code [tablename1] [tablename2] ...");
             return;
         }
         int ind=0;
@@ -116,7 +116,7 @@ public class CodeTaskItem {
         List<String> warnings = new ArrayList<String>();
         try {
             Configuration configuration = new Configuration();
-            configuration.addClasspathEntry(ConfigUtil.getStrProp("festival.classPathEntry"));
+            configuration.addClasspathEntry(ConfigUtil.getStrProp("zhiyu.classPathEntry"));
             Context context=new Context(ModelType.CONDITIONAL);
             context.setId("defaultContext");
 
@@ -127,25 +127,25 @@ public class CodeTaskItem {
 
             JDBCConnectionConfiguration jdbcConnectionConfiguration=new JDBCConnectionConfiguration();
             jdbcConnectionConfiguration.setDriverClass("com.mysql.jdbc.Driver");
-            jdbcConnectionConfiguration.setConnectionURL(ConfigUtil.getStrProp("festival.connectionURL"));
-            jdbcConnectionConfiguration.setUserId(ConfigUtil.getStrProp("festival.userId"));
-            jdbcConnectionConfiguration.setPassword(ConfigUtil.getStrProp("festival.password"));
+            jdbcConnectionConfiguration.setConnectionURL(ConfigUtil.getStrProp("zhiyu.connectionURL"));
+            jdbcConnectionConfiguration.setUserId(ConfigUtil.getStrProp("zhiyu.userId"));
+            jdbcConnectionConfiguration.setPassword(ConfigUtil.getStrProp("zhiyu.password"));
             context.setJdbcConnectionConfiguration(jdbcConnectionConfiguration);
 
             JavaModelGeneratorConfiguration javaModelGeneratorConfiguration=new JavaModelGeneratorConfiguration();
-            javaModelGeneratorConfiguration.setTargetPackage(ConfigUtil.getStrProp("festival.basePackage")+".model");
-            javaModelGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("festival.ormPath") + "/java/");
+            javaModelGeneratorConfiguration.setTargetPackage(ConfigUtil.getStrProp("zhiyu.basePackage")+".model");
+            javaModelGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("zhiyu.ormPath") + "/java/");
             context.setJavaModelGeneratorConfiguration(javaModelGeneratorConfiguration);
 
             JavaClientGeneratorConfiguration javaClientGeneratorConfiguration=new JavaClientGeneratorConfiguration();
-            javaClientGeneratorConfiguration.setTargetPackage(ConfigUtil.getStrProp("festival.basePackage") + ".dao");
-            javaClientGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("festival.ormPath") + "/java/");
+            javaClientGeneratorConfiguration.setTargetPackage(ConfigUtil.getStrProp("zhiyu.basePackage") + ".dao");
+            javaClientGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("zhiyu.ormPath") + "/java/");
             javaClientGeneratorConfiguration.setConfigurationType("XMLMAPPER");
             context.setJavaClientGeneratorConfiguration(javaClientGeneratorConfiguration);
 
             SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration=new SqlMapGeneratorConfiguration();
             sqlMapGeneratorConfiguration.setTargetPackage("orm");
-            sqlMapGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("festival.ormPath")+"/resources/");
+            sqlMapGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("zhiyu.ormPath")+"/resources/");
             context.setSqlMapGeneratorConfiguration(sqlMapGeneratorConfiguration);
 
 
@@ -153,14 +153,14 @@ public class CodeTaskItem {
 
             for(String tableName:tableList){
                 TableConfiguration tableConfiguration=new TableConfiguration(context);
-                tableConfiguration.setSchema(ConfigUtil.getStrProp("festival.database"));
+                tableConfiguration.setSchema(ConfigUtil.getStrProp("zhiyu.database"));
                 tableConfiguration.setTableName(tableName);
                 tableConfiguration.setDomainObjectName(convertDomainName(tableName));
                 GeneratedKey generatedKey=new GeneratedKey("id","MySql",true,null);
                 tableConfiguration.setGeneratedKey(generatedKey);
                 context.addTableConfiguration(tableConfiguration);
 
-                cleanFile(ConfigUtil.getStrProp("festival.ormPath")+"/resources/orm/"+tableConfiguration.getDomainObjectName()+"Mapper.xml");
+                cleanFile(ConfigUtil.getStrProp("zhiyu.ormPath")+"/resources/orm/"+tableConfiguration.getDomainObjectName()+"Mapper.xml");
             }
 
             configuration.addContext(context);
@@ -227,8 +227,8 @@ public class CodeTaskItem {
             logger.info("init TemplateGenerate");
             this.configuration=configuration;
             context = new VelocityContext();
-            String basePackage=ConfigUtil.getStrProp("festival.basePackage");
-            String controllerPackage=ConfigUtil.getStrProp("festival.controllerPackage");
+            String basePackage=ConfigUtil.getStrProp("zhiyu.basePackage");
+            String controllerPackage=ConfigUtil.getStrProp("zhiyu.controllerPackage");
             context.put("basePackage",basePackage);
             context.put("modelPackage",basePackage+".model");
             context.put("daoPackage", basePackage+".dao");
@@ -237,21 +237,21 @@ public class CodeTaskItem {
             context.put("controllerPackage",controllerPackage+".controller");
             context.put("apiPackage",basePackage+".api");
 
-            ormPath=ConfigUtil.getStrProp("festival.ormPath");
-            servicePath=ConfigUtil.getStrProp("festival.servicePath");
-            controllerPath=ConfigUtil.getStrProp("festival.controllerPath");
+            ormPath=ConfigUtil.getStrProp("zhiyu.ormPath");
+            servicePath=ConfigUtil.getStrProp("zhiyu.servicePath");
+            controllerPath=ConfigUtil.getStrProp("zhiyu.controllerPath");
 
 
-            basePackagePath=ConfigUtil.getStrProp("festival.basePackagePath");
+            basePackagePath=ConfigUtil.getStrProp("zhiyu.basePackagePath");
             ve = new VelocityEngine();
             ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
             ve.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
 
-            mapperTemplate = ve.getTemplate("template-festival/mapperTemplate.vm");
-            serviceTemplate = ve.getTemplate("template-festival/serviceTemplate.vm");
-            implTemplate = ve.getTemplate("template-festival/serviceImplTemplate.vm");
-            validatorTemplate = ve.getTemplate("template-festival/validatorTemplate.vm");
-            controllerTemplate = ve.getTemplate("template-festival/controllerTemplate.vm");
+            mapperTemplate = ve.getTemplate("template-zhiyu/mapperTemplate.vm");
+            serviceTemplate = ve.getTemplate("template-zhiyu/serviceTemplate.vm");
+            implTemplate = ve.getTemplate("template-zhiyu/serviceImplTemplate.vm");
+            validatorTemplate = ve.getTemplate("template-zhiyu/validatorTemplate.vm");
+            controllerTemplate = ve.getTemplate("template-zhiyu/controllerTemplate.vm");
         }
 
         @Override
