@@ -45,7 +45,7 @@ public class DeployerLauncher extends Launcher {
         TaskManager.getInstance().addTask(new TranslateTask());
 
 
-        ConfigUtil.initProp("festival.properties");
+        ConfigUtil.initProp("zhiyu.properties");
         ParserManage.getInstance().addAnalyser(new ZhiyuAnalyser());
         TaskManager.getInstance().addTask(new ZhiyuTask());
 

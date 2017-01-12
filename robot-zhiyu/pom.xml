@@ -10,7 +10,7 @@
     <artifactId>robot-zhiyu</artifactId>
     <packaging>jar</packaging>
 
-    <name>robot-festival</name>
+    <name>robot-zhiyu</name>
     <url>http://maven.apache.org</url>
 
     <properties>
