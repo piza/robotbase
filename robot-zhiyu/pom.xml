@@ -7,7 +7,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>robot-festival</artifactId>
+    <artifactId>robot-zhiyu</artifactId>
     <packaging>jar</packaging>
 
     <name>robot-festival</name>

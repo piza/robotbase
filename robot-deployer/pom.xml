@@ -28,7 +28,7 @@
         </dependency>
         <dependency>
             <groupId>com.piza</groupId>
-            <artifactId>robot-festival</artifactId>
+            <artifactId>robot-zhiyu</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
