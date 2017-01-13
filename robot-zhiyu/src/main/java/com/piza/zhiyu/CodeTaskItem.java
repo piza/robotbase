@@ -216,6 +216,7 @@ public class CodeTaskItem {
         private String servicePath;
         private String controllerPath;
         private String basePackagePath;
+        private String controllerPackagePath;
 
         private Template mapperTemplate;
         private Template serviceTemplate;
@@ -243,6 +244,8 @@ public class CodeTaskItem {
 
 
             basePackagePath=ConfigUtil.getStrProp("zhiyu.basePackagePath");
+            controllerPackagePath=ConfigUtil.getStrProp("zhiyu.controllerPackagePath");
+
             ve = new VelocityEngine();
             ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
             ve.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
@@ -308,8 +311,8 @@ public class CodeTaskItem {
                 writeTemplate(ormPath+basePackagePath+File.separator+"dao",modelClass,mapperTemplate,"Mapper");
                 writeTemplate(servicePath+basePackagePath+File.separator+"service",modelClass,serviceTemplate,"Service");
                 writeTemplate(servicePath+basePackagePath+File.separator+"service"+File.separator+"impl",modelClass,implTemplate,"ServiceImpl");
-                writeTemplate(controllerPath+basePackagePath+File.separator+"validator",modelClass,validatorTemplate,"Validator");
-                writeTemplate(controllerPath+basePackagePath+File.separator+"controller",modelClass,controllerTemplate,"Controller");
+                writeTemplate(controllerPath+controllerPackagePath+File.separator+"validator",modelClass,validatorTemplate,"Validator");
+                writeTemplate(controllerPath+controllerPackagePath+File.separator+"controller",modelClass,controllerTemplate,"Controller");
 
             }
 
