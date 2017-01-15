@@ -31,9 +31,9 @@ public class ZhiyuTask extends TaskBase {
                 codeTaskItem.work();
             }else if(this.hasTaskItem("deployAll")){
                 (new DeployHtmlItem(this,false)).work();
-                (new DeployTaskItem(this)).work();
+                (new DeployFestivalTaskItem(this)).work();
             }else if(this.hasTaskItem("festival")){
-                (new DeployTaskItem(this)).work();
+                (new DeployFestivalTaskItem(this)).work();
             }else if(this.hasTaskItem("html")){
                 (new DeployHtmlItem(this)).work();
             }else if(this.hasTaskItem("admin")){
@@ -42,7 +42,7 @@ public class ZhiyuTask extends TaskBase {
                 (new DeployPocketItem(this,true)).work();
             }else if(this.hasTaskItem("java")){
                 (new DeployAdminItem(this,false)).work();
-                (new DeployTaskItem(this,true)).work();
+                (new DeployFestivalTaskItem(this,true)).work();
             }else{
                 this.sendChat("help:\n code       generate code\n deploy    deploy project" +
                         "\n html    deploy wechat html project" +

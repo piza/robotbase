@@ -6,15 +6,15 @@ import com.piza.robot.core.TaskBase;
 /** deploy festival
  * Created by Peter on 2016/12/2.
  */
-public class DeployTaskItem extends BaseItem{
+public class DeployFestivalTaskItem extends BaseItem{
 
 
     private boolean justDeploy;
 
-    public DeployTaskItem(TaskBase taskBase) {
+    public DeployFestivalTaskItem(TaskBase taskBase) {
         super(taskBase);
     }
-    public DeployTaskItem(TaskBase taskBase,boolean justDeploy) {
+    public DeployFestivalTaskItem(TaskBase taskBase, boolean justDeploy) {
         super(taskBase);
         this.justDeploy=justDeploy;
     }
