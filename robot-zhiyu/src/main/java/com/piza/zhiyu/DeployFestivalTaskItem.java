@@ -21,16 +21,7 @@ public class DeployFestivalTaskItem extends BaseItem{
 
 
     public void work(){
-        if(this.taskBase.hasTaskItem("force") ){
-            force="yes";
-        }
         if (!this.justDeploy) {
-            if (this.taskBase.hasTaskItem("skipPull")) {
-                skipPull = true;
-            }
-            if (this.taskBase.hasTaskItem("skipBuild")) {
-                skipBuild = true;
-            }
             taskBase.sendChat("ok,start deploy task!\n pull code...");
             String pullCmd = "pullProject.sh "+ConfigUtil.getStrProp("zhiyu.projectDir");
             if (!skipPull && !pullCode(pullCmd)) {

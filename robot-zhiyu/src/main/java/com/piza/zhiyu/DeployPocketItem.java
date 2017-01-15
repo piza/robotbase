@@ -27,13 +27,13 @@ public class DeployPocketItem extends BaseItem{
             }
             taskBase.sendChat("ok,start deploy task!\n pull code...");
             String pullCmd = "pullProject.sh "+ConfigUtil.getStrProp("pocketmoneyDir");
-            if(!pullCode(pullCmd)){
+            if(!skipPull&&!pullCode(pullCmd)){
                 taskBase.sendChat("task over");
                 return;
             }
 
             String buildCmd =  "buildProject.sh "+ConfigUtil.getStrProp("pocketmoneyDir");
-            if(!buildProject(buildCmd)){
+            if(!skipBuild  && !buildProject(buildCmd)){
                 taskBase.sendChat("task over");
                 return;
             }

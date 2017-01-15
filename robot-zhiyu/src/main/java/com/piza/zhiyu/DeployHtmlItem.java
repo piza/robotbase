@@ -21,8 +21,7 @@ public class DeployHtmlItem extends BaseItem{
 
 
     public void work(){
-        if(this.taskBase.hasTaskItem("force") ){
-            force="yes";
+        if(force!=null ){
             if(!checkFirst()){
                 taskBase.sendChat("check file failed!");
             }else{

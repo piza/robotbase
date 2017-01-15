@@ -22,11 +22,25 @@ public abstract class BaseItem {
 
     public BaseItem(TaskBase taskBase) {
         this.taskBase=taskBase;
+        init();
     }
 
     public BaseItem(TaskBase taskBase,boolean restart) {
         this.taskBase=taskBase;
         this.restart=restart;
+        init();
+    }
+
+    protected void init(){
+        if(this.taskBase.hasTaskItem("force") ){
+            force="yes";
+        }
+        if(this.taskBase.hasTaskItem("skipPull") ){
+            skipPull=true;
+        }
+        if(this.taskBase.hasTaskItem("skipBuild") ){
+            skipBuild=true;
+        }
     }
 
     protected boolean deployProject(String deployCmd){
