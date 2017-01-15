@@ -24,14 +24,12 @@ import java.util.List;
 /**
  * Created by Peter on 2016/12/2.
  */
-public class CodeTaskItem {
+public class CodeTaskItem extends BaseItem{
 
     private static final Logger logger= Logger.getLogger(CodeTaskItem.class);
 
-    private TaskBase taskBase;
-
     public CodeTaskItem(TaskBase taskBase) {
-        this.taskBase=taskBase;
+        super(taskBase);
     }
 
 
@@ -43,7 +41,8 @@ public class CodeTaskItem {
             return;
         }
         //update code to latest
-        if(!pullCode()){
+        String pullCmd =  "pullProject.sh "+ConfigUtil.getStrProp("zhiyu.projectDir");
+        if(!pullCode(pullCmd)){
             return;
         }
         if(!this.generate(tableList)){
@@ -75,26 +74,6 @@ public class CodeTaskItem {
         return false;
     }
 
-    private boolean pullCode(){
-        taskBase.sendChat("start to pull code!");
-        String workingDir= ConfigUtil.getStrProp("workDir");
-
-        try {
-            String pullCmd = workingDir + File.separator + "pullProject.sh "+ConfigUtil.getStrProp("zhiyu.projectDir");
-            ShellJob shellJob=new ShellJob();
-            shellJob.runCommand(pullCmd);
-            taskBase.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
-            if(shellJob.getResult()!=null && shellJob.getResult().contains("Already up-to-date")){
-                taskBase.sendChat("no code changed, continue task!");
-                return true;
-            }
-            return shellJob.isSuccess();
-        }catch (Exception e){
-            e.printStackTrace();
-            taskBase.sendChat("error when pull code:" + e.getMessage());
-        }
-        return false;
-    }
 
     private void getTableList(List<String> tableList,String command){
         String[] cmdArr=command.split(" ");

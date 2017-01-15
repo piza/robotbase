@@ -1,30 +1,21 @@
 package com.piza.zhiyu;
 
 import com.piza.robot.core.ConfigUtil;
-import com.piza.robot.core.ShellJob;
 import com.piza.robot.core.TaskBase;
-import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
-
-/**
+/** deploy festival
  * Created by Peter on 2016/12/2.
  */
-public class DeployTaskItem {
+public class DeployTaskItem extends BaseItem{
 
-    private TaskBase taskBase;
-    private String force=null;
-    private boolean skipPull=false;
-    private boolean skipBuild=false;
 
     private boolean justDeploy;
 
     public DeployTaskItem(TaskBase taskBase) {
-        this.taskBase=taskBase;
+        super(taskBase);
     }
     public DeployTaskItem(TaskBase taskBase,boolean justDeploy) {
-        this.taskBase=taskBase;
+        super(taskBase);
         this.justDeploy=justDeploy;
     }
 
@@ -41,17 +32,20 @@ public class DeployTaskItem {
                 skipBuild = true;
             }
             taskBase.sendChat("ok,start deploy task!\n pull code...");
-            if (!skipPull && !pullCode()) {
+            String pullCmd = "pullProject.sh "+ConfigUtil.getStrProp("zhiyu.projectDir");
+            if (!skipPull && !pullCode(pullCmd)) {
                 taskBase.sendChat("task over");
                 return;
             }
 
-            if (!skipBuild && !buildProject()) {
+            String buildCmd =  "buildProject.sh "+ConfigUtil.getStrProp("zhiyu.projectDir");
+            if (!skipBuild && !buildProject(buildCmd)) {
                 taskBase.sendChat("task over");
                 return;
             }
         }
-        if(!deployProject()){
+        String deployCmd = "shell_zhiyu/deployZhiyu.sh "+ConfigUtil.getStrProp("zhiyu.projectDir")+" "+ConfigUtil.getStrProp("zhiyu.deployDir");
+        if(!deployProject(deployCmd)){
             taskBase.sendChat("task over");
             return;
         }
@@ -61,132 +55,4 @@ public class DeployTaskItem {
         }
     }
 
-
-
-    private boolean deployProject(){
-
-        taskBase.sendChat("start to deploy project!");
-        String workingDir= ConfigUtil.getStrProp("workDir");
-
-        try {
-            String pullCmd = workingDir + File.separator + "shell_zhiyu/deployZhiyu.sh "+ConfigUtil.getStrProp("zhiyu.projectDir")+" "+ConfigUtil.getStrProp("zhiyu.deployDir");
-            ShellJob shellJob=new ShellJob();
-            shellJob.runCommand(pullCmd);
-            taskBase.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
-            return shellJob.isSuccess();
-        }catch (Exception e){
-            e.printStackTrace();
-            taskBase.sendChat("error when deploy project:" + e.getMessage());
-        }
-
-        return true;
-    }
-    private boolean restartTomcat(){
-
-        taskBase.sendChat("start to restart tomcat!");
-        String workingDir= ConfigUtil.getStrProp("workDir");
-
-        try {
-            String shutdownCmd = workingDir + File.separator + "shells_deployer/shutdownTomcat.sh "+ConfigUtil.getStrProp("tomcatDir");
-            ShellJob shellJob1=new ShellJob();
-            shellJob1.runCommand(shutdownCmd);
-            taskBase.sendChat("["+shellJob1.isSuccess()+"]"+shellJob1.getResult());
-//            Thread.sleep(5000);
-            String startCmd = workingDir + File.separator + "shells_deployer/startTomcat.sh "+ConfigUtil.getStrProp("tomcatDir");
-            ShellJob shellJob=new ShellJob();
-            shellJob.runCommand(startCmd);
-            taskBase.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
-            return shellJob.isSuccess();
-        }catch (Exception e){
-            e.printStackTrace();
-            taskBase.sendChat("error when restart tomcat:" + e.getMessage());
-        }
-
-        return true;
-    }
-    private boolean buildProject(){
-        taskBase.sendChat("start to build project!");
-        String workingDir= ConfigUtil.getStrProp("workDir");
-
-        try {
-            String pullCmd = workingDir + File.separator + "buildProject.sh "+ConfigUtil.getStrProp("zhiyu.projectDir");
-            ShellJob shellJob=new ShellJob();
-            shellJob.runCommand(pullCmd);
-            taskBase.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
-            if(shellJob.getResult()!=null && shellJob.getResult().contains("[ERROR]")){
-                taskBase.sendChat("build failed, break task!");
-                return false;
-            }
-            return shellJob.isSuccess();
-        }catch (Exception e){
-            e.printStackTrace();
-            taskBase.sendChat("error when build project:" + e.getMessage());
-        }
-        return false;
-    }
-    private boolean pullCode(){
-        if(!checkFirst()){
-            return false;
-        }
-        taskBase.sendChat("start to pull code!");
-        String workingDir= ConfigUtil.getStrProp("workDir");
-
-        try {
-            String pullCmd = workingDir + File.separator + "pullProject.sh "+ConfigUtil.getStrProp("zhiyu.projectDir");
-            ShellJob shellJob=new ShellJob();
-            shellJob.runCommand(pullCmd);
-            taskBase.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
-            if(shellJob.getResult()!=null && shellJob.getResult().contains("Already up-to-date")){
-                taskBase.sendChat("no code changed, cancel task!");
-                return false;
-            }
-            return shellJob.isSuccess();
-        }catch (Exception e){
-            e.printStackTrace();
-            taskBase.sendChat("error when pull code:" + e.getMessage());
-        }
-        return false;
-    }
-
-    private boolean checkFirst(){
-        String workingDir= ConfigUtil.getStrProp("workDir");
-
-        File robotDir=new File(workingDir);
-        if(!robotDir.exists()) {
-            robotDir.mkdir();
-        }
-
-        checkShellFile(workingDir,"shells/pullProject.sh");
-        checkShellFile(workingDir,"shells/buildProject.sh");
-        checkShellFile(workingDir,"shell_zhiyu/deployZhiyu.sh");
-        checkShellFile(workingDir,"shells_deployer/shutdownTomcat.sh");
-        checkShellFile(workingDir,"shells_deployer/startTomcat.sh");
-
-        String projectDir=ConfigUtil.getStrProp("zhiyu.projectDir");
-
-        File projectFolder=new File(projectDir);
-        if(projectFolder.exists()){
-            return true;
-        }else{
-            taskBase.sendChat("no src dir, pls clone it !");
-            return false;
-        }
-    }
-
-
-    private void checkShellFile(String workingDir,String shellName){
-        File shellFile=new File(workingDir+File.separator+shellName);
-        if(force!=null){
-            shellFile.deleteOnExit();
-        }
-        if(!shellFile.exists()|| force!=null) {
-            try {
-                taskBase.sendChat("copy "+shellName);
-                FileUtils.copyInputStreamToFile(DeployTaskItem.class.getClassLoader().getResourceAsStream(shellName), shellFile);
-                shellFile.setExecutable(true);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }

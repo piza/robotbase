@@ -32,12 +32,14 @@ public class ZhiyuTask extends TaskBase {
             }else if(this.hasTaskItem("deployAll")){
                 (new DeployHtmlItem(this,false)).work();
                 (new DeployTaskItem(this)).work();
-            }else if(this.hasTaskItem("deploy")){
+            }else if(this.hasTaskItem("festival")){
                 (new DeployTaskItem(this)).work();
             }else if(this.hasTaskItem("html")){
                 (new DeployHtmlItem(this)).work();
             }else if(this.hasTaskItem("admin")){
                 (new DeployAdminItem(this)).work();
+            }else if(this.hasTaskItem("pocket")){
+                (new DeployPocketItem(this,true)).work();
             }else if(this.hasTaskItem("java")){
                 (new DeployAdminItem(this,false)).work();
                 (new DeployTaskItem(this,true)).work();

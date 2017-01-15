@@ -1,7 +1,7 @@
 package com.piza.robot.deployer;
 
-import com.piza.coder.CoderAnalyser;
-import com.piza.coder.CoderTask;
+import com.piza.zhiyu.DeployPocketItem;
+import com.piza.zhiyu.DeployPocketAnalyser;
 import com.piza.zhiyu.ZhiyuAnalyser;
 import com.piza.zhiyu.ZhiyuTask;
 import com.piza.robot.core.ConfigUtil;
@@ -25,14 +25,13 @@ public class DeployerLauncher extends Launcher {
 
         ConfigUtil.initProp("deployer.properties");
 
-        ParserManage.getInstance().addAnalyser(new DeployerAnalyser());
+        ParserManage.getInstance().addAnalyser(new DeployPocketAnalyser());
 
-        TaskManager.getInstance().addTask(new DeployTask());
+        TaskManager.getInstance().addTask(new DeployPocketItem());
 
-        ConfigUtil.initProp("coder.properties");
-
-        ParserManage.getInstance().addAnalyser(new CoderAnalyser());
-        TaskManager.getInstance().addTask(new CoderTask());
+//        ConfigUtil.initProp("coder.properties");
+//        ParserManage.getInstance().addAnalyser(new CoderAnalyser());
+//        TaskManager.getInstance().addTask(new CoderTask());
 
 
         ParserManage.getInstance().addAnalyser(new DeployerEshowAnalyser());
