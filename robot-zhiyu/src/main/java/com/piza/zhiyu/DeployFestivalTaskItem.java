@@ -21,6 +21,7 @@ public class DeployFestivalTaskItem extends BaseItem{
 
 
     public void work(){
+        taskBase.sendChat("start work:festival");
         if (!this.justDeploy) {
             taskBase.sendChat("ok,start deploy task!\n pull code...");
             String pullCmd = "pullProject.sh "+ConfigUtil.getStrProp("zhiyu.projectDir");
@@ -40,7 +41,7 @@ public class DeployFestivalTaskItem extends BaseItem{
             taskBase.sendChat("task over");
             return;
         }
-        if(!restartTomcat()){
+        if(this.restart && !restartTomcat()){
             taskBase.sendChat("task over");
             return;
         }

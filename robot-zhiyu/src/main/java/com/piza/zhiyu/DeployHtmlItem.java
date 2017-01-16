@@ -21,6 +21,7 @@ public class DeployHtmlItem extends BaseItem{
 
 
     public void work(){
+        taskBase.sendChat("start work:html");
         if(force!=null ){
             if(!checkFirst()){
                 taskBase.sendChat("check file failed!");

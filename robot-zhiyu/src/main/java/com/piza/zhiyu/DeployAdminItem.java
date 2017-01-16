@@ -22,7 +22,7 @@ public class DeployAdminItem extends BaseItem{
     }
 
     public void work(){
-
+        taskBase.sendChat("start work:admin");
         taskBase.sendChat("ok,start deploy task!\n pull code...");
         String pullCmd =  "pullProject.sh "+ConfigUtil.getStrProp("zhiyu.projectDir");
         if( !skipPull&& !pullCode(pullCmd)){
