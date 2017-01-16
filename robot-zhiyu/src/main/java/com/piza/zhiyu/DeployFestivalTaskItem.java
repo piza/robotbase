@@ -36,7 +36,7 @@ public class DeployFestivalTaskItem extends BaseItem{
                 return;
             }
         }
-        String deployCmd = "shell_zhiyu/deployZhiyu.sh "+ConfigUtil.getStrProp("zhiyu.projectDir")+" "+ConfigUtil.getStrProp("zhiyu.deployDir");
+        String deployCmd = "shell_zhiyu/deployZhiyu.sh "+ConfigUtil.getStrProp("zhiyu.projectDir")+" "+ConfigUtil.getStrProp("zhiyu.deployFestivalDir");
         if(!deployProject(deployCmd)){
             taskBase.sendChat("task over");
             return;
