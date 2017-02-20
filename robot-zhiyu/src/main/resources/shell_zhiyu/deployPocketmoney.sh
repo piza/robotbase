@@ -21,4 +21,4 @@ cd current
 jar -xvf $projectDir/pocket-portal/target/pocket-portal.war
 
 cd WEB-INF/lib
-find . -name "*.jar" | grep  -v "pocket" | xargs rm -f
+find . -name "*.jar" | grep  -v "pocket" | grep  -v "wechat" | grep  -v "zhiyu" | xargs rm -f
