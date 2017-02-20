@@ -18,7 +18,7 @@ mkdir current
 echo "deploy new version"
 cd current
 
-jar -xvf $projectDir/portal-pocket/target/portal.war
+jar -xvf $projectDir/portal-pocket/target/pocket-portal.war
 
 cd WEB-INF/lib
 find . -name "*.jar" | grep  -v "pocket" | xargs rm -f

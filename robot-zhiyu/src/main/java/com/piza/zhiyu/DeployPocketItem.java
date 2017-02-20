@@ -17,18 +17,18 @@ public class DeployPocketItem extends BaseItem{
         taskBase.sendChat("start work:pocket");
 
         taskBase.sendChat("ok,start deploy task!\n pull code...");
-        String pullCmd = "pullProject.sh "+ConfigUtil.getStrProp("pocketmoneyDir");
+        String pullCmd = "pullProject.sh "+ConfigUtil.getStrProp("zhiyu.projectDir");
         if(!skipPull&&!pullCode(pullCmd)){
             taskBase.sendChat("task over");
             return;
         }
 
-        String buildCmd =  "buildProject.sh "+ConfigUtil.getStrProp("pocketmoneyDir");
+        String buildCmd =  "buildProject.sh "+ConfigUtil.getStrProp("zhiyu.projectDir");
         if(!skipBuild  && !buildProject(buildCmd)){
             taskBase.sendChat("task over");
             return;
         }
-        String deployCmd = "shells_deployer/deployPocketmoney.sh "+ConfigUtil.getStrProp("pocketmoneyDir")+" "+ConfigUtil.getStrProp("deployDir");
+        String deployCmd = "shells_deployer/deployPocketmoney.sh "+ConfigUtil.getStrProp("zhiyu.pocketDir")+" "+ConfigUtil.getStrProp("zhiyu.pocketDeployDir");
 
         if(!deployProject(deployCmd)){
             taskBase.sendChat("task over");
