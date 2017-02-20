@@ -28,7 +28,7 @@ public class DeployPocketItem extends BaseItem{
             taskBase.sendChat("task over");
             return;
         }
-        String deployCmd = "shells_deployer/deployPocketmoney.sh "+ConfigUtil.getStrProp("zhiyu.pocketDir")+" "+ConfigUtil.getStrProp("zhiyu.pocketDeployDir");
+        String deployCmd = "shell_zhiyu/deployPocketmoney.sh "+ConfigUtil.getStrProp("zhiyu.pocketDir")+" "+ConfigUtil.getStrProp("zhiyu.pocketDeployDir");
 
         if(!deployProject(deployCmd)){
             taskBase.sendChat("task over");
