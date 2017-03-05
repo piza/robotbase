@@ -7,6 +7,7 @@ echo "change dir to project dir:"
 echo $projectDir
 
 cd $projectDir
+git pull
 npm run build
 
 echo "deploy dir:"
