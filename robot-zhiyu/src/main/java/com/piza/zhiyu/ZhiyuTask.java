@@ -52,6 +52,7 @@ public class ZhiyuTask extends TaskBase {
                         "\n admin    deploy admin project" +
                         "\n festival    deploy festival project" +
                         "\n pocket    deploy pocket project" +
+                        "\n english    deploy english assistant project" +
                         "\n java    deploy pocket,admin,festival one by one project" +
                         "\n skipBuild    skip build" +
                         "\n skipPull     skip pull code "+
