@@ -40,6 +40,8 @@ public class ZhiyuTask extends TaskBase {
                 (new DeployAdminItem(this)).work();
             }else if(this.hasTaskItem("pocket")){
                 (new DeployPocketItem(this,true)).work();
+            }else if(this.hasTaskItem("english")){
+                (new DeployEnglishAssistantItem(this,true)).work();
             }else if(this.hasTaskItem("java")){
                 (new DeployPocketItem(this,false)).work();
                 (new DeployAdminItem(this,false)).work();
