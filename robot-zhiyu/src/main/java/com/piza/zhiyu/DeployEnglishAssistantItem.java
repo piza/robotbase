@@ -31,7 +31,7 @@ public class DeployEnglishAssistantItem extends BaseItem{
         }
         sendChat("ok,start deploy task!");
 
-        String deployCmd =  File.separator + "shell_zhiyu/deployEnglishAssistant.sh.sh "+ConfigUtil.getStrProp("zhiyu.englishAssistantCodeDir")+" "+ConfigUtil.getStrProp("zhiyu.englishAssistantDeployDir");
+        String deployCmd =  File.separator + "shell_zhiyu/deployEnglishAssistant.sh "+ConfigUtil.getStrProp("zhiyu.englishAssistantCodeDir")+" "+ConfigUtil.getStrProp("zhiyu.englishAssistantDeployDir");
         if(!deployProject(deployCmd)){
             sendChat("task over");
             return;

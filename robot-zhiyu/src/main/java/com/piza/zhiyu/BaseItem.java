@@ -172,6 +172,6 @@ public abstract class BaseItem {
     }
 
     protected void sendChat(String msg){
-        sendChat(msg);
+        taskBase.sendChat(msg);
     }
 }
