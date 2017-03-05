@@ -45,61 +45,61 @@ public abstract class BaseItem {
 
     protected boolean deployProject(String deployCmd){
 
-        taskBase.sendChat("start to deploy project!");
+        sendChat("start to deploy project!");
         String workingDir= ConfigUtil.getStrProp("workDir");
 
         try {
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(workingDir+File.separator +deployCmd);
-            taskBase.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
+            sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
             return shellJob.isSuccess();
         }catch (Exception e){
             e.printStackTrace();
-            taskBase.sendChat("error when deploy project:" + e.getMessage());
+            sendChat("error when deploy project:" + e.getMessage());
         }
 
         return true;
     }
     protected boolean restartTomcat(){
 
-        taskBase.sendChat("start to restart tomcat!");
+        sendChat("start to restart tomcat!");
         String workingDir= ConfigUtil.getStrProp("workDir");
 
         try {
             String shutdownCmd = workingDir + File.separator + "shells_deployer/shutdownTomcat.sh "+ConfigUtil.getStrProp("tomcatDir");
             ShellJob shellJob1=new ShellJob();
             shellJob1.runCommand(shutdownCmd);
-            taskBase.sendChat("["+shellJob1.isSuccess()+"]"+shellJob1.getResult());
+            sendChat("["+shellJob1.isSuccess()+"]"+shellJob1.getResult());
 //            Thread.sleep(5000);
             String startCmd = workingDir + File.separator + "shells_deployer/startTomcat.sh "+ConfigUtil.getStrProp("tomcatDir");
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(startCmd);
-            taskBase.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
+            sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
             return shellJob.isSuccess();
         }catch (Exception e){
             e.printStackTrace();
-            taskBase.sendChat("error when restart tomcat:" + e.getMessage());
+            sendChat("error when restart tomcat:" + e.getMessage());
         }
 
         return true;
     }
 
     protected boolean buildProject(String buildCmd){
-        taskBase.sendChat("start to build project!");
+        sendChat("start to build project!");
         String workingDir= ConfigUtil.getStrProp("workDir");
 
         try {
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(workingDir+File.separator +buildCmd);
-            taskBase.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
+            sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
             if(shellJob.getResult()!=null && shellJob.getResult().contains("[ERROR]")){
-                taskBase.sendChat("build failed, break task!");
+                sendChat("build failed, break task!");
                 return false;
             }
             return shellJob.isSuccess();
         }catch (Exception e){
             e.printStackTrace();
-            taskBase.sendChat("error when build project:" + e.getMessage());
+            sendChat("error when build project:" + e.getMessage());
         }
         return false;
     }
@@ -107,21 +107,21 @@ public abstract class BaseItem {
         if(!checkFirst()){
             return false;
         }
-        taskBase.sendChat("start to pull code!");
+        sendChat("start to pull code!");
         String workingDir= ConfigUtil.getStrProp("workDir");
 
         try {
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(workingDir + File.separator +pullCmd);
-            taskBase.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
+            sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
             if(shellJob.getResult()!=null && shellJob.getResult().contains("Already up-to-date")){
-                taskBase.sendChat("no code changed, cancel task!");
+                sendChat("no code changed, cancel task!");
                 return false;
             }
             return shellJob.isSuccess();
         }catch (Exception e){
             e.printStackTrace();
-            taskBase.sendChat("error when pull code:" + e.getMessage());
+            sendChat("error when pull code:" + e.getMessage());
         }
         return false;
     }
@@ -149,7 +149,7 @@ public abstract class BaseItem {
         if(projectFolder.exists()){
             return true;
         }else{
-            taskBase.sendChat("no src dir, pls clone it !");
+            sendChat("no src dir, pls clone it !");
             return false;
         }
     }
@@ -162,12 +162,16 @@ public abstract class BaseItem {
         }
         if(!shellFile.exists()|| force!=null) {
             try {
-                taskBase.sendChat("copy "+shellName);
+                sendChat("copy "+shellName);
                 FileUtils.copyInputStreamToFile(DeployAdminItem.class.getClassLoader().getResourceAsStream(shellName), shellFile);
                 shellFile.setExecutable(true);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    protected void sendChat(String msg){
+        sendChat(msg);
     }
 }

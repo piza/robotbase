@@ -22,26 +22,26 @@ public class DeployAdminItem extends BaseItem{
     }
 
     public void work(){
-        taskBase.sendChat("start work:admin");
-        taskBase.sendChat("ok,start deploy task!\n pull code...");
+        sendChat("start work:admin");
+        sendChat("ok,start deploy task!\n pull code...");
         String pullCmd =  "pullProject.sh "+ConfigUtil.getStrProp("zhiyu.projectDir");
         if( !skipPull&& !pullCode(pullCmd)){
-            taskBase.sendChat("task over");
+            sendChat("task over");
             return;
         }
 
         String buildCmd =  "buildProject.sh "+ConfigUtil.getStrProp("zhiyu.projectDir");
         if(!skipBuild  && !buildProject(buildCmd)){
-            taskBase.sendChat("task over");
+            sendChat("task over");
             return;
         }
         String deployCmd = "shell_zhiyu/deployZhiyuAdmin.sh "+ConfigUtil.getStrProp("zhiyu.projectDir")+" "+ConfigUtil.getStrProp("zhiyu.deployAdminDir");
         if(!deployProject(deployCmd)){
-            taskBase.sendChat("task over");
+            sendChat("task over");
             return;
         }
         if(this.restart && !restartTomcat()){
-            taskBase.sendChat("task over");
+            sendChat("task over");
             return;
         }
     }

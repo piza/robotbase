@@ -37,7 +37,7 @@ public class CodeTaskItem extends BaseItem{
         List<String> tableList=new ArrayList();
         getTableList(tableList,taskBase.getMsgContent());
         if(tableList.size()==0){
-//            taskBase.sendChat("wrong param, example:\n code table1 table2 ...");
+//            sendChat("wrong param, example:\n code table1 table2 ...");
             return;
         }
         //update code to latest
@@ -54,22 +54,22 @@ public class CodeTaskItem extends BaseItem{
 
 
     private boolean commitCode(){
-        taskBase.sendChat("start to commit code!");
+        sendChat("start to commit code!");
         String workingDir= ConfigUtil.getStrProp("workDir");
 
         try {
             String pullCmd = workingDir + File.separator + "commitProject.sh "+ConfigUtil.getStrProp("zhiyu.projectDir");
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(pullCmd);
-            taskBase.sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
+            sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
             if(shellJob.getResult()!=null && shellJob.getResult().contains("coder push success")){
-                taskBase.sendChat("code pushed!");
+                sendChat("code pushed!");
                 return true;
             }
             return shellJob.isSuccess();
         }catch (Exception e){
             e.printStackTrace();
-            taskBase.sendChat("error when pull code:" + e.getMessage());
+            sendChat("error when pull code:" + e.getMessage());
         }
         return false;
     }
@@ -78,7 +78,7 @@ public class CodeTaskItem extends BaseItem{
     private void getTableList(List<String> tableList,String command){
         String[] cmdArr=command.split(" ");
         if(cmdArr.length<3){
-            taskBase.sendChat("wrong command: hint:\n zhiyu code [tablename1] [tablename2] ...");
+            sendChat("wrong command: hint:\n zhiyu code [tablename1] [tablename2] ...");
             return;
         }
         int ind=0;
@@ -154,7 +154,7 @@ public class CodeTaskItem extends BaseItem{
         }catch (Exception e){
             e.printStackTrace();
             logger.error(e);
-            taskBase.sendChat("encounter error when generate code:\n"+e.getMessage());
+            sendChat("encounter error when generate code:\n"+e.getMessage());
             return false;
         }
         return true;
@@ -169,7 +169,7 @@ public class CodeTaskItem extends BaseItem{
             }
         } catch (IOException e) {
             e.printStackTrace();
-            taskBase.sendChat("encounterred error when clean:"+path);
+            sendChat("encounterred error when clean:"+path);
             logger.error(e);
         }
     }
@@ -280,7 +280,7 @@ public class CodeTaskItem extends BaseItem{
         @Override
         public void done() {
             logger.info("done");
-            taskBase.sendChat("MBG done, start velocity generator!");
+            sendChat("MBG done, start velocity generator!");
             List<TableConfiguration> tableConfigurationList=this.configuration.getContext("defaultContext").getTableConfigurations();
 
             for(TableConfiguration tableConfiguration:tableConfigurationList){
@@ -308,7 +308,7 @@ public class CodeTaskItem extends BaseItem{
                 String filePath=folderName+File.separator+modelClass+suffix+".java";
                 File file=new File(filePath);
                 if(file.exists() && !"Mapper".equals(suffix)){
-                    taskBase.sendChat("skip exists file:"+file.getName());
+                    sendChat("skip exists file:"+file.getName());
                     return;
                 }
                 FileWriter writer=new FileWriter(filePath);
@@ -317,7 +317,7 @@ public class CodeTaskItem extends BaseItem{
                 writer.close();
             }catch (Exception e){
                 e.printStackTrace();
-                taskBase.sendChat("encounter error when write file:"+folderName+File.separator+modelClass+suffix);
+                sendChat("encounter error when write file:"+folderName+File.separator+modelClass+suffix);
                 logger.error(e);
             }
 

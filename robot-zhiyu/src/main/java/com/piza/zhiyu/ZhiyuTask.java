@@ -48,6 +48,9 @@ public class ZhiyuTask extends TaskBase {
                 this.sendChat("help:\n code       generate code\n deploy    deploy project" +
                         "\n html    deploy wechat html project" +
                         "\n admin    deploy admin project" +
+                        "\n festival    deploy festival project" +
+                        "\n pocket    deploy pocket project" +
+                        "\n java    deploy pocket,admin,festival one by one project" +
                         "\n skipBuild    skip build" +
                         "\n skipPull     skip pull code "+
                         "\n deployAll     deploy admin & portal "
