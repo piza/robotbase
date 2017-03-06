@@ -36,10 +36,16 @@ public class DeployEnglishAssistantItem extends BaseItem{
             sendChat("task over");
             return;
         }
-        if(this.restart && !restartTomcat()){
-            sendChat("task over");
-            return;
+        
+    }
+
+    public boolean checkFirst(){
+        if(!super.checkFirst()){
+            return false;
         }
+        String workingDir= ConfigUtil.getStrProp("workDir");
+        checkShellFile(workingDir,"shell_zhiyu/deployEnglishAssistant.sh");
+        return true;
     }
 
 
