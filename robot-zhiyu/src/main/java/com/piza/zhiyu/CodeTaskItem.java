@@ -42,9 +42,8 @@ public class CodeTaskItem extends BaseItem{
         }
         //update code to latest
         String pullCmd =  "pullProject.sh "+ConfigUtil.getStrProp("zhiyu.projectDir");
-        if(!pullCode(pullCmd)){
-            return;
-        }
+        pullCode(pullCmd);
+
         if(!this.generate(tableList)){
             return;
         }
