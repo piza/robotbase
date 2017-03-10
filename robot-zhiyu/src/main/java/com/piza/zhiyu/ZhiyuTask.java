@@ -44,6 +44,8 @@ public class ZhiyuTask extends TaskBase {
                 (new DeployEnglishAssistantItem(this,true)).work();
             }else if(this.hasTaskItem("java")){
                 (new DeployPocketItem(this,false)).work();
+                this.overwriteItem("skipPull",true);
+                this.overwriteItem("skipBuild",true);
                 (new DeployAdminItem(this,false)).work();
                 (new DeployFestivalTaskItem(this,true)).work();
             }else{
