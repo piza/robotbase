@@ -8,7 +8,6 @@ import java.util.Map;
  */
 public abstract class TaskBase implements Runnable{
 
-    protected Map<String,Boolean> overwriteItem=new HashMap<String,Boolean>();
 
     protected ChatMessage chatMessage;
 
@@ -34,11 +33,14 @@ public abstract class TaskBase implements Runnable{
     }
 
     public void overwriteItem(String item,Boolean value){
-        overwriteItem.put(item,value);
+        if(chatMessage==null){
+            return;
+        }
+        chatMessage.overwriteItem.put(item,value);
     }
     public boolean hasTaskItem(String item){
-        if(overwriteItem.containsKey(item)){
-            return overwriteItem.get(item);
+        if(chatMessage!=null && chatMessage.overwriteItem.containsKey(item)){
+            return chatMessage.overwriteItem.get(item);
         }
         String cmdStr=this.getMsgContent();
         if(cmdStr==null || !cmdStr.contains(" ")){
