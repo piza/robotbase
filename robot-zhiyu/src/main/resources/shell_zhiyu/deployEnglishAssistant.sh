@@ -8,7 +8,7 @@ echo $projectDir
 
 cd $projectDir
 git pull
-npm run build
+npm run build > /tmp/buildEnglish.output
 
 echo "deploy dir:"
 echo $deployDir
