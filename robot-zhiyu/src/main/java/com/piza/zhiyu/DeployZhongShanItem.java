@@ -16,6 +16,14 @@ public class DeployZhongShanItem extends BaseItem{
     public void work() {
         sendChat("start work:zhongshan");
 
+        if(force!=null ){
+            if(!checkFirst()){
+                sendChat("check file failed!");
+            }else{
+                sendChat("check file success!");
+            }
+        }
+
         sendChat("ok,start deploy task!\n pull code...");
         String pullCmd = "pullProject.sh "+ConfigUtil.getStrProp("zhiyu.projectDir");
         if(!skipPull&&!pullCode(pullCmd)){
@@ -38,6 +46,15 @@ public class DeployZhongShanItem extends BaseItem{
             sendChat("task over");
             return;
         }
+    }
+
+    public boolean checkFirst(){
+        if(!super.checkFirst()){
+            return false;
+        }
+        String workingDir= ConfigUtil.getStrProp("workDir");
+        checkShellFile(workingDir,"shell_zhiyu/deployZhongShan.sh");
+        return true;
     }
 
 }
