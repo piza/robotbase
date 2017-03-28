@@ -40,6 +40,8 @@ public class ZhiyuTask extends TaskBase {
                 (new DeployAdminItem(this)).work();
             }else if(this.hasTaskItem("pocket")){
                 (new DeployPocketItem(this,true)).work();
+            }else if(this.hasTaskItem("zhongshan")){
+                (new DeployZhongShanItem(this,true)).work();
             }else if(this.hasTaskItem("english")){
                 (new DeployEnglishAssistantItem(this,true)).work();
             }else if(this.hasTaskItem("java")){
@@ -55,6 +57,7 @@ public class ZhiyuTask extends TaskBase {
                         "\n festival    deploy festival project" +
                         "\n pocket    deploy pocket project" +
                         "\n english    deploy english assistant project" +
+                        "\n zhongshan    deploy zhongshan project" +
                         "\n java    deploy pocket,admin,festival one by one project" +
                         "\n skipBuild    skip build" +
                         "\n skipPull     skip pull code "+
