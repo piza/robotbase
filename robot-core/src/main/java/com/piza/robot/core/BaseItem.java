@@ -136,22 +136,10 @@ public abstract class BaseItem {
 
         checkShellFile(workingDir,"shells/pullProject.sh");
         checkShellFile(workingDir,"shells/buildProject.sh");
-        checkShellFile(workingDir,"shell_zhiyu/deployZhiyuAdmin.sh");
+
         checkShellFile(workingDir,"shells_deployer/shutdownTomcat.sh");
         checkShellFile(workingDir,"shells_deployer/startTomcat.sh");
-        checkShellFile(workingDir,"shell_zhiyu/deployHtml.sh");
-        checkShellFile(workingDir, "shell_zhiyu/deployPocketmoney.sh");
-        checkShellFile(workingDir,"shell_zhiyu/deployZhiyu.sh");
-
-        String projectDir=ConfigUtil.getStrProp("zhiyu.projectDir");
-
-        File projectFolder=new File(projectDir);
-        if(projectFolder.exists()){
-            return true;
-        }else{
-            sendChat("no src dir, pls clone it !");
-            return false;
-        }
+        return true;
     }
 
 

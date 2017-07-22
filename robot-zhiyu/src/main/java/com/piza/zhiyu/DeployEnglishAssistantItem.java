@@ -9,7 +9,7 @@ import java.io.File;
 /**
  * Created by Peter on 2016/12/2.
  */
-public class DeployEnglishAssistantItem extends BaseItem {
+public class DeployEnglishAssistantItem extends ZhiyuBaseItem {
 
     public DeployEnglishAssistantItem(TaskBase taskBase, boolean restart) {
         super(taskBase, restart);

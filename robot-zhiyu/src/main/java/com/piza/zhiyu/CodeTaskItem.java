@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Created by Peter on 2016/12/2.
  */
-public class CodeTaskItem extends BaseItem {
+public class CodeTaskItem extends ZhiyuBaseItem {
 
     private static final Logger logger= Logger.getLogger(CodeTaskItem.class);
 
