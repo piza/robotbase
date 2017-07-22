@@ -1,14 +1,13 @@
 package com.piza.zhiyu;
 
+import com.piza.robot.core.BaseItem;
 import com.piza.robot.core.ConfigUtil;
 import com.piza.robot.core.TaskBase;
-
-import java.io.File;
 
 /**
  * Created by Peter on 2016/12/2.
  */
-public class DeployAdminItem extends BaseItem{
+public class DeployAdminItem extends BaseItem {
 
 
 

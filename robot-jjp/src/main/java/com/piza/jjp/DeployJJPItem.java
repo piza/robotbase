@@ -1,4 +1,4 @@
-package com.piza.zhiyu;
+package com.piza.jjp;
 
 import com.piza.robot.core.BaseItem;
 import com.piza.robot.core.ConfigUtil;
@@ -7,15 +7,15 @@ import com.piza.robot.core.TaskBase;
 /**
  * Created by Peter on 16/9/28.
  */
-public class DeployZhongShanItem extends BaseItem {
+public class DeployJJPItem extends BaseItem {
 
 
-    public DeployZhongShanItem(TaskBase taskBase, boolean restart) {
+    public DeployJJPItem(TaskBase taskBase, boolean restart) {
         super(taskBase,restart);
     }
 
     public void work() {
-        sendChat("start work:zhongshan");
+        sendChat("start work:jjp");
 
         if(force!=null ){
             if(!checkFirst()){
@@ -26,18 +26,18 @@ public class DeployZhongShanItem extends BaseItem {
         }
 
         sendChat("ok,start deploy task!\n pull code...");
-        String pullCmd = "pullProject.sh "+ConfigUtil.getStrProp("zhiyu.projectDir");
+        String pullCmd = "pullProject.sh "+ConfigUtil.getStrProp("jjp.projectDir");
         if(!skipPull&&!pullCode(pullCmd)){
             sendChat("task over");
             return;
         }
 
-        String buildCmd =  "buildProject.sh "+ConfigUtil.getStrProp("zhiyu.projectDir");
+        String buildCmd =  "buildProject.sh "+ConfigUtil.getStrProp("jjp.projectDir");
         if(!skipBuild  && !buildProject(buildCmd)){
             sendChat("task over");
             return;
         }
-        String deployCmd = "shell_zhiyu/deployZhongShan.sh "+ConfigUtil.getStrProp("zhiyu.zhongshanDir")+" "+ConfigUtil.getStrProp("zhiyu.zhongshanDeployDir");
+        String deployCmd = "shell_jjp/deployJjp.sh "+ConfigUtil.getStrProp("jjp.jjpDir")+" "+ConfigUtil.getStrProp("jjp.jjpDeployDir");
 
         if(!deployProject(deployCmd)){
             sendChat("task over");
@@ -54,7 +54,7 @@ public class DeployZhongShanItem extends BaseItem {
             return false;
         }
         String workingDir= ConfigUtil.getStrProp("workDir");
-        checkShellFile(workingDir,"shell_zhiyu/deployZhongShan.sh");
+        checkShellFile(workingDir,"shell_jjp/deployJjp.sh");
         return true;
     }
 

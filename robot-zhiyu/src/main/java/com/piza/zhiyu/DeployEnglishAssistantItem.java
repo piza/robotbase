@@ -1,5 +1,6 @@
 package com.piza.zhiyu;
 
+import com.piza.robot.core.BaseItem;
 import com.piza.robot.core.ConfigUtil;
 import com.piza.robot.core.TaskBase;
 
@@ -8,7 +9,7 @@ import java.io.File;
 /**
  * Created by Peter on 2016/12/2.
  */
-public class DeployEnglishAssistantItem extends BaseItem{
+public class DeployEnglishAssistantItem extends BaseItem {
 
     public DeployEnglishAssistantItem(TaskBase taskBase, boolean restart) {
         super(taskBase, restart);

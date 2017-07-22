@@ -31,6 +31,12 @@
             <artifactId>robot-zhiyu</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.piza</groupId>
+            <artifactId>robot-jjp</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

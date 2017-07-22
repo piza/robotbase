@@ -1,4 +1,4 @@
-package com.piza.zhiyu;
+package com.piza.robot.core;
 
 import com.piza.robot.core.ConfigUtil;
 import com.piza.robot.core.ShellJob;
@@ -163,7 +163,7 @@ public abstract class BaseItem {
         if(!shellFile.exists()|| force!=null) {
             try {
                 sendChat("copy "+shellName);
-                FileUtils.copyInputStreamToFile(DeployAdminItem.class.getClassLoader().getResourceAsStream(shellName), shellFile);
+                FileUtils.copyInputStreamToFile(BaseItem.class.getClassLoader().getResourceAsStream(shellName), shellFile);
                 shellFile.setExecutable(true);
             } catch (IOException e) {
                 e.printStackTrace();

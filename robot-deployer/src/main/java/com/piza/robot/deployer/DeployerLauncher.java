@@ -1,5 +1,7 @@
 package com.piza.robot.deployer;
 
+import com.piza.jjp.JJPAnalyser;
+import com.piza.jjp.JJPTask;
 import com.piza.robot.core.ConfigUtil;
 import com.piza.robot.core.Launcher;
 import com.piza.robot.core.ParserManage;
@@ -31,20 +33,25 @@ public class DeployerLauncher extends Launcher {
 //        ParserManage.getInstance().addAnalyser(new CoderAnalyser());
 //        TaskManager.getInstance().addTask(new CoderTask());
 
-
-        ParserManage.getInstance().addAnalyser(new DeployerEshowAnalyser());
-        TaskManager.getInstance().addTask(new DeployEshowTask());
-
-
+//
+//        ParserManage.getInstance().addAnalyser(new DeployerEshowAnalyser());
+//        TaskManager.getInstance().addTask(new DeployEshowTask());
 
 
-        ParserManage.getInstance().addAnalyser(new TranslateAnalyser());
-        TaskManager.getInstance().addTask(new TranslateTask());
 
 
-        ConfigUtil.initProp("zhiyu.properties");
-        ParserManage.getInstance().addAnalyser(new ZhiyuAnalyser());
-        TaskManager.getInstance().addTask(new ZhiyuTask());
+//        ParserManage.getInstance().addAnalyser(new TranslateAnalyser());
+//        TaskManager.getInstance().addTask(new TranslateTask());
+
+
+//        ConfigUtil.initProp("zhiyu.properties");
+//        ParserManage.getInstance().addAnalyser(new ZhiyuAnalyser());
+//        TaskManager.getInstance().addTask(new ZhiyuTask());
+
+
+        ConfigUtil.initProp("jjp.properties");
+        ParserManage.getInstance().addAnalyser(new JJPAnalyser());
+        TaskManager.getInstance().addTask(new JJPTask());
 
         deployerLauncher.startApp();
 

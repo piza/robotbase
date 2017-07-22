@@ -1,12 +1,13 @@
 package com.piza.zhiyu;
 
+import com.piza.robot.core.BaseItem;
 import com.piza.robot.core.ConfigUtil;
 import com.piza.robot.core.TaskBase;
 
 /** deploy festival
  * Created by Peter on 2016/12/2.
  */
-public class DeployFestivalTaskItem extends BaseItem{
+public class DeployFestivalTaskItem extends BaseItem {
 
 
     private boolean justDeploy;

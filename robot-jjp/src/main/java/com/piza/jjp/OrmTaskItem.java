@@ -1,4 +1,4 @@
-package com.piza.zhiyu;
+package com.piza.jjp;
 
 import com.piza.robot.core.BaseItem;
 import com.piza.robot.core.ConfigUtil;
@@ -25,11 +25,11 @@ import java.util.List;
 /**
  * Created by Peter on 2016/12/2.
  */
-public class CodeTaskItem extends BaseItem {
+public class OrmTaskItem extends BaseItem {
 
-    private static final Logger logger= Logger.getLogger(CodeTaskItem.class);
+    private static final Logger logger= Logger.getLogger(OrmTaskItem.class);
 
-    public CodeTaskItem(TaskBase taskBase) {
+    public OrmTaskItem(TaskBase taskBase) {
         super(taskBase);
     }
 
@@ -42,7 +42,7 @@ public class CodeTaskItem extends BaseItem {
             return;
         }
         //update code to latest
-        String pullCmd =  "pullProject.sh "+ConfigUtil.getStrProp("zhiyu.projectDir");
+        String pullCmd =  "pullProject.sh "+ConfigUtil.getStrProp("jjp.projectDir");
         pullCode(pullCmd);
 
         if(!this.generate(tableList)){
@@ -58,7 +58,7 @@ public class CodeTaskItem extends BaseItem {
         String workingDir= ConfigUtil.getStrProp("workDir");
 
         try {
-            String pullCmd = workingDir + File.separator + "commitProject.sh "+ConfigUtil.getStrProp("zhiyu.projectDir");
+            String pullCmd = workingDir + File.separator + "commitProject.sh "+ConfigUtil.getStrProp("jjp.projectDir");
             ShellJob shellJob=new ShellJob();
             shellJob.runCommand(pullCmd);
             sendChat("["+shellJob.isSuccess()+"]"+shellJob.getResult());
@@ -78,7 +78,7 @@ public class CodeTaskItem extends BaseItem {
     private void getTableList(List<String> tableList,String command){
         String[] cmdArr=command.split(" ");
         if(cmdArr.length<3){
-            sendChat("wrong command: hint:\n zhiyu code [tablename1] [tablename2] ...");
+            sendChat("wrong command: hint:\n jjp code [tablename1] [tablename2] ...");
             return;
         }
         int ind=0;
@@ -95,7 +95,7 @@ public class CodeTaskItem extends BaseItem {
         List<String> warnings = new ArrayList<String>();
         try {
             Configuration configuration = new Configuration();
-            configuration.addClasspathEntry(ConfigUtil.getStrProp("zhiyu.classPathEntry"));
+            configuration.addClasspathEntry(ConfigUtil.getStrProp("jjp.classPathEntry"));
             Context context=new Context(ModelType.CONDITIONAL);
             context.setId("defaultContext");
 
@@ -106,25 +106,25 @@ public class CodeTaskItem extends BaseItem {
 
             JDBCConnectionConfiguration jdbcConnectionConfiguration=new JDBCConnectionConfiguration();
             jdbcConnectionConfiguration.setDriverClass("com.mysql.jdbc.Driver");
-            jdbcConnectionConfiguration.setConnectionURL(ConfigUtil.getStrProp("zhiyu.connectionURL"));
-            jdbcConnectionConfiguration.setUserId(ConfigUtil.getStrProp("zhiyu.userId"));
-            jdbcConnectionConfiguration.setPassword(ConfigUtil.getStrProp("zhiyu.password"));
+            jdbcConnectionConfiguration.setConnectionURL(ConfigUtil.getStrProp("jjp.connectionURL"));
+            jdbcConnectionConfiguration.setUserId(ConfigUtil.getStrProp("jjp.userId"));
+            jdbcConnectionConfiguration.setPassword(ConfigUtil.getStrProp("jjp.password"));
             context.setJdbcConnectionConfiguration(jdbcConnectionConfiguration);
 
             JavaModelGeneratorConfiguration javaModelGeneratorConfiguration=new JavaModelGeneratorConfiguration();
-            javaModelGeneratorConfiguration.setTargetPackage(ConfigUtil.getStrProp("zhiyu.basePackage")+".model");
-            javaModelGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("zhiyu.ormPath") + "/java/");
+            javaModelGeneratorConfiguration.setTargetPackage(ConfigUtil.getStrProp("jjp.basePackage")+".model");
+            javaModelGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("jjp.ormPath") + "/java/");
             context.setJavaModelGeneratorConfiguration(javaModelGeneratorConfiguration);
 
             JavaClientGeneratorConfiguration javaClientGeneratorConfiguration=new JavaClientGeneratorConfiguration();
-            javaClientGeneratorConfiguration.setTargetPackage(ConfigUtil.getStrProp("zhiyu.basePackage") + ".dao");
-            javaClientGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("zhiyu.ormPath") + "/java/");
+            javaClientGeneratorConfiguration.setTargetPackage(ConfigUtil.getStrProp("jjp.basePackage") + ".dao");
+            javaClientGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("jjp.ormPath") + "/java/");
             javaClientGeneratorConfiguration.setConfigurationType("XMLMAPPER");
             context.setJavaClientGeneratorConfiguration(javaClientGeneratorConfiguration);
 
             SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration=new SqlMapGeneratorConfiguration();
             sqlMapGeneratorConfiguration.setTargetPackage("orm");
-            sqlMapGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("zhiyu.ormPath")+"/resources/");
+            sqlMapGeneratorConfiguration.setTargetProject(ConfigUtil.getStrProp("jjp.ormPath")+"/resources/");
             context.setSqlMapGeneratorConfiguration(sqlMapGeneratorConfiguration);
 
 
@@ -132,14 +132,14 @@ public class CodeTaskItem extends BaseItem {
 
             for(String tableName:tableList){
                 TableConfiguration tableConfiguration=new TableConfiguration(context);
-                tableConfiguration.setSchema(ConfigUtil.getStrProp("zhiyu.database"));
+                tableConfiguration.setSchema(ConfigUtil.getStrProp("jjp.database"));
                 tableConfiguration.setTableName(tableName);
                 tableConfiguration.setDomainObjectName(convertDomainName(tableName));
                 GeneratedKey generatedKey=new GeneratedKey("id","MySql",true,null);
                 tableConfiguration.setGeneratedKey(generatedKey);
                 context.addTableConfiguration(tableConfiguration);
 
-                cleanFile(ConfigUtil.getStrProp("zhiyu.ormPath")+"/resources/orm/"+tableConfiguration.getDomainObjectName()+"Mapper.xml");
+                cleanFile(ConfigUtil.getStrProp("jjp.ormPath")+"/resources/orm/"+tableConfiguration.getDomainObjectName()+"Mapper.xml");
             }
 
             configuration.addContext(context);
@@ -207,8 +207,8 @@ public class CodeTaskItem extends BaseItem {
             logger.info("init TemplateGenerate");
             this.configuration=configuration;
             context = new VelocityContext();
-            String basePackage=ConfigUtil.getStrProp("zhiyu.basePackage");
-            String controllerPackage=ConfigUtil.getStrProp("zhiyu.controllerPackage");
+            String basePackage=ConfigUtil.getStrProp("jjp.basePackage");
+            String controllerPackage=ConfigUtil.getStrProp("jjp.controllerPackage");
             context.put("basePackage",basePackage);
             context.put("modelPackage",basePackage+".model");
             context.put("daoPackage", basePackage+".dao");
@@ -217,23 +217,23 @@ public class CodeTaskItem extends BaseItem {
             context.put("controllerPackage",controllerPackage+".controller");
             context.put("apiPackage",basePackage+".api");
 
-            ormPath=ConfigUtil.getStrProp("zhiyu.ormPath");
-            servicePath=ConfigUtil.getStrProp("zhiyu.servicePath");
-            controllerPath=ConfigUtil.getStrProp("zhiyu.controllerPath");
+            ormPath=ConfigUtil.getStrProp("jjp.ormPath");
+            servicePath=ConfigUtil.getStrProp("jjp.servicePath");
+            controllerPath=ConfigUtil.getStrProp("jjp.controllerPath");
 
 
-            basePackagePath=ConfigUtil.getStrProp("zhiyu.basePackagePath");
-            controllerPackagePath=ConfigUtil.getStrProp("zhiyu.controllerPackagePath");
+            basePackagePath=ConfigUtil.getStrProp("jjp.basePackagePath");
+            controllerPackagePath=ConfigUtil.getStrProp("jjp.controllerPackagePath");
 
             ve = new VelocityEngine();
             ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
             ve.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
 
-            mapperTemplate = ve.getTemplate("template-zhiyu/mapperTemplate.vm");
-            serviceTemplate = ve.getTemplate("template-zhiyu/serviceTemplate.vm");
-            implTemplate = ve.getTemplate("template-zhiyu/serviceImplTemplate.vm");
-            validatorTemplate = ve.getTemplate("template-zhiyu/validatorTemplate.vm");
-            controllerTemplate = ve.getTemplate("template-zhiyu/controllerTemplate.vm");
+            mapperTemplate = ve.getTemplate("template-jjp/mapperTemplate.vm");
+            serviceTemplate = ve.getTemplate("template-jjp/serviceTemplate.vm");
+            implTemplate = ve.getTemplate("template-jjp/serviceImplTemplate.vm");
+            validatorTemplate = ve.getTemplate("template-jjp/validatorTemplate.vm");
+            controllerTemplate = ve.getTemplate("template-jjp/controllerTemplate.vm");
         }
 
         @Override
