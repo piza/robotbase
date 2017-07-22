@@ -214,7 +214,7 @@ public class OrmTaskItem extends BaseItem {
             context.put("daoPackage", basePackage+".dao");
             context.put("servicePackage",basePackage+".service");
             context.put("validatorPackage",controllerPackage+".validator");
-            context.put("controllerPackage",controllerPackage+".controller");
+            context.put("controllerPackage",controllerPackage);
             context.put("apiPackage",basePackage+".api");
 
             ormPath=ConfigUtil.getStrProp("jjp.ormPath");
