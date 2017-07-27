@@ -3,22 +3,20 @@
 
 projectDir=$1
 deployDir=$2
+jarName=$3
 
 echo "project dir:"
 echo $projectDir
 
-echo "project dir:"
+echo "deploy dir:"
 echo $deployDir
 
+echo "kill program"
+ps -ef | grep $jarName | grep -v grep | awk {'print $2'} | xargs kill -9
+
 cd $deployDir
-rm -rf back
-mv current back
-mkdir current
+rm $jarName
+cp $projectDir/target/$jarName ./
 
-echo "deploy new version"
-cd current
-
-jar -xvf $projectDir/zhongshan/target/zhongshan.war
-
-cd WEB-INF/lib
-find . -name "*.jar" | grep  -v "zhongshan" | grep  -v "wechat" | grep  -v "zhiyu" | xargs rm -f
+echo "start new version"
+nohup java -jar $jarName &

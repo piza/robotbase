@@ -32,21 +32,56 @@ public class DeployJJPItem extends BaseItem {
             return;
         }
 
-        String buildCmd =  "buildProject.sh "+ConfigUtil.getStrProp("jjp.projectDir");
-        if(!skipBuild  && !buildProject(buildCmd)){
-            sendChat("task over");
-            return;
+        if(this.taskBase.hasTaskItem("common") || this.taskBase.hasTaskItem("all")){
+            String buildCmd =  "buildProject.sh "+ConfigUtil.getStrProp("jjp.projectDir") + "/jjp-common";
+            if(!skipBuild  && !buildProject(buildCmd)){
+                sendChat("task over");
+                return;
+            }
         }
-        String deployCmd = "shell_jjp/deployJjp.sh "+ConfigUtil.getStrProp("jjp.jjpDir")+" "+ConfigUtil.getStrProp("jjp.jjpDeployDir");
 
-        if(!deployProject(deployCmd)){
-            sendChat("task over");
-            return;
+        if(this.taskBase.hasTaskItem("security") || this.taskBase.hasTaskItem("all")){
+            String buildCmd =  "buildProject.sh "+ConfigUtil.getStrProp("jjp.projectDir") + "/jjp-security";
+            if(!skipBuild  && !buildProject(buildCmd)){
+                sendChat("task over");
+                return;
+            }
+            String deployCmd = "shell_jjp/deployJjp.sh "+ConfigUtil.getStrProp("jjp.jjpDir")+" "+ConfigUtil.getStrProp("jjp.jjpDeployDir") +" jjp-security-1.0-SNAPSHOT.jar";
+
+            if(!deployProject(deployCmd)){
+                sendChat("task over");
+                return;
+            }
         }
-        if(this.restart && !restartTomcat()){
-            sendChat("task over");
-            return;
+
+        if(this.taskBase.hasTaskItem("admin") || this.taskBase.hasTaskItem("all")){
+            String buildCmd =  "buildProject.sh "+ConfigUtil.getStrProp("jjp.projectDir") + "/jjp-admin";
+            if(!skipBuild  && !buildProject(buildCmd)){
+                sendChat("task over");
+                return;
+            }
+            String deployCmd = "shell_jjp/deployJjp.sh "+ConfigUtil.getStrProp("jjp.jjpDir")+" "+ConfigUtil.getStrProp("jjp.jjpDeployDir") +" jjp-admin-1.0-SNAPSHOT.jar";
+
+            if(!deployProject(deployCmd)){
+                sendChat("task over");
+                return;
+            }
         }
+
+        if(this.taskBase.hasTaskItem("monitor") || this.taskBase.hasTaskItem("all") ){
+            String buildCmd =  "buildProject.sh "+ConfigUtil.getStrProp("jjp.projectDir") + "/jjp-monitor";
+            if(!skipBuild  && !buildProject(buildCmd)){
+                sendChat("task over");
+                return;
+            }
+            String deployCmd = "shell_jjp/deployJjp.sh "+ConfigUtil.getStrProp("jjp.jjpDir")+" "+ConfigUtil.getStrProp("jjp.jjpDeployDir") +" jjp-monitor-1.0-SNAPSHOT.jar";
+
+            if(!deployProject(deployCmd)){
+                sendChat("task over");
+                return;
+            }
+        }
+
     }
 
     public boolean checkFirst(){
