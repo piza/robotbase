@@ -46,7 +46,7 @@ public class DeployJJPItem extends BaseItem {
                 sendChat("task over");
                 return;
             }
-            String deployCmd = "shell_jjp/deployJjp.sh "+ConfigUtil.getStrProp("jjp.jjpDir")+" "+ConfigUtil.getStrProp("jjp.jjpDeployDir") +" jjp-security-1.0-SNAPSHOT.jar";
+            String deployCmd = "shell_jjp/deployJjp.sh "+ConfigUtil.getStrProp("jjp.jjpDir")+" "+ConfigUtil.getStrProp("jjp.jjpDeployDir")+ "/jjp-security" +" jjp-security-1.0-SNAPSHOT.jar";
 
             if(!deployProject(deployCmd)){
                 sendChat("task over");
@@ -60,7 +60,7 @@ public class DeployJJPItem extends BaseItem {
                 sendChat("task over");
                 return;
             }
-            String deployCmd = "shell_jjp/deployJjp.sh "+ConfigUtil.getStrProp("jjp.jjpDir")+" "+ConfigUtil.getStrProp("jjp.jjpDeployDir") +" jjp-admin-1.0-SNAPSHOT.jar";
+            String deployCmd = "shell_jjp/deployJjp.sh "+ConfigUtil.getStrProp("jjp.jjpDir")+" "+ConfigUtil.getStrProp("jjp.jjpDeployDir")+ "/jjp-admin" +" jjp-admin-1.0-SNAPSHOT.jar";
 
             if(!deployProject(deployCmd)){
                 sendChat("task over");
@@ -74,7 +74,7 @@ public class DeployJJPItem extends BaseItem {
                 sendChat("task over");
                 return;
             }
-            String deployCmd = "shell_jjp/deployJjp.sh "+ConfigUtil.getStrProp("jjp.jjpDir")+" "+ConfigUtil.getStrProp("jjp.jjpDeployDir") +" jjp-monitor-1.0-SNAPSHOT.jar";
+            String deployCmd = "shell_jjp/deployJjp.sh "+ConfigUtil.getStrProp("jjp.jjpDir")+" "+ConfigUtil.getStrProp("jjp.jjpDeployDir")+"/jjp-monitor" +" jjp-monitor-1.0-SNAPSHOT.jar";
 
             if(!deployProject(deployCmd)){
                 sendChat("task over");
