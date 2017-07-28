@@ -4,7 +4,7 @@
 projectDir=$1
 deployDir=$2
 moduleDir=$3
-jarName=$4
+jarName=$4.jar
 
 echo "project dir:"
 echo $projectDir
