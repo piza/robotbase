@@ -23,3 +23,5 @@ cp $projectDir/$moduleDir/target/$jarName ./
 
 echo "start new version"
 nohup java -jar $jarName &
+
+echo "deploy task done"
