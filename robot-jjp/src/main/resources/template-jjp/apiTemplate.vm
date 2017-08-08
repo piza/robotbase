@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import $!{basePackage}.bean.PagingProperties;
-import $!{basePackage}.annotation.ApicloudRequestBody;
-import $!{basePackage}.controller.BaseController;
+import $!{basePackage}.anno.ApicloudRequestBody;
+import $!{basePackage}.api.BaseController;
 
 
 import $!{modelPackage}.$!{modelClass};
