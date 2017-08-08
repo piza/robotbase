@@ -202,6 +202,8 @@ public class OrmTaskItem extends BaseItem {
         private Template implTemplate;
         private Template validatorTemplate;
         private Template controllerTemplate;
+        private Template apiTemplate;
+
 
         public TemplateGenerate(Configuration configuration){
             logger.info("init TemplateGenerate");
@@ -234,6 +236,8 @@ public class OrmTaskItem extends BaseItem {
             implTemplate = ve.getTemplate("template-jjp/serviceImplTemplate.vm");
             validatorTemplate = ve.getTemplate("template-jjp/validatorTemplate.vm");
             controllerTemplate = ve.getTemplate("template-jjp/controllerTemplate.vm");
+            apiTemplate = ve.getTemplate("template-jjp/apiTemplate.vm");
+
         }
 
         @Override
@@ -292,6 +296,7 @@ public class OrmTaskItem extends BaseItem {
                 writeTemplate(servicePath+basePackagePath+File.separator+"service"+File.separator+"impl",modelClass,implTemplate,"ServiceImpl");
                 writeTemplate(controllerPath+controllerPackagePath+File.separator+"validator",modelClass,validatorTemplate,"Validator");
                 writeTemplate(controllerPath+controllerPackagePath+File.separator+"controller",modelClass,controllerTemplate,"Controller");
+                writeTemplate(controllerPath+controllerPackagePath+File.separator+"controller",modelClass,apiTemplate,"Api");
 
             }
 
