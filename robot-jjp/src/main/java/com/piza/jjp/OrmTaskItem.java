@@ -295,8 +295,8 @@ public class OrmTaskItem extends BaseItem {
                 writeTemplate(servicePath+basePackagePath+File.separator+"service",modelClass,serviceTemplate,"Service");
                 writeTemplate(servicePath+basePackagePath+File.separator+"service"+File.separator+"impl",modelClass,implTemplate,"ServiceImpl");
                 writeTemplate(controllerPath+controllerPackagePath+File.separator+"validator",modelClass,validatorTemplate,"Validator");
-                writeTemplate(controllerPath+controllerPackagePath+File.separator+"controller",modelClass,controllerTemplate,"Controller");
-                writeTemplate(controllerPath+controllerPackagePath+File.separator+"controller",modelClass,apiTemplate,"Api");
+                writeTemplate(controllerPath+controllerPackagePath+File.separator+"api",modelClass,controllerTemplate,"Controller");
+                writeTemplate(controllerPath+controllerPackagePath+File.separator+"api",modelClass,apiTemplate,"Api");
 
             }
 
