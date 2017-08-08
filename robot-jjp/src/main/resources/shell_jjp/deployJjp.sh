@@ -22,6 +22,7 @@ rm $jarName
 cp $projectDir/$moduleDir/target/$jarName ./
 
 echo "start new version"
-nohup java -jar $jarName &
+echo "./"$jarName
+nohup java -jar ./$jarName >> console.log &
 
 echo "deploy task done"
