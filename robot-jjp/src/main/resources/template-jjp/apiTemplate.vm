@@ -20,7 +20,7 @@ import $!{servicePackage}.$!{modelClass}Service;
 
 @Controller
 @RequestMapping("/api/$!{modelClassParam}")
-public class $!{modelClass}API extends BaseController {
+public class $!{modelClass}Api extends BaseController {
 
     @Autowired
     private $!{modelClass}Service $!{modelClassParam}Service;
