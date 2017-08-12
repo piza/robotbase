@@ -64,7 +64,7 @@ public class $!{modelClass}Api extends BaseController {
     }
 
 
-    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "{id}", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> update(@PathVariable("id") Integer id, @ApicloudRequestBody("content") $!{modelClass} $!{modelClassParam}) {
         $!{modelClassParam}Service.updateByPrimaryKeySelective($!{modelClassParam});

@@ -12,17 +12,16 @@ echo $projectDir
 echo "deploy dir:"
 echo $deployDir
 
-echo "kill program"
-ps -ef | grep $jarName | grep -v grep | awk {'print $2'} | xargs kill -9 >> $deployDir/kill.log
-
-echo $?
+#echo "kill program"
+#ps -ef | grep $jarName | grep -v grep | awk {'print $2'} | xargs kill -9 >> $deployDir/kill.log
+#echo $?
 
 cd $deployDir/$moduleDir
 rm $jarName
 cp $projectDir/$moduleDir/target/$jarName ./
 
-echo "start new version"
-echo "./"$jarName
-nohup java -jar ./$jarName >> console.log &
-
-echo "deploy task done"
+#echo "start new version"
+echo "scp "$jarName
+#nohup java -jar ./$jarName >> console.log &
+scp ./$jarName jjpServer:$deployDir/$moduleDir
+echo "scp task done,pls restart"
