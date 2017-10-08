@@ -29,7 +29,12 @@ public class $!{modelClass}Api extends BaseController {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> insert(@ApicloudRequestBody("content") $!{modelClass} $!{modelClassParam}) {
-        $!{modelClassParam}Service.insert($!{modelClassParam});
+        if($!{modelClassParam}.getId()!=null){
+            $!{modelClassParam}Service.updateByPrimaryKeySelective($!{modelClassParam});
+        }else{
+           $!{modelClassParam}Service.insert($!{modelClassParam});
+        }
+        
         return successResult($!{modelClassParam});
     }
 

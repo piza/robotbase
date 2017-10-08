@@ -297,7 +297,7 @@ public class OrmTaskItem extends BaseItem {
                 writeTemplate(controllerPath+controllerPackagePath+File.separator+"validator",modelClass,validatorTemplate,"Validator");
                 writeTemplate(controllerPath+controllerPackagePath+File.separator,modelClass,controllerTemplate,"Controller");
                 writeTemplate(controllerPath+controllerPackagePath+File.separator,modelClass,apiTemplate,"Api");
-
+                addDateFormatCode(ormPath+basePackagePath+File.separator+"model"+File.separator+modelClass+".java");
             }
 
         }
@@ -330,6 +330,33 @@ public class OrmTaskItem extends BaseItem {
         @Override
         public void checkCancel() throws InterruptedException {
 
+        }
+
+        public void addDateFormatCode(String modelClass){
+            File modelFile=new File(modelClass);
+
+            try {
+                List<String> codeList= FileUtils.readLines(modelFile,"UTF-8");
+                List<Integer> addList=new ArrayList();
+                for(int i=0;i<codeList.size();i++){
+                    if(codeList.get(i).contains("private Date")){
+                        addList.add(i);
+                    }
+                }
+                if(addList.size()>0){
+                    codeList.add(2,"import com.fasterxml.jackson.annotation.JsonFormat;");
+
+                    int offset=1;
+                    for(Integer index:addList){
+                        codeList.add(index+offset,"    @JsonFormat(pattern=\"yyyy-MM-dd HH:mm:ss\", timezone=\"GMT+8\")");
+                        offset++;
+                    }
+                    FileUtils.writeLines(modelFile,codeList);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
