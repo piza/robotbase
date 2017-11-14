@@ -24,6 +24,7 @@ import java.util.List;
 
 /**
  * Created by Peter on 2016/12/2.
+ *
  */
 public class OrmTaskItem extends BaseItem {
 
