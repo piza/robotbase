@@ -348,7 +348,7 @@ public class OrmTaskItem extends BaseItem {
 
                     int offset=1;
                     for(Integer index:addList){
-                        codeList.add(index+offset,"    @JsonFormat(pattern=\"yyyy-MM-dd HH:mm:ss\", timezone=\"GMT+8\")");
+                        codeList.add(index+offset,"    @JsonFormat(pattern=\"yyyy-MM-dd\", timezone=\"GMT+8\")");
                         offset++;
                     }
                     FileUtils.writeLines(modelFile,codeList);
