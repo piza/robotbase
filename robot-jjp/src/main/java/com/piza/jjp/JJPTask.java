@@ -37,7 +37,7 @@ public class JJPTask extends TaskBase {
                         "\n java    deploy java project" +
                         "\n skipBuild    skip build" +
                         "\n skipPull     skip pull code "+
-                        "\n deployAll     deploy admin & portal "
+                        "\n deployAll     deploy admin & app "
                         );
             }
 

@@ -100,6 +100,21 @@ public class DeployJJPItem extends BaseItem {
                 return;
             }
         }
+
+        if(this.taskBase.hasTaskItem("data") || this.taskBase.hasTaskItem("all")){
+            sendChat("deploy data");
+            String buildCmd =  "buildProject.sh "+ConfigUtil.getStrProp("jjp.projectDir") + "/jjp-data";
+            if(!skipBuild  && !buildProject(buildCmd)){
+                sendChat("task over");
+                return;
+            }
+            String deployCmd = "shell_jjp/deployJjp.sh "+ConfigUtil.getStrProp("jjp.projectDir")+" "+ConfigUtil.getStrProp("jjp.jjpDeployDir")+ " jjp-data" +" jjp-data-1.0-SNAPSHOT";
+
+            if(!deployProject(deployCmd)){
+                sendChat("task over");
+                return;
+            }
+        }
         sendChat("task over");
     }
 
