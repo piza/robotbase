@@ -71,14 +71,14 @@ public class DeployYslItem extends BaseItem {
             }
         }
 
-        if(this.taskBase.hasTaskItem("admin") || this.taskBase.hasTaskItem("all")){
-            sendChat("deploy admin");
-            String buildCmd =  "buildProject.sh "+ConfigUtil.getStrProp("ysl.projectDir") + "/ysl-admin";
+        if(this.taskBase.hasTaskItem("portal") || this.taskBase.hasTaskItem("all")){
+            sendChat("deploy portal");
+            String buildCmd =  "buildProject.sh "+ConfigUtil.getStrProp("ysl.projectDir") + "/ysl-portal";
             if(!skipBuild  && !buildProject(buildCmd)){
                 sendChat("task over");
                 return;
             }
-            String deployCmd = "shell_ysl/deployYsl.sh " +ConfigUtil.getStrProp("ysl.projectDir")+" "+ConfigUtil.getStrProp("ysl.yslDeployDir")+ " ysl-admin" +" ysl-admin-1.0-SNAPSHOT";
+            String deployCmd = "shell_ysl/deployYsl.sh " +ConfigUtil.getStrProp("ysl.projectDir")+" "+ConfigUtil.getStrProp("ysl.yslDeployDir")+ " ysl-portal" +" ysl-portal-1.0-SNAPSHOT";
 
             if(!deployProject(deployCmd)){
                 sendChat("task over");
@@ -86,14 +86,14 @@ public class DeployYslItem extends BaseItem {
             }
         }
 
-        if(this.taskBase.hasTaskItem("app") || this.taskBase.hasTaskItem("all")){
-            sendChat("deploy app");
-            String buildCmd =  "buildProject.sh "+ConfigUtil.getStrProp("ysl.projectDir") + "/ysl-app";
+        if(this.taskBase.hasTaskItem("device") || this.taskBase.hasTaskItem("all")){
+            sendChat("deploy device");
+            String buildCmd =  "buildProject.sh "+ConfigUtil.getStrProp("ysl.projectDir") + "/ysl-device";
             if(!skipBuild  && !buildProject(buildCmd)){
                 sendChat("task over");
                 return;
             }
-            String deployCmd = "shell_ysl/deployYsl.sh " +ConfigUtil.getStrProp("ysl.projectDir")+" "+ConfigUtil.getStrProp("ysl.yslDeployDir")+ " ysl-app" +" ysl-app-1.0-SNAPSHOT";
+            String deployCmd = "shell_ysl/deployYsl.sh " +ConfigUtil.getStrProp("ysl.projectDir")+" "+ConfigUtil.getStrProp("ysl.yslDeployDir")+ " ysl-device" +" ysl-device-1.0-SNAPSHOT";
 
             if(!deployProject(deployCmd)){
                 sendChat("task over");

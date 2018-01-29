@@ -8,6 +8,8 @@ import com.piza.robot.core.ParserManage;
 import com.piza.robot.core.TaskManager;
 import com.piza.translate.TranslateAnalyser;
 import com.piza.translate.TranslateTask;
+import com.piza.ysl.YslAnalyser;
+import com.piza.ysl.YslTask;
 import com.piza.zhiyu.ZhiyuAnalyser;
 import com.piza.zhiyu.ZhiyuTask;
 
@@ -49,9 +51,13 @@ public class DeployerLauncher extends Launcher {
 //        TaskManager.getInstance().addTask(new ZhiyuTask());
 
 
-        ConfigUtil.initProp("jjp.properties");
-        ParserManage.getInstance().addAnalyser(new JJPAnalyser());
-        TaskManager.getInstance().addTask(new JJPTask());
+//        ConfigUtil.initProp("jjp.properties");
+//        ParserManage.getInstance().addAnalyser(new JJPAnalyser());
+//        TaskManager.getInstance().addTask(new JJPTask());
+
+        ConfigUtil.initProp("ysl.properties");
+        ParserManage.getInstance().addAnalyser(new YslAnalyser());
+        TaskManager.getInstance().addTask(new YslTask());
 
         deployerLauncher.startApp();
 
