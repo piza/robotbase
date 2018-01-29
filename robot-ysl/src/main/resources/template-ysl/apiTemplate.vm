@@ -1,0 +1,79 @@
+package $!{apiPackage};
+
+import java.util.List;
+import java.util.Map;
+
+import $!{basePackage}.enums.ErrorTypeEnum;
+import $!{basePackage}.enums.NormalStatusEnum;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import $!{basePackage}.bean.PagingProperties;
+import $!{basePackage}.anno.ApicloudRequestBody;
+import $!{basePackage}.api.BaseController;
+
+
+import $!{modelPackage}.$!{modelClass};
+import $!{modelPackage}.$!{modelClass}Example;
+import $!{servicePackage}.$!{modelClass}Service;
+
+
+@Controller
+@RequestMapping("/api/$!{modelClassParam}")
+public class $!{modelClass}Api extends BaseController {
+
+    @Autowired
+    private $!{modelClass}Service $!{modelClassParam}Service;
+
+
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> insert(@ApicloudRequestBody("content") $!{modelClass} $!{modelClassParam}) {
+        if($!{modelClassParam}.getId()!=null){
+            $!{modelClassParam}Service.updateByPrimaryKeySelective($!{modelClassParam});
+        }else{
+           $!{modelClassParam}Service.insert($!{modelClassParam});
+        }
+        
+        return successResult($!{modelClassParam});
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public Map<String, Object> delete(@PathVariable("id") Integer id) {
+        $!{modelClass} delete = new $!{modelClass}();
+        delete.setId(id);
+        delete.setStatus(NormalStatusEnum.DELETED.getValue());
+        $!{modelClassParam}Service.updateByPrimaryKeySelective(delete);
+        return successResult("Ok");
+    }
+
+
+    @RequestMapping(value = "list", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> list(PagingProperties paging) {
+        $!{modelClass}Example exam = new $!{modelClass}Example();
+        if(paging.getNeedPaging()) {
+            paging.setTotal($!{modelClassParam}Service.countByExample(exam));
+            exam.setOrderByClause(" id desc " + paging.build());
+        }
+        List<$!{modelClass}> list = $!{modelClassParam}Service.selectByExample(exam);
+        return successPageList(paging,list);
+    }
+
+
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> get(@PathVariable("id") Integer id) {
+        return successResult($!{modelClassParam}Service.selectByPrimaryKey(id));
+    }
+
+
+    @RequestMapping(value = "{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> update(@PathVariable("id") Integer id, @ApicloudRequestBody("content") $!{modelClass} $!{modelClassParam}) {
+        $!{modelClassParam}Service.updateByPrimaryKeySelective($!{modelClassParam});
+        return successResult("ok");
+    }
+
+}

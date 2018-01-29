@@ -12,6 +12,7 @@
         <module>robot-translate</module>
         <module>robot-zhiyu</module>
         <module>robot-jjp</module>
+        <module>robot-ysl</module>
     </modules>
   <packaging>pom</packaging>
 
