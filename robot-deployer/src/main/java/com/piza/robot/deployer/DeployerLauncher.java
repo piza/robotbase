@@ -2,10 +2,7 @@ package com.piza.robot.deployer;
 
 import com.piza.jjp.JJPAnalyser;
 import com.piza.jjp.JJPTask;
-import com.piza.robot.core.ConfigUtil;
-import com.piza.robot.core.Launcher;
-import com.piza.robot.core.ParserManage;
-import com.piza.robot.core.TaskManager;
+import com.piza.robot.core.*;
 import com.piza.translate.TranslateAnalyser;
 import com.piza.translate.TranslateTask;
 import com.piza.ysl.YslAnalyser;
@@ -19,6 +16,13 @@ import com.piza.zhiyu.ZhiyuTask;
 public class DeployerLauncher extends Launcher {
 
 
+    @Override
+    public void init() {
+        super.init();
+
+        timer.schedule(new SelfCheckTimerTask(),600000,600000);//execute every 10 minutes
+
+    }
 
     public static void main(String[] args) {
         DeployerLauncher deployerLauncher=new DeployerLauncher();
@@ -51,13 +55,13 @@ public class DeployerLauncher extends Launcher {
 //        TaskManager.getInstance().addTask(new ZhiyuTask());
 
 
-//        ConfigUtil.initProp("jjp.properties");
-//        ParserManage.getInstance().addAnalyser(new JJPAnalyser());
-//        TaskManager.getInstance().addTask(new JJPTask());
+        ConfigUtil.initProp("jjp.properties");
+        ParserManage.getInstance().addAnalyser(new JJPAnalyser());
+        TaskManager.getInstance().addTask(new JJPTask());
 
-        ConfigUtil.initProp("ysl.properties");
-        ParserManage.getInstance().addAnalyser(new YslAnalyser());
-        TaskManager.getInstance().addTask(new YslTask());
+//        ConfigUtil.initProp("ysl.properties");
+//        ParserManage.getInstance().addAnalyser(new YslAnalyser());
+//        TaskManager.getInstance().addTask(new YslTask());
 
         deployerLauncher.startApp();
 
