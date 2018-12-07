@@ -5,6 +5,8 @@ import com.piza.jjp.JJPTask;
 import com.piza.robot.core.*;
 import com.piza.translate.TranslateAnalyser;
 import com.piza.translate.TranslateTask;
+import com.piza.wine.WineAnalyser;
+import com.piza.wine.WineTask;
 import com.piza.ysl.YslAnalyser;
 import com.piza.ysl.YslTask;
 import com.piza.zhiyu.ZhiyuAnalyser;
@@ -59,6 +61,10 @@ public class DeployerLauncher extends Launcher {
         ParserManage.getInstance().addAnalyser(new JJPAnalyser());
         TaskManager.getInstance().addTask(new JJPTask());
 
+
+        ConfigUtil.initProp("wine.properties");
+        ParserManage.getInstance().addAnalyser(new WineAnalyser());
+        TaskManager.getInstance().addTask(new WineTask());
 //        ConfigUtil.initProp("ysl.properties");
 //        ParserManage.getInstance().addAnalyser(new YslAnalyser());
 //        TaskManager.getInstance().addTask(new YslTask());
