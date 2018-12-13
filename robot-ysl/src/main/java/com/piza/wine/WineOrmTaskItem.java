@@ -237,7 +237,7 @@ public class WineOrmTaskItem extends BaseItem {
             implTemplate = ve.getTemplate("template-wine/serviceImplTemplate.vm");
             validatorTemplate = ve.getTemplate("template-wine/validatorTemplate.vm");
             controllerTemplate = ve.getTemplate("template-wine/controllerTemplate.vm");
-            apiTemplate = ve.getTemplate("template-wine/apiTemplate.vm");
+//            apiTemplate = ve.getTemplate("template-wine/apiTemplate.vm");
 
         }
 
@@ -297,7 +297,7 @@ public class WineOrmTaskItem extends BaseItem {
                 writeTemplate(servicePath+basePackagePath+File.separator+"service"+File.separator+"impl",modelClass,implTemplate,"ServiceImpl");
                 writeTemplate(controllerPath+controllerPackagePath+File.separator+"validator",modelClass,validatorTemplate,"Validator");
                 writeTemplate(controllerPath+controllerPackagePath+File.separator,modelClass,controllerTemplate,"Controller");
-                writeTemplate(controllerPath+controllerPackagePath+File.separator,modelClass,apiTemplate,"Api");
+//                writeTemplate(controllerPath+controllerPackagePath+File.separator,modelClass,apiTemplate,"Api");
                 addDateFormatCode(ormPath+basePackagePath+File.separator+"model"+File.separator+modelClass+".java");
             }
 
