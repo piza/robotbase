@@ -38,6 +38,7 @@ public class $!{modelClass}Controller extends BaseController {
         if (result.hasErrors()) {
             return failedResult(ErrorTypeEnum.VALIDATE_ERROR, result.getAllErrors().get(0).getDefaultMessage());
         }
+        $!{modelClassParam}.setIsDelete(NormalStatusEnum.NORMAL.getByte());
         $!{modelClassParam}Service.insert($!{modelClassParam});
         return successResult($!{modelClassParam});
     }
@@ -56,6 +57,7 @@ public class $!{modelClass}Controller extends BaseController {
     @ResponseBody
     public Map<String, Object> list(PagingProperties paging) {
         $!{modelClass}Example exam = new $!{modelClass}Example();
+        $!{modelClass}Example.Criteria cond = exam.or().andStatusEqualTo(NormalStatusEnum.NORMAL.getByte());
         if(paging.getNeedPaging()) {
             paging.setTotal($!{modelClassParam}Service.countByExample(exam));
             exam.setOrderByClause(" id desc " + paging.build());
