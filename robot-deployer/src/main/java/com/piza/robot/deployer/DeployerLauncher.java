@@ -1,5 +1,7 @@
 package com.piza.robot.deployer;
 
+import com.piza.hkld.HkldAnalyser;
+import com.piza.hkld.HkldTask;
 import com.piza.jjp.JJPAnalyser;
 import com.piza.jjp.JJPTask;
 import com.piza.robot.core.*;
@@ -65,6 +67,10 @@ public class DeployerLauncher extends Launcher {
         ConfigUtil.initProp("wine.properties");
         ParserManage.getInstance().addAnalyser(new WineAnalyser());
         TaskManager.getInstance().addTask(new WineTask());
+
+        ConfigUtil.initProp("hkld.properties");
+        ParserManage.getInstance().addAnalyser(new HkldAnalyser());
+        TaskManager.getInstance().addTask(new HkldTask());
 //        ConfigUtil.initProp("ysl.properties");
 //        ParserManage.getInstance().addAnalyser(new YslAnalyser());
 //        TaskManager.getInstance().addTask(new YslTask());
