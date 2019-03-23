@@ -85,7 +85,7 @@ public class HkldOrmTaskItem extends BaseItem {
         int ind=0;
         for(String tableName:cmdArr){
             if(ind>1){
-                tableList.add(tableName);
+                tableList.add(tableName.trim());
             }
             ind++;
         }
