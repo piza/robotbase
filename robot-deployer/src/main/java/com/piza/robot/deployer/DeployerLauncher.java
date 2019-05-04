@@ -1,5 +1,7 @@
 package com.piza.robot.deployer;
 
+import com.piza.cpc.CpcAnalyser;
+import com.piza.cpc.CpcTask;
 import com.piza.hkld.HkldAnalyser;
 import com.piza.hkld.HkldTask;
 import com.piza.jjp.JJPAnalyser;
@@ -71,6 +73,10 @@ public class DeployerLauncher extends Launcher {
         ConfigUtil.initProp("hkld.properties");
         ParserManage.getInstance().addAnalyser(new HkldAnalyser());
         TaskManager.getInstance().addTask(new HkldTask());
+
+        ConfigUtil.initProp("cpc.properties");
+        ParserManage.getInstance().addAnalyser(new CpcAnalyser());
+        TaskManager.getInstance().addTask(new CpcTask());
 //        ConfigUtil.initProp("ysl.properties");
 //        ParserManage.getInstance().addAnalyser(new YslAnalyser());
 //        TaskManager.getInstance().addTask(new YslTask());
