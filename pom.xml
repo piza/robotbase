@@ -258,6 +258,7 @@
                 <configuration>
                     <locales>en,fr</locales>
                 </configuration>
+                <version>3.7.1</version>
             </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

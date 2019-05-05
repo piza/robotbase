@@ -1,5 +1,7 @@
 package com.piza.robot.deployer;
 
+import com.piza.bus.BusAnalyser;
+import com.piza.bus.BusTask;
 import com.piza.cpc.CpcAnalyser;
 import com.piza.cpc.CpcTask;
 import com.piza.hkld.HkldAnalyser;
@@ -61,22 +63,26 @@ public class DeployerLauncher extends Launcher {
 //        TaskManager.getInstance().addTask(new ZhiyuTask());
 
 
-        ConfigUtil.initProp("jjp.properties");
-        ParserManage.getInstance().addAnalyser(new JJPAnalyser());
-        TaskManager.getInstance().addTask(new JJPTask());
+//        ConfigUtil.initProp("jjp.properties");
+//        ParserManage.getInstance().addAnalyser(new JJPAnalyser());
+//        TaskManager.getInstance().addTask(new JJPTask());
 
 
-        ConfigUtil.initProp("wine.properties");
-        ParserManage.getInstance().addAnalyser(new WineAnalyser());
-        TaskManager.getInstance().addTask(new WineTask());
+//        ConfigUtil.initProp("wine.properties");
+//        ParserManage.getInstance().addAnalyser(new WineAnalyser());
+//        TaskManager.getInstance().addTask(new WineTask());
 
         ConfigUtil.initProp("hkld.properties");
         ParserManage.getInstance().addAnalyser(new HkldAnalyser());
         TaskManager.getInstance().addTask(new HkldTask());
 
-        ConfigUtil.initProp("cpc.properties");
-        ParserManage.getInstance().addAnalyser(new CpcAnalyser());
-        TaskManager.getInstance().addTask(new CpcTask());
+        ConfigUtil.initProp("bus.properties");
+        ParserManage.getInstance().addAnalyser(new BusAnalyser());
+        TaskManager.getInstance().addTask(new BusTask());
+
+//        ConfigUtil.initProp("cpc.properties");
+//        ParserManage.getInstance().addAnalyser(new CpcAnalyser());
+//        TaskManager.getInstance().addTask(new CpcTask());
 //        ConfigUtil.initProp("ysl.properties");
 //        ParserManage.getInstance().addAnalyser(new YslAnalyser());
 //        TaskManager.getInstance().addTask(new YslTask());
