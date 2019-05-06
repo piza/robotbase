@@ -64,10 +64,21 @@ public class CoderTask extends TaskBase {
             working=false;
         }
     }
+
+    private boolean isWindows(){
+        String OS = System.getProperty("os.name").toLowerCase();
+        return OS.indexOf("windows")>=0;
+    }
     private boolean commitCode(){
         this.sendChat("start to commit code!");
         String workingDir= ConfigUtil.getStrProp("workDir");
 
+        //判断系统，如果是Windows 就提示用户手动处理
+        if (isWindows()) {
+            this.sendChat("代码未提交，请手动处理!");
+
+            return true;
+        }
         try {
             String pullCmd = workingDir + File.separator + "commitProject.sh "+ConfigUtil.getStrProp("coder.projectDir");
             ShellJob shellJob=new ShellJob();
@@ -88,7 +99,10 @@ public class CoderTask extends TaskBase {
     private boolean pullCode(){
         this.sendChat("start to pull code!");
         String workingDir= ConfigUtil.getStrProp("workDir");
-
+        if (isWindows()) {
+            this.sendChat("代码未更新，请手动处理!");
+            return true;
+        }
         try {
             String pullCmd = workingDir + File.separator + "pullProject.sh "+ConfigUtil.getStrProp("coder.projectDir");
             ShellJob shellJob=new ShellJob();
