@@ -203,7 +203,6 @@ public class OrmTaskItem extends BaseItem {
         private Template implTemplate;
         private Template validatorTemplate;
         private Template controllerTemplate;
-        private Template apiTemplate;
 
 
         public TemplateGenerate(Configuration configuration){
@@ -237,7 +236,6 @@ public class OrmTaskItem extends BaseItem {
             implTemplate = ve.getTemplate("template-cpc/serviceImplTemplate.vm");
             validatorTemplate = ve.getTemplate("template-cpc/validatorTemplate.vm");
             controllerTemplate = ve.getTemplate("template-cpc/controllerTemplate.vm");
-            apiTemplate = ve.getTemplate("template-cpc/apiTemplate.vm");
 
         }
 
@@ -297,7 +295,6 @@ public class OrmTaskItem extends BaseItem {
                 writeTemplate(servicePath+basePackagePath+File.separator+"service"+File.separator+"impl",modelClass,implTemplate,"ServiceImpl");
                 writeTemplate(controllerPath+controllerPackagePath+File.separator+"validator",modelClass,validatorTemplate,"Validator");
                 writeTemplate(controllerPath+controllerPackagePath+File.separator,modelClass,controllerTemplate,"Controller");
-                writeTemplate(controllerPath+controllerPackagePath+File.separator,modelClass,apiTemplate,"Api");
                 addDateFormatCode(ormPath+basePackagePath+File.separator+"model"+File.separator+modelClass+".java");
             }
 
