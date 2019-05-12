@@ -197,6 +197,7 @@ public class BusOrmTaskItem extends BaseItem {
         private String controllerPath;
         private String basePackagePath;
         private String controllerPackagePath;
+        private String appApiPackagePath;
 
         private Template mapperTemplate;
         private Template serviceTemplate;
@@ -218,7 +219,7 @@ public class BusOrmTaskItem extends BaseItem {
             context.put("servicePackage",basePackage+".service");
             context.put("validatorPackage",controllerPackage+".validator");
             context.put("controllerPackage",controllerPackage);
-            context.put("apiPackage",basePackage+".api");
+            context.put("apiPackage",basePackage+".api.app");
 
             ormPath=ConfigUtil.getStrProp("bus.ormPath");
             servicePath=ConfigUtil.getStrProp("bus.servicePath");
@@ -227,6 +228,7 @@ public class BusOrmTaskItem extends BaseItem {
 
             basePackagePath=ConfigUtil.getStrProp("bus.basePackagePath");
             controllerPackagePath=ConfigUtil.getStrProp("bus.controllerPackagePath");
+            appApiPackagePath=ConfigUtil.getStrProp("bus.controllerPackagePath")+File.separator+"app";
 
             ve = new VelocityEngine();
             ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
@@ -237,7 +239,7 @@ public class BusOrmTaskItem extends BaseItem {
             implTemplate = ve.getTemplate("template-bus/serviceImplTemplate.vm");
             validatorTemplate = ve.getTemplate("template-bus/validatorTemplate.vm");
             controllerTemplate = ve.getTemplate("template-bus/controllerTemplate.vm");
-//            apiTemplate = ve.getTemplate("template-bus/apiTemplate.vm");
+            apiTemplate = ve.getTemplate("template-bus/apiTemplate.vm");
 
         }
 
@@ -297,7 +299,7 @@ public class BusOrmTaskItem extends BaseItem {
                 writeTemplate(servicePath+basePackagePath+File.separator+"service"+File.separator+"impl",modelClass,implTemplate,"ServiceImpl");
                 writeTemplate(controllerPath+controllerPackagePath+File.separator+"validator",modelClass,validatorTemplate,"Validator");
                 writeTemplate(controllerPath+controllerPackagePath+File.separator,modelClass,controllerTemplate,"Controller");
-//                writeTemplate(controllerPath+controllerPackagePath+File.separator,modelClass,apiTemplate,"Api");
+                writeTemplate(controllerPath+appApiPackagePath+File.separator,modelClass,apiTemplate,"Api");
                 addDateFormatCode(ormPath+basePackagePath+File.separator+"model"+File.separator+modelClass+".java");
             }
 
