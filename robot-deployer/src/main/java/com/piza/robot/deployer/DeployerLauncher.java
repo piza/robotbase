@@ -68,9 +68,9 @@ public class DeployerLauncher extends Launcher {
 //        TaskManager.getInstance().addTask(new JJPTask());
 //
 //
-//        ConfigUtil.initProp("wine.properties");
-//        ParserManage.getInstance().addAnalyser(new WineAnalyser());
-//        TaskManager.getInstance().addTask(new WineTask());
+        ConfigUtil.initProp("wine.properties");
+        ParserManage.getInstance().addAnalyser(new WineAnalyser());
+        TaskManager.getInstance().addTask(new WineTask());
 //
         ConfigUtil.initProp("hkld.properties");
         ParserManage.getInstance().addAnalyser(new HkldAnalyser());
