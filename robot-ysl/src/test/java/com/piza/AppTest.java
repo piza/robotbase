@@ -44,8 +44,13 @@ public class AppTest {
             e.printStackTrace();
         }
 
-
+        //System.out.println(isWindows());
     }
+
+//    private static boolean isWindows(){
+//        String OS = System.getProperty("os.name").toLowerCase();
+//        return OS.indexOf("windows")>=0;
+//    }
 
     private static String replace(String s){
         StringBuilder stringBuilder=new StringBuilder();

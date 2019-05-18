@@ -9,26 +9,26 @@ public class BusFeTools {
 
     public static void main(String[] args) {
 
-        String storePath="/Users/piza/work/ysl/outsource/code_temp/";
+        String storePath="E:\\tem\\";
         ConfigUtil.initProp("db.properties");
 
 
         FeConfig feConfig=new FeConfig();
 
         feConfig.setFolderName(storePath);
-        feConfig.setDetailsTemp("template-hkld/fe-details.vm");
+        feConfig.setDetailsTemp("template-bus/fe-details.vm");
         feConfig.setJdbcUrl(ConfigUtil.getStrProp("dbUrl"));
-        feConfig.setFormTemp("template-hkld/fe-form.vm");
-        feConfig.setMainTemp("template-hkld/fe-main.vm");
+        feConfig.setFormTemp("template-bus/fe-form.vm");
+        feConfig.setMainTemp("template-bus/fe-main.vm");
 
         FeModule feModule=new FeModule();
         feModule.init(feConfig);
 
 
-        feModule.setParam("rdMember",
-                "会员管理",
-                "会员管理",
-                "rd_member");
+        feModule.setParam("ptSkGoodsManage",
+                "积分货品管理",
+                "积分货品管理",
+                "pt_sk_goods");
 
         feModule.generate(FeModule.mainTemplate,"Main");
         feModule.generate(FeModule.formTemplate,"Form");
