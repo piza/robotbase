@@ -11,6 +11,8 @@ import com.piza.jjp.JJPTask;
 import com.piza.robot.core.*;
 import com.piza.translate.TranslateAnalyser;
 import com.piza.translate.TranslateTask;
+import com.piza.water.WaterAnalyser;
+import com.piza.water.WaterTask;
 import com.piza.wine.WineAnalyser;
 import com.piza.wine.WineTask;
 import com.piza.ysl.YslAnalyser;
@@ -68,9 +70,9 @@ public class DeployerLauncher extends Launcher {
 //        TaskManager.getInstance().addTask(new JJPTask());
 //
 //
-        ConfigUtil.initProp("wine.properties");
-        ParserManage.getInstance().addAnalyser(new WineAnalyser());
-        TaskManager.getInstance().addTask(new WineTask());
+//        ConfigUtil.initProp("wine.properties");
+//        ParserManage.getInstance().addAnalyser(new WineAnalyser());
+//        TaskManager.getInstance().addTask(new WineTask());
 //
         ConfigUtil.initProp("hkld.properties");
         ParserManage.getInstance().addAnalyser(new HkldAnalyser());
@@ -80,6 +82,9 @@ public class DeployerLauncher extends Launcher {
         ParserManage.getInstance().addAnalyser(new BusAnalyser());
         TaskManager.getInstance().addTask(new BusTask());
 
+        ConfigUtil.initProp("water.properties");
+        ParserManage.getInstance().addAnalyser(new WaterAnalyser());
+        TaskManager.getInstance().addTask(new WaterTask());
 //        ConfigUtil.initProp("cpc.properties");
 //        ParserManage.getInstance().addAnalyser(new CpcAnalyser());
 //        TaskManager.getInstance().addTask(new CpcTask());

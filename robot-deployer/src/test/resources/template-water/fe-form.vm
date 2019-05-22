@@ -1,0 +1,106 @@
+<!--$!{moduleName} -->
+<template>
+    <div class="each-model">
+
+        <div class="page-nav">
+            <el-breadcrumb separator="/">
+                <el-breadcrumb-item :to="{ path: '/' }"><i class="el-icon-home" style="margin-right: 6px;"></i>$!{moduleName}</el-breadcrumb-item>
+            </el-breadcrumb>
+        </div>
+        <div class="page-content">
+            <div class="page-content-box">
+                <div class="page-content-header">
+                    <div class="model-title">
+                        <span>$!{moduleName}</span>
+                        <div class="add-new-btn">
+                            <el-button @click="$router.go(-1)" style="margin-top: 4px;" size="small" type="primary" icon="arrow-left">返回</el-button>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-content-main">
+                    <div class="model-content">
+                        <el-form ref="form" :model="form" :rules="formRules" label-width="130px">
+                            #foreach($propName in $propList)
+                            <el-form-item prop="$!{propName}" label="$!{propName}">
+                                <el-input v-model="form.$!{propName}" placeholder="$!{propName}"></el-input>
+                            </el-form-item>
+                            #end
+                        </el-form>
+                        <div slot="footer" class="dialog-footer">
+                            <el-button @click="cancelForm">取 消</el-button>
+                            <el-button type="primary" @click="saveForm">确 定</el-button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</template>
+
+<script type="text/ecmascript-6">
+    export default {
+        name: '$!{lowerCaseName}Form',
+        data : function(){
+            return {
+                form: {
+                #foreach($propName in $propList)
+                $!{propName}:'',
+                #end
+                },
+                formRules: {
+                }
+            }
+        },
+        methods: {
+            cancelForm: function () {
+                this.$router.go(-1);
+            },
+            saveForm:function() {
+                var that=this;
+                this.#[[$refs]]#["form"].validate(function(valid)
+                {
+                    if (valid) {
+                        if (that.form.id) {
+                            that.#[[$rsClient]]#.put("/$!{lowerCaseName}/"+that.form.id, that.form,function (result) {
+                            #[[that.$message({message: "修改成功", type: "success"});
+                                that.$router.go(-1);]]#
+                            });
+                        } else {
+                            that.form.status=0;
+                            that.form.isDelete=0;
+                            that.#[[$rsClient]]#.post("/$!{lowerCaseName}", that.form, function(result) {
+                            #[[ that.$message({message: "创建成功", type: "success"});
+                                that.$router.go(-1);
+                            },function(error){
+                                if(error.errorMesg){
+                                    that.$message({message: error.errorMesg, type: "warning"});
+                                }
+                            });
+                        }]]#
+                    }
+                });
+            },
+            get$!{filePrefix}:function(){
+                var that=this;
+                this.#[[$rsClient]]#.get("/$!{lowerCaseName}/"+this.#[[$route.query.id]]#,function(custom){
+                    #foreach($propName in $propList)
+                    #[[that.form.]]#$!{propName}=custom.$!{propName};
+                    #end
+                    that.form.id=custom.id;
+                });
+            }
+        },
+        components: {
+        },
+        mounted:function(){
+            if(this.#[[$route]]#.query.id){
+                this.get$!{filePrefix}();
+            }
+        }
+    }
+</script>
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="less" scoped>
+
+</style>

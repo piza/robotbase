@@ -16,19 +16,19 @@ public class BusFeTools {
         FeConfig feConfig=new FeConfig();
 
         feConfig.setFolderName(storePath);
-        feConfig.setDetailsTemp("template-bus/fe-details.vm");
+        feConfig.setDetailsTemp("template-water/fe-details.vm");
         feConfig.setJdbcUrl(ConfigUtil.getStrProp("dbUrl"));
-        feConfig.setFormTemp("template-bus/fe-form.vm");
-        feConfig.setMainTemp("template-bus/fe-main.vm");
+        feConfig.setFormTemp("template-water/fe-form.vm");
+        feConfig.setMainTemp("template-water/fe-main.vm");
 
         FeModule feModule=new FeModule();
         feModule.init(feConfig);
 
 
-        feModule.setParam("ptSkGoodsManage",
-                "积分货品管理",
-                "积分货品管理",
-                "pt_sk_goods");
+        feModule.setParam("membershipCardManage",
+                "充值记录管理",
+                "充值记录管理",
+                "op_membership_card");
 
         feModule.generate(FeModule.mainTemplate,"Main");
         feModule.generate(FeModule.formTemplate,"Form");

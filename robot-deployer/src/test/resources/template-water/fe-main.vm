@@ -1,0 +1,138 @@
+<!--$!{moduleName} -->
+<template>
+    <div class="each-model">
+        <div class="page-nav">
+            <el-breadcrumb separator="/">
+                <el-breadcrumb-item :to="{ path: '/' }"><i class="el-icon-home" style="margin-right: 6px;"></i>$!{moduleName}</el-breadcrumb-item>
+            </el-breadcrumb>
+        </div>
+        <div class="page-content">
+            <div class="page-content-box">
+                <div class="page-content-header">
+                    <div class="model-title">
+                        <span>$!{moduleName}</span>
+                        <div class="add-new-btn">
+                            <el-button  @click="add$!{filePrefix}" style="margin-top: 4px;" size="small" type="primary" icon="el-icon-plus">添加</el-button>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-content-main">
+                    <div class="model-content">
+                        <el-table
+                                :data="tableData"
+                                border
+                                style="width: 100%;margin-top: 15px;">
+                            #foreach($propName in $propList)
+                                <el-table-column prop="$!{propName}" label="$!{propName}"> </el-table-column>
+                            #end
+
+                            <el-table-column
+                                    fixed="right"
+                                    label="操作"
+                                    width="280">
+                                <template slot-scope="scope">
+                                    <el-button type="text" size="small" @click="$!{lowerCaseName}Details(scope.row.id)">详情</el-button>
+                                    <el-button  @click="$!{lowerCaseName}Edit(scope.row.id)" type="text" size="small">编辑</el-button>
+                                    <el-button  type="text" size="small" @click="$!{lowerCaseName}Delete(scope.row.id)">删除</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                        <paging v-bind:pagingInfo="pagingInfo" v-on:gotoPage="gotoPage"></paging>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</template>
+
+<script type="text/ecmascript-6">
+
+    import Paging from '../common/Paging.vue'
+
+    export default {
+        name: '$!{lowerCaseName}',
+        data : function(){
+            return {
+                /*表格*/
+                tableData: [],
+                page:1,
+                pagingInfo:{
+                    totalPage:1,
+                    page:1,
+                    perPage:10,
+                    total:0
+                }
+            }
+        },
+        mounted:function(){
+            this.get$!{filePrefix}List();
+        },
+        computed: {
+            buttonPermission:function(){
+                return this.$store.state.permissionStore.buttonPermissions;
+            }
+        },
+        methods: {
+            $!{lowerCaseName}Delete: function (id) {
+            #[[   var that=this;
+                this.$confirm("你确定删除吗?","危险操作", {
+                    type: 'warning'
+                }).then(function() {
+                    var delForm={
+                        id:id,
+                        isDelete:1
+                    };
+                    ]]#
+                    that.#[[$rsClient]]#.put("/$!{lowerCaseName}/" + id,delForm, function () {
+                    that.get$!{filePrefix}List();
+                    #[[
+                    }, function (errorMessage) {
+                    that.$alert(errorMessage.errorMessage, "删除失败");
+                    });
+                });
+            },]]#
+            $!{lowerCaseName}Details:function(id){
+                this.#[[$router]]#.push({
+                path:"/$!{permissionPrefix}/$!{lowerCaseName}Details",
+                    query:{
+                        id:id
+                    }
+                });
+            },
+            $!{lowerCaseName}Edit:function(id){
+                this.#[[$router]]#.push({
+                path:"/$!{permissionPrefix}/$!{lowerCaseName}Form",
+                    query:{
+                        id:id
+                    }
+                });
+            },
+            add$!{filePrefix}:function(){
+                this.#[[$router]]#.push("/$!{permissionPrefix}/$!{lowerCaseName}Form");
+            },
+            get$!{filePrefix}List:function(){
+                var that=this;
+                that.tableData=[];
+                this.#[[$rsClient]]#.get("/$!{lowerCaseName}/list?page="+this.page, function(result){
+                if(result.models){
+                    that.tableData=result.models;
+                }
+                if(result.pagingInfo){
+                    that.pagingInfo=result.pagingInfo;
+                }
+                });
+            },
+            gotoPage:function(page){
+                this.page=page;
+                this.get$!{filePrefix}List();
+            }
+        },
+        components: {
+            Paging
+        }
+    }
+</script>
+<style lang="less" scoped>
+
+</style>
