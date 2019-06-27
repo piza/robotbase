@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 /**
  * Unit test for simple App.
  */
-public class AppTest {
+public class SqlReplace {
 
 
     public static void main(String[] args) {
@@ -22,7 +22,7 @@ public class AppTest {
         File file=new File(filePath);
         File fileNew=new File(new_filePath);
 
-        String pattern="`.*`";
+        String pattern="``";
         Pattern r = Pattern.compile(pattern);
         try {
             List<String> allLines=FileUtils.readLines(file);

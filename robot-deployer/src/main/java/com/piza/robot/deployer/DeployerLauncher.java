@@ -2,21 +2,11 @@ package com.piza.robot.deployer;
 
 import com.piza.bus.BusAnalyser;
 import com.piza.bus.BusTask;
-import com.piza.cpc.CpcAnalyser;
-import com.piza.cpc.CpcTask;
 import com.piza.hkld.HkldAnalyser;
 import com.piza.hkld.HkldTask;
-import com.piza.jjp.JJPAnalyser;
-import com.piza.jjp.JJPTask;
 import com.piza.robot.core.*;
-import com.piza.translate.TranslateAnalyser;
-import com.piza.translate.TranslateTask;
 import com.piza.wine.WineAnalyser;
 import com.piza.wine.WineTask;
-import com.piza.ysl.YslAnalyser;
-import com.piza.ysl.YslTask;
-import com.piza.zhiyu.ZhiyuAnalyser;
-import com.piza.zhiyu.ZhiyuTask;
 
 /**
  * Created by Peter on 16/9/28.

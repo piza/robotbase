@@ -13,6 +13,7 @@
         <module>robot-zhiyu</module>
         <module>robot-jjp</module>
         <module>robot-ysl</module>
+        <module>robot-tools</module>
     </modules>
   <packaging>pom</packaging>
 

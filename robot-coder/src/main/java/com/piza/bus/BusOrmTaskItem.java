@@ -299,7 +299,7 @@ public class BusOrmTaskItem extends BaseItem {
                 writeTemplate(servicePath+basePackagePath+File.separator+"service"+File.separator+"impl",modelClass,implTemplate,"ServiceImpl");
                 writeTemplate(controllerPath+controllerPackagePath+File.separator+"validator",modelClass,validatorTemplate,"Validator");
                 writeTemplate(controllerPath+controllerPackagePath+File.separator,modelClass,controllerTemplate,"Controller");
-                writeTemplate(controllerPath+appApiPackagePath+File.separator,modelClass,apiTemplate,"Api");
+                writeTemplate(controllerPath+appApiPackagePath,modelClass,apiTemplate,"Api");
                 addDateFormatCode(ormPath+basePackagePath+File.separator+"model"+File.separator+modelClass+".java");
             }
 
