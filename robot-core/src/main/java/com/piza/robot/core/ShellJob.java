@@ -33,10 +33,21 @@ public class ShellJob {
         this.success = success;
     }
 
+    private boolean isWindows(){
+        String OS = System.getProperty("os.name").toLowerCase();
+        return OS.indexOf("windows")>=0;
+    }
     public void runCommand(String command){
         try {
-//            String[] cmd = {"/bin/bash", "-c", command};
 
+
+//            String[] cmd = {"/bin/bash", "-c", command};
+            if (isWindows()) {
+                System.out.println(
+                        "代码未提交，请手动处理!"
+                );
+                return;
+            }
             ProcessBuilder pb=new ProcessBuilder("/bin/bash","-c",command);
 //            Process pid = Runtime.getRuntime().exec(cmd);
             pb.redirectErrorStream(true);
